@@ -1,0 +1,116 @@
+<!--
+<div class="w-full space-y-8">
+  <div class="text-center">
+    <h2 class="mt-6 text-3xl font-bold text-gray-900">
+      Welcome back!
+    </h2>
+    <p class="mt-2 text-sm text-gray-500">Sign in your account now</p>
+  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"  class="mt-8 space-y-6">
+    <input type="hidden" name="remember" value="true">
+    <div class="relative">
+      <label for="txtbxUsername" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">
+        Name
+      </label>
+
+      <div class="relative">
+
+        <div class="absolute flex border border-transparent left-0 top-0 h-full w-10">
+          <div
+            class="flex items-center justify-center rounded-tl rounded-bl z-10 bg-gray-100 text-gray-600 text-lg h-full w-full">
+            <svg viewBox="0 0 24 24" width="24" height="24" class="h-5 w-5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+        </div>
+
+        <input id="txtbxUsername" name="txtbxUsername" type="text" placeholder="Username" value="" formControlName="username"
+          class="text-sm sm:text-base relative w-full border rounded placeholder-gray-400 focus:border-indigo-400 focus:outline-none py-2 pr-2 pl-12">
+
+      </div>
+    </div>
+    <div class="mt-8 content-center">
+      <label for="txtbxPassword" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">
+        Password
+      </label>
+
+      <div class="relative">
+
+        <div class="absolute flex border border-transparent left-0 top-0 h-full w-10">
+          <div
+            class="flex items-center justify-center rounded-tl rounded-bl z-10 bg-gray-100 text-gray-600 text-lg h-full w-full">
+
+            <svg viewBox="0 0 512 512" width="24" height="24"  class="text-gray-500 h-5 w-5">
+              <path d="M336 352c97.2 0 176-78.8 176-176S433.2 0 336 0S160 78.8 160 176c0 18.7 2.9 36.8 8.3 53.7L7 391c-4.5 4.5-7 10.6-7 17v80c0 13.3 10.7 24 24 24h80c13.3 0 24-10.7 24-24V448h40c13.3 0 24-10.7 24-24V384h40c6.4 0 12.5-2.5 17-7l33.3-33.3c16.9 5.4 35 8.3 53.7 8.3zM376 96a40 40 0 1 1 0 80 40 40 0 1 1 0-80z"/>
+            </svg>
+          </div>
+        </div>
+
+        <input id="txtbxPassword" name="txtbxPassword" type="password" placeholder="Password" value="" formControlName="password"
+          class="text-sm sm:text-base relative w-full border rounded placeholder-gray-400 focus:border-indigo-400 focus:outline-none py-2 pr-2 pl-12">
+
+      </div>
+    </div>
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <input id="remember_me" name="remember_me" type="checkbox"
+          class="h-4 w-4 bg-blue-500 focus:ring-blue-400 border-gray-300 rounded">
+        <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+          Remember Me
+        </label>
+      </div>
+    </div>
+    <div>
+      <button data-te-ripple-init
+      data-te-ripple-color="light" type="submit"
+        class="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
+        Sign in
+      </button>
+    </div>
+    <p class="flex flex-col items-center justify-center mt-10 text-center text-md text-gray-500">
+      <span>Don't have an account?</span>
+      <a routerLink="/signup"
+        class="text-indigo-400 hover:text-blue-500 no-underline hover:underline cursor-pointer transition ease-in duration-300">Sign up now!</a>
+    </p>
+  </form>
+</div> -->
+
+
+
+<div class="w-full">
+  <h1 class="text-2xl font-semibold tracking-wider text-gray-800 capitalize dark:text-white">
+      Login your account now.
+  </h1>
+
+  <p class="mt-4 text-gray-500 dark:text-gray-400">
+      Let’s login your account to start to get going!
+  </p>
+
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 gap-6 mt-8 w-full">
+      <div>
+          <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200 w-full">Username</label>
+          <input formControlName="username" type="text" placeholder="Enter your username"  class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+      </div>
+
+      <div>
+          <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200 w-full">Password</label>
+          <input formControlName="password" type="password" placeholder="Enter your password" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+      </div>
+
+      <div>
+        <a routerLink="/account/signup" class="text-xs uppercase cursor-pointer text-[#179182] font-bold">Don't have an account? Register Now</a>
+      </div>
+      <button
+          class="flex items-center justify-between w-full px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#179182] rounded-md hover:bg-[#179182] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+          <span>Sign In</span>
+
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 rtl:-scale-x-100" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd" />
+          </svg>
+      </button>
+  </form>
+</div>
