@@ -13,6 +13,7 @@ import { Modal, Ripple, Input, initTE, Select, Datepicker} from "tw-elements";
 export class DoctorPageComponent {
   @ViewChild('openViewPhysician') viewPhysicianModal!: ElementRef;
   @ViewChild('closeModals') closeModals!: ElementRef;
+  @ViewChild('viewPhysicianStatusModal') viewPhysicianStatusModal!: ElementRef;
 
   selectedFile : File | undefined;
   originalPhysiciansList: Physician[] = [];
@@ -70,17 +71,27 @@ export class DoctorPageComponent {
 
   isPhysician = false;
   searchString = "";
+  role = "";
+  selectedPhysicianStatus = "";
+  isButtonDisabled = true;
+  applicationList:any[] = [];
 
   constructor(private data: DataService, private auth:AuthService) { }
 
   ngOnInit() {
     initTE({ Modal, Ripple, Input, Select, Datepicker });
+    this.role = this.auth.getAuth()!;
 
-    if(this.auth.getAuth() === "Physician"){
+    if(this.role === "Physician"){
       this.isPhysician = true;
     }
 
-    this.getAllPhysicians();
+    if(this.role === 'Clinic'){
+      this.getAllPhysiciansOfClinic();
+    }
+    else{
+      this.getAllPhysicians();
+    }
   }
 
   getAllPhysicians() {
@@ -90,12 +101,35 @@ export class DoctorPageComponent {
         data.addressId = e.payload.doc.id;
         return data;
       })
-
+      this.physiciansList = this.physiciansList.filter(att => att.status == 'Approved')
       this.originalPhysiciansList = this.physiciansList;
     }, err => {
       alert('Error while fetching student data');
     })
 
+  }
+
+  async getAllPhysiciansOfClinic(){
+    this.data.getAllClinicPhysicianApplication().subscribe(res => {
+      var applications = res.map((e: any) => {
+        const data = e.payload.doc.data();
+        return data;
+      })
+
+      var toDisplayApplications = applications.filter(att => att.clinicId == this.auth.getToken() && (att.status == 'Pending' || att.status == 'Approved'));
+      this.physiciansList.splice(0, this.physiciansList.length);
+      toDisplayApplications.forEach(async att => {
+        var p = await this.data.getPhysicianById(att.physicianId);
+        if (p) {
+          p.status = att.status;
+          this.physiciansList.push(p);
+        }
+      });
+      this.originalPhysiciansList = this.physiciansList;
+      this.applicationList = toDisplayApplications;
+    }, err => {
+      alert('Error while fetching student data');
+    })
   }
 
   searchPhysicians(){
@@ -108,7 +142,7 @@ export class DoctorPageComponent {
       obj.lastname.toUpperCase().includes(text.toUpperCase()) ||
       obj.email.toUpperCase().includes(text.toUpperCase()) ||
       obj.contactno.toUpperCase().includes(text.toUpperCase()) ||
-      (obj.status?.toString() || '').toUpperCase().includes(text.toUpperCase()) ||
+      ((obj.status?.toString() || '').toUpperCase().includes(text.toUpperCase()) && this.role == 'Clinic') ||
       obj.address.toUpperCase().includes(text.toUpperCase()));
     })
 
@@ -125,6 +159,7 @@ export class DoctorPageComponent {
 
   openViewPhysicianModal(physician: Physician) {
     this.selectedPhysician = physician;
+    this.physicianObj = physician;
     this.viewPhysicianModal.nativeElement.click();
   }
 
@@ -135,6 +170,36 @@ export class DoctorPageComponent {
   displaybday(){
     var dateString = this.Birthdate.split('-');
     this.resultBirthDate = dateString[1]+ "/" + dateString[2] + "/" + dateString[0];
+  }
+
+  viewStatusUpdate(){
+    this.viewPhysicianStatusModal.nativeElement.click();
+  }
+
+  txtbxApproveDecline(){
+    if(this.selectedPhysicianStatus == 'Approve' || this.selectedPhysicianStatus == 'Decline'){
+      this.isButtonDisabled = false;
+    }
+    else{
+      this.isButtonDisabled = true;
+    }
+  }
+
+  updateClinic(){
+    if(this.selectedPhysicianStatus == 'Approve' || this.selectedPhysicianStatus == 'Decline'){
+      if (window.confirm('Are you sure you want to update ' + this.selectedPhysician.firstname + ' ' + this.selectedPhysician.lastname + ' ?')) {
+        this.physicianObj.status = this.selectedPhysicianStatus + 'd';
+        var selectedApplication = this.applicationList.find(att => att.physicianId == this.physicianObj.id);
+        selectedApplication.status = this.selectedPhysicianStatus + 'd';
+        this.data.updatePhysician(this.physicianObj);
+        this.data.updateClinicPhysicianApplication(selectedApplication);
+      }
+    }
+    else{
+      alert('Type Approve or Decline to make sure of your adjustments')
+    }
+
+    this.closeModal();
   }
 }
 

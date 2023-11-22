@@ -15,47 +15,33 @@ export class DataService {
     if(patient.id === ''){
       patient.id = this.fs.createId();
     }
-    return this.fs.collection('/Patients').add(patient);
+    return this.fs.collection('/PatientsV2').doc(patient.id).set(patient);
   }
 
   getAllPatients(){
-    return this.fs.collection('/Patients').snapshotChanges();
+    return this.fs.collection('/PatientsV2').snapshotChanges();
   }
 
-  deletePatient(patient: Patient){
-    this.fs.doc('/Accounts/' + patient.id).delete();
-    return this.fs.doc('/Patients/' + patient.id).delete();
-  }
-
-  async updatePatient(patient: Patient): Promise<void> {
+  async updatePatient(patient: Patient | any): Promise<void> {
     try {
-      const querySnapshot = await this.fs.collection('/Patients', ref =>
-        ref.where('id', '==', patient.id).limit(1)
-      ).get().toPromise();
-
-      if (querySnapshot!.size > 0) {
-        // Update the first document that matches the query
-        const patientDocId = querySnapshot!.docs[0].id;
-        await this.fs.collection('/Patients').doc(patientDocId).update(patient);
-        alert('Patient updated successfully');
-      } else {
-        console.log('Patient with patientid ' + patient.id + ' not found');
-      }
+      this.fs.collection('/PatientsV2').doc(patient.id).update(patient);
+      console.log('Patient updated successfully');
     } catch (error) {
-      console.error('Error updating patient:', error);
+      console.error('Error updating clinic:', error);
     }
   }
 
   async getPatientById(id: string): Promise<Patient | null>{
-    const querySnapshot = await this.fs.collection('/Patients', ref =>
-      ref.where('id', '==', id).limit(1)
-    ).get().toPromise();
-
-    //return null;
-    if (querySnapshot!.size > 0) {
-      const patientData = querySnapshot!.docs[0].data() as Patient;
-      return { ...patientData };
-    } else {
+    try {
+      const patientDoc = await this.fs.collection('/PatientsV2').doc(id).get().toPromise();
+      if (patientDoc!.exists) {
+        const patientData = patientDoc!.data() as Patient;
+        return { ...patientData, id: patientDoc!.id };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error getting patient by ID:', error);
       return null;
     }
   }
@@ -65,20 +51,20 @@ export class DataService {
     account.id = this.fs.createId();
     patient.id = account.id;
 
-    this.fs.collection('/Accounts').add(account);
-    this.fs.collection('/Patients').add(patient);
+    this.fs.collection('/AccountsV2').doc(account.id).set(account);
+    this.fs.collection('/PatientsV2').doc(patient.id).set(patient);
     return null;
   }
 
   async loginAccount(username: string, password: string): Promise<Account | null>{
-    const querySnapshot = await this.fs.collection('/Accounts', ref =>
+    const querySnapshot = await this.fs.collection('/AccountsV2', ref =>
       ref.where('username', '==', username).where('password', '==', password).limit(1)
     ).get().toPromise();
 
     //return null;
     if (querySnapshot!.size > 0) {
-      const patientData = querySnapshot!.docs[0].data() as Account;
-      return { ...patientData };
+      const accountData = querySnapshot!.docs[0].data() as Account;
+      return { ...accountData };
     } else {
       return null;
     }
@@ -86,107 +72,160 @@ export class DataService {
 
   //Physician
   getAllPhysicians(){
-    return this.fs.collection('/Physicians').snapshotChanges();
+    return this.fs.collection('/PhysiciansV2').snapshotChanges();
   }
 
   addPhysician(physician: Physician){
     if(physician.id === ''){
       physician.id = this.fs.createId();
     }
-    return this.fs.collection('/Physicians').add(physician);
+    return this.fs.collection('/PhysiciansV2').doc(physician.id).set(physician);
   }
 
   createPhysicianAccount(account: Account, physician: Physician){
     account.id = this.fs.createId();
     physician.id = account.id;
 
-    this.fs.collection('/Accounts').add(account);
-    this.fs.collection('/Physicians').add(physician);
+    this.fs.collection('/AccountsV2').doc(account.id).set(account);
+    this.fs.collection('/PhysiciansV2').doc(physician.id).set(physician);
     return null;
   }
 
   async getPhysicianById(id: string): Promise<Physician | null>{
-    const querySnapshot = await this.fs.collection('/Physicians', ref =>
-      ref.where('id', '==', id).limit(1)
-    ).get().toPromise();
-    //return null
-    if (querySnapshot!.size > 0) {
-      const physicianData = querySnapshot!.docs[0].data() as Physician;
-      return { ...physicianData };
-    } else {
+    try {
+      const physicianDoc = await this.fs.collection('/PhysiciansV2').doc(id).get().toPromise();
+      if (physicianDoc!.exists) {
+        const physicianData = physicianDoc!.data() as Physician;
+        return { ...physicianData, id: physicianDoc!.id };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error getting patient by ID:', error);
       return null;
     }
   }
 
-  async updatePhysician(physician: Physician): Promise<void> {
+  async updatePhysician(physician: Physician | any) {
     try {
-      const querySnapshot = await this.fs.collection('/Physicians', ref =>
-        ref.where('id', '==', physician.id).limit(1)
-      ).get().toPromise();
-
-      if (querySnapshot!.size > 0) {
-        // Update the first document that matches the query
-        const patientDocId = querySnapshot!.docs[0].id;
-        await this.fs.collection('/Physicians').doc(patientDocId).update(physician);
-        alert('Physician updated successfully');
-      } else {
-        console.log('Physician with patientid ' + physician.id + ' not found');
-      }
+      this.fs.collection('/PhysiciansV2').doc(physician.id).update(physician);
+      console.log('Physician updated successfully');
     } catch (error) {
-      console.error('Error updating patient:', error);
+      console.error('Error updating clinic:', error);
     }
   }
 
   //Clinics
   getAllClinics(){
-    return this.fs.collection('/Clinics').snapshotChanges();
+    return this.fs.collection('/ClinicsV2').snapshotChanges();
   }
 
   addClinic(clinic: Clinic){
     if(clinic.id === ''){
       clinic.id = this.fs.createId();
     }
-    return this.fs.collection('/Clinics').add(clinic);
+    return this.fs.collection('/ClinicsV2').add(clinic);
   }
 
-  createClinicAccount(account: Account, Clinic: Clinic){
+  createClinicAccount(account: Account, clinic: Clinic){
     account.id = this.fs.createId();
-    Clinic.id = account.id;
+    clinic.id = account.id;
 
-    this.fs.collection('/Accounts').add(account);
-    this.fs.collection('/Clinics').add(Clinic);
+    this.fs.collection('/AccountsV2').doc(account.id).set(account);
+    this.fs.collection('/ClinicsV2').doc(clinic.id).set(clinic);
     return null;
   }
 
   async getClinicById(id: string): Promise<Clinic | null>{
-    const querySnapshot = await this.fs.collection('/Clinics', ref =>
-      ref.where('id', '==', id).limit(1)
-    ).get().toPromise();
-    if (querySnapshot!.size > 0) {
-      const ClinicData = querySnapshot!.docs[0].data() as Clinic;
-      return { ...ClinicData };
-    } else {
+    try {
+      const clinicDoc = await this.fs.collection('/ClinicsV2').doc(id).get().toPromise();
+      if (clinicDoc!.exists) {
+        const clinicData = clinicDoc!.data() as Clinic;
+        return { ...clinicData, id: clinicDoc!.id };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error getting patient by ID:', error);
       return null;
     }
   }
 
-  async updateClinic(Clinic: Clinic): Promise<void> {
+  updateClinic(clinic: Clinic | any) {
     try {
-      const querySnapshot = await this.fs.collection('/Clinics', ref =>
-        ref.where('id', '==', Clinic.id).limit(1)
-      ).get().toPromise();
-
-      if (querySnapshot!.size > 0) {
-        // Update the first document that matches the query
-        const patientDocId = querySnapshot!.docs[0].id;
-        await this.fs.collection('/Clinics').doc(patientDocId).update(Clinic);
-        alert('Clinic updated successfully');
-      } else {
-        console.log('Clinic with patientid ' + Clinic.id + ' not found');
-      }
+      this.fs.collection('/ClinicsV2').doc(clinic.id).update(clinic);
+      console.log('Clinic updated successfully');
     } catch (error) {
-      console.error('Error updating patient:', error);
+      console.error('Error updating clinic:', error);
     }
+  }
+
+  //Apply for a clinic
+  addClinicPhysicianApplication(phyId: string, clinId: string){
+    var id = this.fs.createId();
+    const physicianApplication = {
+      id: id,
+      clinicId : clinId,
+      physicianId : phyId,
+      status: "Pending"
+    }
+    this.fs.collection('/ClinicPhysicianApplications').doc(id).set(physicianApplication);
+    return null
+  }
+
+  getAllClinicPhysicianApplication(){
+    return this.fs.collection('/ClinicPhysicianApplications').snapshotChanges();
+  }
+
+  updateClinicPhysicianApplication(application: any) {
+    try {
+      this.fs.collection('/ClinicPhysicianApplications').doc(application.id).update(application);
+      console.log('Clinic updated successfully');
+    } catch (error) {
+      console.error('Error updating clinic:', error);
+    }
+  }
+
+  updateAccountPassword(application: any) {
+    try {
+      this.fs.collection('/AccountsV2').doc(application.id).update(application);
+      console.log('Account updated successfully');
+    } catch (error) {
+      console.error('Error updating clinic:', error);
+    }
+  }
+
+  //services
+  addServices(services: any){
+    services.id = this.fs.createId();
+    return this.fs.collection('/Services').doc(services.id).set(services);
+  }
+
+  getAllServices(physicianId: any){
+    return this.fs.collection('/Services').snapshotChanges();
+  }
+
+  async updateServices(services: any): Promise<void> {
+    try {
+      this.fs.collection('/Services').doc(services.id).update(services);
+      console.log('Service updated successfully');
+    } catch (error) {
+      console.error('Error updating clinic:', error);
+    }
+  }
+
+  deleteService(services: any){
+    this.fs.doc('/Services/' + services.id).delete();
+  }
+
+  //Appointments
+  getAllAppointment(){
+    return this.fs.collection('/Appointments').snapshotChanges();
+  }
+
+  //Users
+  getAllUsers(){
+    return this.fs.collection('/AccountsV2').snapshotChanges();
   }
 
 }

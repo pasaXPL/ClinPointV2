@@ -63,8 +63,10 @@ export class SignupComponentComponent {
     clinicName: '',
     clinicOwner: '',
     description: '',
+    clinicDTINumber: '',
     file1:'',
     file2:'',
+    file3:'',
     logo:'',
     contactno:'',
     dayoff: '',
@@ -99,6 +101,8 @@ export class SignupComponentComponent {
   ConfirmPassword: string = '';
   Birthdate: string = '';
   resultBirthDate: string = '';
+  ClinicFile3: any =  null;
+  clinicDTINumber = '';
 
 
 
@@ -179,13 +183,14 @@ export class SignupComponentComponent {
       if(
         this.ClinicName == '' ||
         this.ClinicManagerName == '' ||
-        this. ClinicDescription == '' ||
+        this.ClinicDescription == '' ||
         this.PhoneNumber == '' ||
         this.EmailAddress == '' ||
         this.Address == '' ||
         this.UserUsername == '' ||
         this.UserPassword == '' ||
-        this.ConfirmPassword == ''
+        this.ConfirmPassword == ''||
+        this.clinicDTINumber == ''
       )
       {
         alert('Fill all input fields in the form!');
@@ -278,6 +283,7 @@ export class SignupComponentComponent {
         this.physicianObj.contactno = this.PhoneNumber;
         this.physicianObj.email = this.EmailAddress;
         this.physicianObj.address = this.Address;
+        this.physicianObj.birthdate = this.Birthdate;
         this.physicianObj.image = baseURL + 'uploads/' + this.PhysicianProfilePhoto.name;
         this.physicianObj.license = baseURL + 'uploads/' + this.PhysicianLicensePhoto.name;
 
@@ -302,10 +308,26 @@ export class SignupComponentComponent {
           }catch{}
         }
 
-         if (this.ClinicFile2) {
+        if (this.ClinicFile2) {
           try{
           const formData = new FormData();
-          formData.append('file', this.ClinicFile1);
+          formData.append('file', this.ClinicFile2);
+
+          this.http.post(baseURL + 'upload', formData, { responseType: 'text' }).subscribe(
+            response => {
+              console.log('File uploaded successfully', response);
+            },
+            error => {
+              console.error('Error uploading the file', error);
+            }
+          );
+          }catch{}
+        }
+
+        if (this.ClinicFile3) {
+          try{
+          const formData = new FormData();
+          formData.append('file', this.ClinicFile3);
 
           this.http.post(baseURL + 'upload', formData, { responseType: 'text' }).subscribe(
             response => {
@@ -341,6 +363,8 @@ export class SignupComponentComponent {
         this.clinicObj.email = this.EmailAddress;
         this.clinicObj.address = this.Address;
         this.clinicObj.description = this.ClinicDescription;
+        this.clinicObj.clinicDTINumber = this.clinicDTINumber;
+        this.clinicObj.file3 = baseURL + 'uploads/' + this.ClinicFile3.name;
         this.clinicObj.file1 = baseURL + 'uploads/' + this.ClinicFile1.name;
         this.clinicObj.file2 = baseURL + 'uploads/' + this.ClinicFile2.name;
         this.clinicObj.logo = baseURL + 'uploads/' + this.ClinicLogo.name;
@@ -363,6 +387,11 @@ export class SignupComponentComponent {
   getSupportingFile2(event: any){
     this.ClinicFile2 = event.target.files[0];
   }
+
+  getSupportingFile3(event: any){
+    this.ClinicFile3 = event.target.files[0];
+  }
+
 
   getPatientLogo(event:any) {
     this.PatientProfilePhoto = event.target.files[0];

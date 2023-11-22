@@ -1,3 +1,8 @@
+import { Component } from '@angular/core';
+import { Sidenav, initTE, } from "tw-elements";
+import { AuthService } from 'src/app/Services/auth.service';
+import { Router } from '@angular/router';
+import { DataService } from 'src/app/Services/data.service';
 import {
   HttpClient,
   HttpHeaders,
@@ -5,15 +10,16 @@ import {
 } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { Component } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
 
 @Component({
-  selector: 'app-landing-page',
-  templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss'],
+  selector: 'app-mobile-main-page',
+  templateUrl: './mobile-main-page.component.html',
+  styleUrls: ['./mobile-main-page.component.scss']
 })
-export class LandingPageComponent {
+export class MobileMainPageComponent {
+  role = "";
+  name = "";
+
   showButton = true;
   deferredPrompt: any;
 
@@ -45,33 +51,44 @@ export class LandingPageComponent {
     },
   ];
 
-  constructor(private http: HttpClient, private swUpdate: SwUpdate) {}
+  constructor(private authService: AuthService, private router: Router, private data: DataService, private http: HttpClient) {}
 
-  ngOnInit() {
-    window.addEventListener('beforeinstallprompt', (e: any) => {
-      this.deferredPrompt = e;
-    });
-  }
+  async ngOnInit() {
+    initTE({ Sidenav });
+    this.role = this.authService.getAuth()!;
+    var token = this.authService.getToken()!;
+    var user: any;
+    try{
+      if(this.role == "Physician"){
+        user = await this.data.getPatientById(token);
+        this.name = user.firstname + " " + user.lastname;
+      }
+      else if(this.role == "Admin"){
+        this.name = "ClinPoint";
+      }
+      else if (this.role == "Patient"){
+        user  = await this.data.getPhysicianById(token);
+        this.name = user.firstname + " " + user.lastname;
+      }
+      else if(this.role == "Clinic"){
+        user = await this.data.getClinicById(token);
+        this.name = user.clinicName
+      }
+    }catch{}
 
-  ngAfterViewInit() {
-    window.addEventListener('beforeinstallprompt', (e: any) => {
-      this.deferredPrompt = e;
-    });
-  }
-
-  installPWA() {
-    if (this.deferredPrompt) {
-      this.deferredPrompt.prompt();
-      this.deferredPrompt.userChoice.then((choiceResult: any) => {
-        if (choiceResult.outcome === 'accepted') {
-          // The user accepted the installation
-          this.deferredPrompt = null;
-        }
-      });
-    } else {
-      alert('App is already installed');
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      console.log('You are using mobile')
+    }else{
+      this.router.navigate(['dashboard']);
     }
   }
+
+  logoutUser(){
+    if (window.confirm('Are you sure you want to logout?')) {
+      this.authService.logout();
+    }
+  }
+
 
   showChatBox() {
     if (this.showAiChat == true) this.showAiChat = false;

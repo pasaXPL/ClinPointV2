@@ -194,6 +194,20 @@
     </div>
 
     <div *ngIf="role == 'Clinic'">
+      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Supporting File 3</label>
+      <input type="file" placeholder="Supporting File"
+        class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+        accept="application/pdf, image/*" (change)="getSupportingFile3($event)" />
+    </div>
+
+    <div *ngIf="role == 'Clinic'">
+      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">DTI Number</label>
+      <input type="text" value="" placeholder="XXX-XX-XXXX-XXX"
+        class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+        [(ngModel)]="clinicDTINumber" />
+    </div>
+
+    <div *ngIf="role == 'Clinic'">
       <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Logo</label>
       <input type="file" placeholder="Logo"
         class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -218,7 +232,7 @@
       <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Birthdate</label>
       <input type="date"
         class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-        (change)="displaybday()" placeholder="Enter Birthdate" value="" [(ngModel)]="Birthdate" />
+      placeholder="Enter Birthdate" value="" [(ngModel)]="Birthdate" />
     </div>
 
     <div>

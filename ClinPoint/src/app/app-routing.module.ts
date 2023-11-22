@@ -16,6 +16,10 @@ import { SignupComponentComponent } from './LoginPageFolder/signup-component/sig
 import { LandingPageComponent } from './LandingPageFolder/landing-page/landing-page.component';
 import { GuardGuard } from './Services/guard.guard';
 import { ClinicPageComponent } from './MainPageFolder/clinic-page/clinic-page.component';
+import { BlockedUserComponent } from './MainPageFolder/blocked-user/blocked-user.component';
+import { MobileMainPageComponent } from './MainPageFolder/mobile-main-page/mobile-main-page.component';
+import { ServicesPageComponent } from './MainPageFolder/services-page/services-page.component';
+import { AppointmentResultPageComponent } from './MainPageFolder/appointment-result-page/appointment-result-page.component';
 
 const routes: Routes = [
   {
@@ -33,8 +37,33 @@ const routes: Routes = [
       { path: 'scheduler', component: SchedulerPageComponent, canActivate:[GuardGuard] },
       { path: 'settings', component: SettingPageComponent, canActivate:[GuardGuard] },
       { path: 'clinic', component: ClinicPageComponent, canActivate:[GuardGuard] },
+      { path: 'blocked', component: BlockedUserComponent, canActivate:[GuardGuard] },
+      { path: 'services', component: ServicesPageComponent, canActivate:[GuardGuard] },
+      { path: 'results', component: AppointmentResultPageComponent, canActivate:[GuardGuard] },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
       { path: '**', redirectTo:'/dashboard', pathMatch: 'full' }
+    ]
+  },
+  {
+    path: 'mobiledashboard',
+    component: MobileMainPageComponent,
+    canActivate: [GuardGuard],
+    children :[
+      { path: '', component: DashboardPageComponent, canActivate:[GuardGuard] },
+      { path: 'appointment', component: AppointmentPageComponent, canActivate:[GuardGuard]},
+      { path: 'physician', component: DoctorPageComponent, canActivate:[GuardGuard] },
+      { path: 'invoice', component: InvoicePageComponent, canActivate:[GuardGuard] },
+      { path: 'map', component: MapPageComponent, canActivate:[GuardGuard] },
+      { path: 'message', component: MessagePageComponent, canActivate:[GuardGuard] },
+      { path: 'patient', component: PatientPageComponent, canActivate:[GuardGuard] },
+      { path: 'scheduler', component: SchedulerPageComponent, canActivate:[GuardGuard] },
+      { path: 'settings', component: SettingPageComponent, canActivate:[GuardGuard] },
+      { path: 'clinic', component: ClinicPageComponent, canActivate:[GuardGuard] },
+      { path: 'blocked', component: BlockedUserComponent, canActivate:[GuardGuard] },
+      { path: 'services', component: ServicesPageComponent, canActivate:[GuardGuard] },
+      { path: 'results', component: AppointmentResultPageComponent, canActivate:[GuardGuard] },
+      { path: '', redirectTo: '/mobiledashboard', pathMatch: 'full' },
+      { path: '**', redirectTo:'/mobiledashboard', pathMatch: 'full' }
     ]
   },
   {

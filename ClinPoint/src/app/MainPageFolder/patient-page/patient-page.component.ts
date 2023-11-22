@@ -172,10 +172,21 @@ export class PatientPageComponent {
     this.closeModal();
   }
 
-  deletePatient(patient: Patient) {
-    if (window.confirm('Are you sure you want to delete ' + patient.firstname + ' ' + patient.lastname + ' ?')) {
-      this.data.deletePatient(patient);
+  async archivePatient(patient: Patient) :Promise<void> {
+    if(patient.status == 'Active'){
+      if (window.confirm('Are you sure you want to archive ' + patient.firstname + ' ' + patient.lastname + ' ?')) {
+        patient.status = "Inactive"
+        await this.data.updatePatient(patient);
+      }
     }
+    else{
+      if (window.confirm('Patient is currently Inactive, are you sure you want to re-active ' + patient.firstname + ' ' + patient.lastname + ' ?')) {
+        patient.status = "Active"
+        await this.data.updatePatient(patient);
+      }
+    }
+
+    this.closeModal();
   }
 
   openViewPatientModal(patient: Patient) {

@@ -34,6 +34,11 @@ import { MessagePageComponent } from './MainPageFolder/message-page/message-page
 import { PatientPageComponent } from './MainPageFolder/patient-page/patient-page.component';
 import { SchedulerPageComponent } from './MainPageFolder/scheduler-page/scheduler-page.component';
 import { SettingPageComponent } from './MainPageFolder/setting-page/setting-page.component';
+import { BlockedUserComponent } from './MainPageFolder/blocked-user/blocked-user.component';
+import { MobileMainPageComponent } from './MainPageFolder/mobile-main-page/mobile-main-page.component';
+import { ServicesPageComponent } from './MainPageFolder/services-page/services-page.component';
+import { AppointmentResultPageComponent } from './MainPageFolder/appointment-result-page/appointment-result-page.component';
+import { CreateAppointmentPageComponent } from './MainPageFolder/create-appointment-page/create-appointment-page.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnTUq3eFmvr1XTmZrU-ThBMZBEFKosxDU",
@@ -65,7 +70,12 @@ const firebaseConfig = {
     MessagePageComponent,
     PatientPageComponent,
     SchedulerPageComponent,
-    SettingPageComponent
+    SettingPageComponent,
+    BlockedUserComponent,
+    MobileMainPageComponent,
+    ServicesPageComponent,
+    AppointmentResultPageComponent,
+    CreateAppointmentPageComponent,
   ],
   imports: [
     BrowserModule,

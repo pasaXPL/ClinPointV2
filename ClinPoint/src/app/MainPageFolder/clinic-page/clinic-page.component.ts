@@ -13,6 +13,7 @@ import { Modal, Ripple, Input, initTE, Select, Datepicker} from "tw-elements";
 export class ClinicPageComponent {
   @ViewChild('openViewClinic') viewClinicModal!: ElementRef;
   @ViewChild('closeModals') closeModals!: ElementRef;
+  @ViewChild('openViewClinicStatus') viewClinicStatusModal!: ElementRef;
 
   selectedFile : File | undefined;
   originalClinicsList: Clinic[] = [];
@@ -32,7 +33,9 @@ export class ClinicPageComponent {
     email: '',
     address: '',
     status: '',
-    aisupportdescription: ''
+    aisupportdescription: '',
+    file3: '',
+    clinicDTINumber: ''
   };
 
   ClinicName: string = '';
@@ -70,22 +73,32 @@ export class ClinicPageComponent {
     email: '',
     address: '',
     status: '',
-    aisupportdescription: ''
+    aisupportdescription: '',
+    file3: '',
+    clinicDTINumber: ''
   };
 
+  selectedClinicStatus = "";
   isClinic = false;
   searchString = "";
+  role:string = "Admin";
+  isButtonDisabled:boolean = true;
+  isAlreadyApplied = true;
+
+  applicationList:any[] = [];
 
   constructor(private data: DataService, private auth:AuthService) { }
 
   ngOnInit() {
     initTE({ Modal, Ripple, Input, Select, Datepicker });
 
-    if(this.auth.getAuth() === "Clinic"){
+    this.role = this.auth.getAuth()!;
+    if(this.role === "Clinic"){
       this.isClinic = true;
     }
 
     this.getAllClinics();
+    this.getAllClinicPhysicianApplications()
   }
 
   getAllClinics() {
@@ -94,13 +107,31 @@ export class ClinicPageComponent {
         const data = e.payload.doc.data();
         data.addressId = e.payload.doc.id;
         return data;
-      })
+      });
+
+      console.log(this.clinicsList)
+
+      if(this.role != 'Admin'){
+        this.clinicsList = this.clinicsList.filter(att => att.status == 'Approved');
+      }
 
       this.originalClinicsList = this.clinicsList;
     }, err => {
       alert('Error while fetching student data');
     })
+  }
 
+  getAllClinicPhysicianApplications(){
+    this.data.getAllClinicPhysicianApplication().subscribe(res => {
+      this.applicationList = res.map((e: any) => {
+        const data = e.payload.doc.data();
+        data.addressId = e.payload.doc.id;
+        return data;
+      });
+      this.applicationList = this.applicationList.filter(att => att.physicianId == this.auth.getToken());
+    }, err => {
+      alert('Error while fetching student data');
+    })
   }
 
   searchClinics(){
@@ -120,17 +151,64 @@ export class ClinicPageComponent {
     this.clinicsList = list;
   }
 
-  async updateClinic(clinic: Clinic) :Promise<void> {
-    if (window.confirm('Are you sure you want to update ' + clinic.clinicName + ' ?')) {
-      await this.data.updateClinic(clinic);
+  updateClinic(){
+    if(this.selectedClinicStatus == 'Approve' || this.selectedClinicStatus == 'Decline'){
+      if (window.confirm('Are you sure you want to update ' + this.selectedClinic.clinicName + ' ?')) {
+        this.clinicObj.status = this.selectedClinicStatus + 'd';
+        this.data.updateClinic(this.clinicObj);
+      }
+    }
+    else{
+      alert('Type Approve or Decline to make sure of your adjustments')
     }
 
     this.closeModal();
   }
 
+
+  viewStatusUpdate(){
+    this.viewClinicStatusModal.nativeElement.click();
+  }
+
   openViewClinicModal(clinic: Clinic) {
-    this.selectedClinic = clinic;
+    var clinicCpy:Clinic = clinic;
+    this.selectedClinic = clinicCpy;
+    this.clinicObj = clinicCpy;
     this.viewClinicModal.nativeElement.click();
+  }
+
+  txtbxApproveDecline(){
+    if(this.selectedClinicStatus == 'Approve' || this.selectedClinicStatus == 'Decline'){
+      this.isButtonDisabled = false;
+    }
+    else{
+      this.isButtonDisabled = true;
+    }
+  }
+
+  addApplication(){
+    var applications = this.applicationList.filter(att => att.physicianId == this.auth.getToken() && this.selectedClinic.id == att.clinicId && (att.status == 'Pending' || att.status == 'Approved'));
+    console.log(applications)
+    if (window.confirm('Are you sure you want to apply to ' + this.selectedClinic.clinicName + ' ?')) {
+      if(applications.length > 0){
+        var approvedApplication = applications.find(att => att.status == 'Approved');
+        if(approvedApplication){
+          alert('You are already part of ' + this.selectedClinic.clinicName);
+        }
+        else{
+          var pendingApplication = applications.find(att => att.status == 'Pending');
+          if (window.confirm('Your application on ' + this.selectedClinic.clinicName + ' is already on pending, do you want to cancel your application ?'))
+          {
+            pendingApplication.status = 'Cancelled'
+            this.data.updateClinicPhysicianApplication(pendingApplication);
+          }
+        }
+      }
+      else
+      {
+        this.data.addClinicPhysicianApplication(this.auth.getToken()!, this.selectedClinic.id);
+      }
+    }
   }
 
   closeModal(){

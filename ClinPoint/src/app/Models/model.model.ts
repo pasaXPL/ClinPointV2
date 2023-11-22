@@ -49,8 +49,10 @@ export interface Clinic {
   clinicName: string;
   clinicOwner: string;
   description: string;
+  clinicDTINumber:string;
   file1:string;
   file2:string;
+  file3:string;
   logo:string;
   contactno:string;
   dayoff:string;
@@ -64,4 +66,13 @@ export interface Clinic {
 export interface Admin {
   id: string;
   name: string;
+}
+
+
+export interface Services {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  physicianId: string;
 }
