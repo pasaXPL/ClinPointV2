@@ -56,9 +56,12 @@ export class MainPageComponent {
 
   role = "";
   name = "";
+  token = "";
 
 
   isWeb = false;
+  isActive = false;
+  notificationList:any[] = []
 
   ngAfterViewInit(){
     this.toggleSideBar();
@@ -67,26 +70,34 @@ export class MainPageComponent {
   async ngOnInit() {
     initTE({ Sidenav, Modal });
     this.role = this.authService.getAuth()!;
-    var token = this.authService.getToken()!;
+    this.token = this.authService.getToken()!;
 
     console.log(this.role);
-    console.log(token);
+    console.log(this.token);
     var user: any;
     try{
-    if(this.role == "Physician"){
-      user = await this.data.getPatientById(token);
+    if(this.role == "Patient"){
+      user = await this.data.getPatientById(this.token);
+      console.log('test' + user)
       this.name = user.firstname + " " + user.lastname;
+
     }
     else if(this.role == "Admin"){
       this.name = "ClinPoint";
     }
-    else if (this.role == "Patient"){
-      user  = await this.data.getPhysicianById(token);
+    else if (this.role == "Physician"){
+      user  = await this.data.getPhysicianById(this.token);
       this.name = user.firstname + " " + user.lastname;
+      if(user.status == 'Approved'){
+        this.isActive = true;
+      }
     }
     else if(this.role == "Clinic"){
-      user = await this.data.getClinicById(token);
-      this.name = user.clinicName
+      user = await this.data.getClinicById(this.token);
+      this.name = user.clinicName;
+      if(user.status == 'Approved'){
+        this.isActive = true;
+      }
     }
     }catch{}
 
@@ -96,6 +107,28 @@ export class MainPageComponent {
     else{
       console.log('You are using web!');
     }
+
+    this.getAllNotifications();
+  }
+
+  getAllNotifications() {
+    this.data.getAllNotification().subscribe(res => {
+      this.notificationList = res.map((e: any) => {
+        const data = e.payload.doc.data();
+        data.addressId = e.payload.doc.id;
+        return data;
+      })
+
+      if(this.role == 'Admin'){
+        this.notificationList = this.notificationList.filter(att => att.role == 'Admin');
+      }
+      else{
+        this.notificationList = this.notificationList.filter(att => att.receiver == this.token);
+      }
+    }, err => {
+      alert('Error while fetching services data');
+    })
+
   }
 
   logoutUser(){

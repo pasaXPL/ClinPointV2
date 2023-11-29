@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/Services/auth.service';
-import { initTE, Select, Input, Ripple } from 'tw-elements';
+import { initTE, Select, Input, Ripple, Modal } from 'tw-elements';
 import { Account, Physician, Patient, Clinic } from 'src/app/Models/model.model';
 import { DataService } from 'src/app/Services/data.service';
 import { FileSaverService } from 'ngx-filesaver';
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { baseURL } from 'src/app/Models/BaseURL';
 
 @Component({
@@ -15,6 +19,10 @@ import { baseURL } from 'src/app/Models/BaseURL';
   styleUrls: ['./signup-component.component.scss']
 })
 export class SignupComponentComponent {
+  @ViewChild('viewTermsAndCondition') viewTermsAndCondition!: ElementRef;
+  @ViewChild('viewOTP') viewOTP!: ElementRef;
+  @ViewChild('closeModals') closeModal!: ElementRef;
+
   accountObj: Account = {
     addressId: '',
     id: '',
@@ -104,13 +112,19 @@ export class SignupComponentComponent {
   ClinicFile3: any =  null;
   clinicDTINumber = '';
 
+  isButtonDisabled = false;
+  otpCode = '';
+  otpReceived = '';
+
+  successfullyCreated = false;
+
 
 
   constructor(private http: HttpClient, private auth:AuthService, private router:Router, private data:DataService, private fileSaverService:FileSaverService){}
 
   ngOnInit() {
 
-    initTE({ Input, Ripple, Select });
+    initTE({ Input, Ripple, Select, Modal });
     if (this.auth.isLoggedIn()) {
       this.router.navigate(['dashboard']);
     }
@@ -196,12 +210,88 @@ export class SignupComponentComponent {
         alert('Fill all input fields in the form!');
         return;
       }
+      else if(this.ClinicFile1.name == this.ClinicFile2.name || this.ClinicFile2.name == this.ClinicFile3.name || this.ClinicFile1.name == this.ClinicFile3.name){
+        alert('Please don\'t use same supporting file.')
+        return;
+      }
     }
 
     if(this.UserPassword != this.ConfirmPassword){
       alert('Password does not match!');
       return;
     }
+
+
+    if(this.isEmailValid() == false){
+      alert('You use invalid email, Please input a valid email!')
+      return;
+    }
+
+    this.viewTermsAndCondition.nativeElement.click();
+  }
+
+  openOtp(){
+    this.closeModal.nativeElement.click();
+    this.viewOTP.nativeElement.click();
+    if(this.otpCode == ""){
+    this.otpCode = this.generateRandomNumber().toString();
+
+    var apiUrl = 'https://rest.clicksend.com/v3/sms/send';
+
+    var credentials = btoa('pasa.johnpaul@gmail.com:06B70D06-F276-0E45-2ED4-207215C0CC05');
+
+    var headers = new HttpHeaders({
+      'Authorization': 'Basic ' + credentials,
+      'Content-Type': 'application/json'
+    });
+
+
+    const mn = this.PhoneNumber.slice(1);
+
+    const data = {
+      "messages": [
+        {
+          "source":"php",
+          "body":"Your Jnco OTP : " + this.otpCode + "\n\n\nJnco Solutions OTP powered by ClickSend",
+          "to":"+63" + mn,
+          "from": "Jnco Solutions",
+          "custom_string": "Your ClinPoint OTP : " + this.otpCode + "\n\n\nJnco Solutions OTP powered by ClickSend"
+        }
+      ]
+    };
+    console.log(mn)
+    this.http.post(apiUrl, data, { headers: headers })
+      .subscribe(
+        (response) => {
+          console.log('SMS sent successfully:', response);
+          // Handle success, e.g., show a success message
+        },
+        (error) => {
+          console.error('Error sending SMS:', error);
+          // Handle error, e.g., show an error message
+        }
+      );
+    }
+  }
+
+  generateRandomNumber(): number {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
+
+  checkOtp(){
+    if(this.otpCode == this.otpReceived){
+      this.registerNow();
+
+    this.closeModal.nativeElement.click();
+    }
+    else{
+      alert('Wrong OTP. Please try again!')
+    }
+
+  }
+
+
+  registerNow(){
 
     const currentDate: Date = new Date();
     const dateString: string = currentDate.toLocaleDateString('en-US', {
@@ -216,7 +306,6 @@ export class SignupComponentComponent {
       this.accountObj.username = this.UserUsername!;
       this.accountObj.password = this.UserPassword!;
       this.accountObj.role = this.role;
-
       if(this.role === 'Patient'){
         if (this.PatientProfilePhoto) {
           try{
@@ -241,8 +330,8 @@ export class SignupComponentComponent {
         this.patientObj.address = this.Address;
         this.patientObj.image = baseURL + 'uploads/' + this.PatientProfilePhoto.name;
         this.patientObj.birthdate = this.Birthdate;
-        this.data.createPatientAccount(this.accountObj, this.patientObj)
-        this.router.navigate(['/account/login']);
+        this.data.createPatientAccount(this.accountObj, this.patientObj);
+        this.successfullyCreated = true;
       }
       else if(this.role === 'Physician'){
         if (this.PhysicianProfilePhoto) {
@@ -289,7 +378,7 @@ export class SignupComponentComponent {
 
         this.physicianObj.createdat = dateString;
         this.data.createPhysicianAccount(this.accountObj, this.physicianObj)
-        this.router.navigate(['/account/login']);
+        this.successfullyCreated = true;
       }
       else if(this.role === 'Clinic'){
         if (this.ClinicFile1) {
@@ -371,8 +460,10 @@ export class SignupComponentComponent {
 
         this.clinicObj.createdat = dateString;
         this.data.createClinicAccount(this.accountObj, this.clinicObj)
-        this.router.navigate(['/account/login']);
+        this.successfullyCreated = true;
       }
+
+      this.closeModal.nativeElement.close();
     }
   }
 
@@ -409,4 +500,22 @@ export class SignupComponentComponent {
     var dateString = this.Birthdate.split('-');
     this.resultBirthDate = dateString[1]+ "/" + dateString[2] + "/" + dateString[0];
   }
+
+
+  validateNumericInput(event: any): void {
+    const charCode = event.which || event.keyCode;
+
+    if (charCode >= 48 && charCode <= 57) {
+      return;
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  isEmailValid(): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return !!this.EmailAddress && emailRegex.test(this.EmailAddress);
+  }
+
+
 }

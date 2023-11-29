@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+// const functions = require('firebase-functions');
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -32,4 +32,4 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-exports.app = functions.https.onRequest(app);
+// exports.app = functions.https.onRequest(app);

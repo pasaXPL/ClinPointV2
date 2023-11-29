@@ -76,3 +76,17 @@ export interface Services {
   price: string;
   physicianId: string;
 }
+
+export interface Payment{
+  id:string;
+  refno: string;
+  clinicName: string;
+  fromdate: string;
+  todate: string;
+  datesent: string;
+  status: string;
+  totalprice:string;
+  clinicId: string;
+  datecreated: string;
+  receiptPhoto: string;
+}

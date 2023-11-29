@@ -1,0 +1,17 @@
+.suggestion-list {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.suggestion-list div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestion-list div:hover {
+  background-color: #f0f0f0;
+}

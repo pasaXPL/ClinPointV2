@@ -14,7 +14,7 @@
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                  </svg>
               </button>
-              <a href="#" class="text-xl font-bold flex items-center lg:ml-2.5">
+              <a routerLink="/dashboard"  class="text-xl font-bold flex items-center lg:ml-2.5">
               <img src="/assets/Images/CPLOOG-01.svg" class="h-12 mr-2" alt="ClinPoint Logo">
               <span class="self-center whitespace-nowrap text-alili">{{"ClinPoint (" + role + ")"}}</span>
               </a>
@@ -65,7 +65,7 @@
                          <span class="ml-3 flex-1 whitespace-nowrap">Clinics</span>
                       </a>
                    </li>
-                   <li>
+                   <li *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin' || role == 'Patient'">
                       <a routerLink="/dashboard/appointment"  class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
                          <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
@@ -82,46 +82,46 @@
                        <span class="ml-3 flex-1 whitespace-nowrap">Services</span>
                     </a>
                   </li>
-                   <li>
-                      <a routerLink="/dashboard/physician" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
+                   <li *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin' || role == 'Patient'">
+                      <a routerLink="/dashboard/physician" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()" >
                          <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                          </svg>
                          <span class="ml-3 flex-1 whitespace-nowrap">Physician</span>
                       </a>
                    </li>
-                   <li>
-                      <a routerLink="/dashboard/patient" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()" *ngIf="role != 'Patient'">
+                   <li *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin' && role !== 'Admin'">
+                      <a routerLink="/dashboard/patient" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
                          <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path>
                          </svg>
                          <span class="ml-3 flex-1 whitespace-nowrap">Patient</span>
                       </a>
                    </li>
-                   <!-- <li>
-                      <a routerLink="/dashboard/invoice" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
+                   <li  *ngIf="role == 'Admin' || role == 'Clinic'">
+                      <a routerLink="/dashboard/invoice" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()" *ngIf="role == 'Admin' || role == 'Clinic'">
                          <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
                           </svg>
-                         <span class="ml-3 flex-1 whitespace-nowrap">Invoice</span>
+                         <span class="ml-3 flex-1 whitespace-nowrap">Subscription</span>
                       </a>
                    </li>
-                   <li>
-                    <a routerLink="/dashboard/scheduler" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
+                   <li *ngIf="role == 'Physician'">
+                    <a routerLink="/dashboard/services" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
                       <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z" clip-rule="evenodd"></path>
                       </svg>
-                       <span class="ml-3 flex-1 whitespace-nowrap">Scheduler</span>
+                       <span class="ml-3 flex-1 whitespace-nowrap">Services</span>
                     </a>
-                   </li> -->
+                   </li>
                 </ul>
                 <div class="space-y-2 pt-2">
-                   <!-- <a routerLink="/dashboard/map" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 group transition duration-75 flex items-center p-2" (click)="toggleSideBar()">
+                   <a routerLink="/dashboard/message" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 group transition duration-75 flex items-center p-2" (click)="toggleSideBar()" *ngIf="role == 'Admin' || role == 'Clinic'">
                        <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                          <path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z" clip-rule="evenodd"></path>
                        </svg>
-                       <span class="ml-4">Map</span>
-                   </a> -->
+                       <span class="ml-4">Message Admin</span>
+                   </a>
                    <a routerLink="/dashboard/settings" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 group transition duration-75 flex items-center p-2" (click)="toggleSideBar()">
 
                     <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -251,17 +251,20 @@
       </div>
       <div class="relative grid p-4 gap-3" data-te-modal-body-ref>
         <span class="text-secondary-600">Notifications</span>
-      </div>
-      <div
-        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <button (click)="logoutUser()"
-          type="button"
-          class="inline-block rounded bg-danger-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-danger-700 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-          data-te-modal-dismiss
-          data-te-ripple-init
-          data-te-ripple-color="light">
-          Logout
-        </button>
+        <div class="grid w-full max-h-80 overflow-y-auto gap-y-3">
+
+          <div class="flex w-full bg-white border border-alili shadowg-xl rounded-lg overflow-hidden" *ngFor="let n of notificationList">
+            <div class="w-2 bg-alili"></div>
+            <div class="flex items-center px-2 py-3">
+              <img class="w-8 h-8 object-cover rounded-full"  src="/assets/Images/CPLOOG-01.svg">
+              <div class="mx-3">
+                <h2 class="font-semibold text-gray-800">{{n.title}}</h2>
+                <p class="text-gray-600 text-xs">{{n.body}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>

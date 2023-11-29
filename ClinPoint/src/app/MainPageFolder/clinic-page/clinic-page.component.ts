@@ -3,6 +3,7 @@ import { Clinic } from 'src/app/Models/model.model';
 import { DataService } from 'src/app/Services/data.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Modal, Ripple, Input, initTE, Select, Datepicker} from "tw-elements";
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-clinic-page',
@@ -14,6 +15,7 @@ export class ClinicPageComponent {
   @ViewChild('openViewClinic') viewClinicModal!: ElementRef;
   @ViewChild('closeModals') closeModals!: ElementRef;
   @ViewChild('openViewClinicStatus') viewClinicStatusModal!: ElementRef;
+  @ViewChild('viewMap') viewMap!: ElementRef;
 
   selectedFile : File | undefined;
   originalClinicsList: Clinic[] = [];
@@ -86,15 +88,23 @@ export class ClinicPageComponent {
   isAlreadyApplied = true;
 
   applicationList:any[] = [];
+  selectedLocation:SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl('');
+  physicianObj:any;
+  physicianName = '';
 
-  constructor(private data: DataService, private auth:AuthService) { }
+  constructor(private data: DataService, private auth:AuthService, private sanitizer: DomSanitizer) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     initTE({ Modal, Ripple, Input, Select, Datepicker });
 
     this.role = this.auth.getAuth()!;
     if(this.role === "Clinic"){
       this.isClinic = true;
+    }
+
+    if(this.role == 'Physician'){
+      this.physicianObj = await this.data.getPhysicianById(this.auth.getToken()!)!;
+      this.physicianName = this.physicianObj.firstname + ' ' + this.physicianObj.lastname;
     }
 
     this.getAllClinics();
@@ -206,13 +216,22 @@ export class ClinicPageComponent {
       }
       else
       {
-        this.data.addClinicPhysicianApplication(this.auth.getToken()!, this.selectedClinic.id);
+        console.log(this.physicianObj)
+        this.data.addClinicPhysicianApplication(this.auth.getToken()!, this.selectedClinic.id, this.physicianName);
       }
     }
   }
 
   closeModal(){
     this.closeModals.nativeElement.click();
+  }
+
+  openMap(){
+    this.closeModals.nativeElement.click();
+    var loc = this.selectedClinic.address.replaceAll(' ', '%20');
+    var mapsURL = `https://maps.google.com/maps?q=${loc}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+    this.selectedLocation = this.sanitizer.bypassSecurityTrustResourceUrl(mapsURL);
+    this.viewMap.nativeElement.click();
   }
 }
 

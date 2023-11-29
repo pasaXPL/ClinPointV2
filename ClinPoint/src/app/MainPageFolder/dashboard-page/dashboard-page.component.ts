@@ -13,10 +13,10 @@ import { Clinic } from 'src/app/Models/model.model';
 })
 export class DashboardPageComponent {
 
-  clinicList: any;
-  patientList: any;
-  appointmentList: any;
-  userList: any;
+  clinicList: any[] = [];
+  patientList: any[] = [];
+  appointmentList: any[] = [];
+  userList: any[] = [];
 
   role = "";
   name = "";
@@ -63,6 +63,7 @@ export class DashboardPageComponent {
         return data;
       });
 
+      this.clinicList = this.clinicList.filter(att => att.status == 'Approved');
       this.clinicCount = this.clinicList.length;
     }, err => {
       this.clinicCount = 0;
@@ -86,7 +87,7 @@ export class DashboardPageComponent {
   }
 
   getAllAppointments() {
-    this.data.getAllAppointment().subscribe(res => {
+    this.data.getAllAppointments().subscribe(res => {
       this.appointmentList = res.map((e: any) => {
         const data = e.payload.doc.data();
         data.addressId = e.payload.doc.id;

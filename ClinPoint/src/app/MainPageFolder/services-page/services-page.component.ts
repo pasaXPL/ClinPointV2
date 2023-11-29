@@ -37,7 +37,7 @@ export class ServicesPageComponent {
   }
 
   getAllServices() {
-    this.data.getAllServices(this.auth.getToken()).subscribe(res => {
+    this.data.getAllServices().subscribe(res => {
       this.servicesList = res.map((e: any) => {
         const data = e.payload.doc.data();
         data.addressId = e.payload.doc.id;

@@ -1,1 +1,29 @@
-<p>scheduler-page works!</p>
+<div class="w-full mx-auto bg-white p-6 rounded-md shadow-md">
+  <h1 class="text-2xl font-bold mb-4">Calendar</h1>
+
+  <!-- Month Navigation Buttons -->
+  <div class="flex justify-between mb-4">
+    <button (click)="changeMonth(-1)" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+      Previous Month
+    </button>
+    <p class="text-lg font-semibold">
+      {{ formatDate(currentDate, 'Mm yyyy') }}
+    </p>
+    <button (click)="changeMonth(1)" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+      Next Month
+    </button>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="grid grid-cols-7 gap-2">
+    <!-- Weekday Labels -->
+    <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" class="text-center font-semibold text-gray-600">{{ day }}</div>
+
+    <!-- Days of the Month -->
+    <div *ngFor="let day of daysInMonth" class="text-center">
+      <div class="py-2 px-3 rounded-full hover:bg-gray-200">
+        {{ day }}
+      </div>
+    </div>
+  </div>
+</div>

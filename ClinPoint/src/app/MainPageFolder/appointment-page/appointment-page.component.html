@@ -1,1 +1,479 @@
-<p>appointment-page works!</p>
+<div class="bg-white px-3 md:p-8 rounded-md w-full">
+  <div class=" flex items-center justify-between pb-6">
+    <div>
+      <h2 class="text-gray-600 font-semibold text-lg">Appointment List</h2>
+      <span class="text-xs">All appointments</span>
+    </div>
+    <div class="flex items-center justify-between space-x-7">
+
+      <div class="space-x-8">
+        <div>
+          <button data-te-ripple-init data-te-ripple-color="light" data-te-toggle="modal" data-te-target="#viewCalendar"
+            class="inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">View
+            Calendar</button>
+        </div>
+      </div>
+
+      <div class="space-x-8">
+        <div>
+          <button data-te-ripple-init data-te-ripple-color="light" data-te-toggle="modal" data-te-target="#addAppointment"
+            class="inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">Add
+            Appointment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex pb-6">
+    <div class="w-full flex space-x-5">
+
+      <input type="text" placeholder="Search (Clinic, Patient, Physician)"
+        class="block w-full px-6 pb-2 pt-2.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+        [(ngModel)]="searchString" />
+
+      <div>
+        <button data-te-ripple-init data-te-ripple-color="light" (click)="searchAppointments()"
+          class="w-full inline-block rounded bg-alili px-6 pb-2 pt-2.5 font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">Search</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+      <div class="hidden md:inline-block min-w-full shadow rounded-lg overflow-hidden">
+        <table class="min-w-full leading-normal">
+          <thead>
+            <tr>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Reference No.
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Clinic Name
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Physician Name
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Patient
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Date
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hover:bg-gray-300 cursor-pointer"
+              *ngFor="let appointment of appointmentList" (click)="openAppointmentModal(appointment)">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">{{appointment.id}}</p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{appointment.clinicName}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{appointment.physicianName}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{appointment.patientName}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{appointment.appointmentDate}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{appointment.status}}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="grid md:hidden min-w-full shadow rounded-lg overflow-hidden gap-y-6">
+        <div class="border rounded bg-white shadow-md w-full px-4 py-2" *ngFor="let appointment of appointmentList" (click)="openAppointmentModal(appointment)">
+
+          <div class="flex items-center gap-x-5 textxs">
+            <div class="ml-3">
+              <p class="font-semibold text-gray-900 whitespace-no-wrap">
+                {{'RefNo: ' + appointment.id}}
+              </p>
+              <p class="font-semibold text-gray-900 whitespace-no-wrap">
+                {{'Patient: ' + appointment.patientName}}
+              </p>
+              <p class="text-xs text-gray-900 whitespace-no-wrap">
+                {{'Physician: ' + appointment.physicianName}}
+              </p>
+              <p class="text-xs text-gray-900 whitespace-no-wrap">
+                {{"Clinic : " + appointment.clinicName}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="addAppointment" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewServiceLabel"
+  aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+
+    <div
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <!--Modal title-->
+        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="viewServiceLabel">
+          Create an Appointment
+        </h5>
+        <!--Close button-->
+        <button type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!--Modal body-->
+      <div data-te-modal-body-ref class="relative p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+          <div *ngIf="role != 'Clinic'">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Clinic</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              placeholder="Select or type clinic"
+              [(ngModel)]="selectedClinicName"
+              (input)="filterClinics($event)"
+              (focus)="onClinicFocus()"
+              (blur)="onClinicBlur()"
+            />
+            <div *ngIf="filteredClinics.length > 0" class="suggestion-list">
+              <div *ngFor="let clinic of filteredClinics" (click)="selectClinic(clinic)">
+                {{ clinic.clinicName }}
+              </div>
+            </div>
+          </div>
+
+
+          <div *ngIf="role != 'Physician'">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Physician</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              placeholder="Select or type physician"
+              [(ngModel)]="selectedPhysicianName"
+              (input)="filterPhysicians($event)"
+              (focus)="onPhysicianFocus()"
+              (blur)="onPhysicianBlur()"
+            />
+            <div *ngIf="filteredPhysicians.length > 0" class="suggestion-list">
+              <div *ngFor="let physician of filteredPhysicians" (click)="selectPhysician(physician)">
+                {{ physician.physicianName }}
+              </div>
+            </div>
+          </div>
+
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Physician Service</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              placeholder="Select or type service"
+              [(ngModel)]="selectedServiceName"
+              (input)="filterServices($event)"
+              (focus)="onServiceFocus()"
+              (blur)="onServiceBlur()"
+            />
+            <div *ngIf="filteredServices.length > 0" class="suggestion-list">
+              <div *ngFor="let service of filteredServices" (click)="selectService(service)">
+                {{ service.name }}
+              </div>
+            </div>
+          </div>
+
+
+          <div *ngIf="role != 'Patient'">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Patient</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              placeholder="Select or type patient"
+              [(ngModel)]="selectedPatientName"
+              (input)="filterPatients($event)"
+              (focus)="onPatientFocus()"
+              (blur)="onPatientBlur()"
+            />
+            <div *ngIf="filteredPatients.length > 0" class="suggestion-list">
+              <div *ngFor="let patient of filteredPatients" (click)="selectPatient(patient)">
+                {{ patient.firstname + ' ' + patient.lastname }}
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Description</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedServiceDescription" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Appointment Price</label>
+            <input type="text" placeholder="Service Price"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedServicePrice" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-600 dark:text-gray-200">Appointment Date</label>
+            <input type="date"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" value="" [(ngModel)]="appointmentDate" />
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Appointment Description</label>
+            <input type="text" placeholder="Appointment Description (Optional)"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="appointmentDescription"/>
+          </div>
+
+
+        </div>
+      </div>
+
+
+      <!--Modal footer-->
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <button type="button"
+          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+          Close
+        </button>
+        <button type="button" data-te-modal-dismiss
+          class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+          data-te-ripple-init data-te-ripple-color="light" (click)="checkAppointment()">
+          Add Appointment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="viewCalendar" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="addServiceLabel"
+  aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+
+    <div
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <!--Modal title-->
+        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="addServiceLabel">
+          Calendar
+        </h5>
+        <!--Close button-->
+        <button type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!--Modal body-->
+      <div data-te-modal-body-ref class="relative p-4">
+        <div class="h-98">
+          <!-- Month Navigation Buttons -->
+          <div class="flex justify-between">
+            <button (click)="changeMonth(-1)" class="text-secondary-600 hover:text-secodary-800 focus:outline-none">
+              Previous Month
+            </button>
+            <p class="text-lg font-semibold">
+              {{ formatDate(currentDate, 'Mm yyyy') }}
+            </p>
+            <button (click)="changeMonth(1)" class="text-secondary-600 hover:text-secondary-800 focus:outline-none">
+              Next Month
+            </button>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="grid grid-cols-7 gap-2 h-full">
+            <!-- Weekday Labels -->
+            <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']"
+              class="text-center font-semibold text-gray-600">{{ day }}</div>
+
+            <!-- Days of the Month -->
+            <div *ngFor="let day of daysInMonth" class="text-center h-full">
+              <div class="h-full w-full rounded hover:bg-success-100">
+                {{ day }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="openViewAppointment" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewServiceLabel"
+  aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+
+    <div
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <!--Modal title-->
+        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="viewServiceLabel">
+          View Appointment
+        </h5>
+        <!--Close button-->
+        <button type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!--Modal body-->
+      <div data-te-modal-body-ref class="relative p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" *ngIf="selectedAppointment">
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Reference Number</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.id" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Status</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.status" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Clinic</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.clinicName" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Physician</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.physicianName" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Service</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.serviceName" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Patient</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.patientName" disabled/>
+          </div>
+
+
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">ServiceDescription</label>
+            <input type="text" placeholder="Service Description"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.serviceDescription" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Service Price</label>
+            <input type="text" placeholder="Service Price"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.servicePrice" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-600 dark:text-gray-200">Appointment Date</label>
+            <input type="date"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" value="" [(ngModel)]="selectedAppointment.appointmentDate" disabled/>
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Appointment Description</label>
+            <input type="text" placeholder="Appointment Description (Optional)"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointment.appointmentDetails" disabled/>
+          </div>
+
+
+        </div>
+      </div>
+
+
+      <!--Modal footer-->
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <button type="button"
+          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+          Close
+        </button>
+        <button type="button" data-te-modal-dismiss
+          class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+          data-te-ripple-init data-te-ripple-color="light" (click)="checkAppointment()">
+          Add Appointment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hidden">
+  <button #openViewAppointment data-te-toggle="modal" data-te-target="#openViewAppointment"></button>
+  <button #openViewMap data-te-toggle="modal" data-te-target="#openViewMap"></button>
+  <button #closeModals data-te-modal-dismiss aria-label="Close"></button>
+</div>

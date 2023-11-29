@@ -130,9 +130,25 @@ export class DataService {
   createClinicAccount(account: Account, clinic: Clinic){
     account.id = this.fs.createId();
     clinic.id = account.id;
+    const currentDate: Date = new Date();
+    const nextDate: Date = new Date();
+    var messageData = {
+      id: clinic.id,
+      clinicName: clinic.clinicName,
+      messages: [
+        {
+          role: 'Admin',
+          message: 'Welcome to Clinpoint',
+          datesent: currentDate.toISOString()
+        }
+      ]
+    }
 
     this.fs.collection('/AccountsV2').doc(account.id).set(account);
     this.fs.collection('/ClinicsV2').doc(clinic.id).set(clinic);
+    this.fs.collection('/Messages').doc(messageData.id).set(messageData);
+
+    this.addNotification('New Clinic has been created', clinic.clinicName + ' has registered check the clinic\s credentials', '', 'Admin');
     return null;
   }
 
@@ -161,15 +177,18 @@ export class DataService {
   }
 
   //Apply for a clinic
-  addClinicPhysicianApplication(phyId: string, clinId: string){
+  addClinicPhysicianApplication(phyId: string, clinId: string, physicianName:string){
     var id = this.fs.createId();
     const physicianApplication = {
       id: id,
       clinicId : clinId,
       physicianId : phyId,
-      status: "Pending"
+      status: "Pending",
+      physicianName: physicianName
     }
     this.fs.collection('/ClinicPhysicianApplications').doc(id).set(physicianApplication);
+
+    this.addNotification(physicianName + ' has sent a request', physicianName + ' would like to be a part of your clinic, view the physician\'s credentials', clinId, 'Clinic');
     return null
   }
 
@@ -201,7 +220,7 @@ export class DataService {
     return this.fs.collection('/Services').doc(services.id).set(services);
   }
 
-  getAllServices(physicianId: any){
+  getAllServices(){
     return this.fs.collection('/Services').snapshotChanges();
   }
 
@@ -218,14 +237,83 @@ export class DataService {
     this.fs.doc('/Services/' + services.id).delete();
   }
 
-  //Appointments
-  getAllAppointment(){
-    return this.fs.collection('/Appointments').snapshotChanges();
-  }
-
   //Users
   getAllUsers(){
     return this.fs.collection('/AccountsV2').snapshotChanges();
   }
 
+  //Payment
+  addPayment(payment: any){
+    payment.id = this.fs.createId();
+    payment.refno = payment.id;
+
+    this.addNotification('Received payment receipt from '+ payment.clinicName, payment.clinicName + ' has sent you a payment and screenshot of the receipt.', '', 'Admin');
+    return this.fs.collection('/Payments').doc(payment.id).set(payment);
+  }
+
+  getAllPayments(){
+    return this.fs.collection('/Payments').snapshotChanges();
+  }
+
+  async updatePayments(payment: any): Promise<void> {
+    try {
+      this.fs.collection('/Payments').doc(payment.id).update(payment);
+      console.log('Payment updated successfully');
+    } catch (error) {
+      console.error('Error updating clinic:', error);
+    }
+  }
+
+  getAllMessages(){
+    return this.fs.collection('/Messages').snapshotChanges();
+  }
+
+  getAllMessageClinic(tokenId: string){
+    return this.fs.collection('/Messages').doc(tokenId).snapshotChanges()
+      .pipe(
+        map(action => {
+          const data = action.payload.data(); // No type checking for 'data'
+          const id = action.payload.id;
+          return { id, data };
+        })
+      );
+  }
+
+  async sendMessage(message: any): Promise<void> {
+    try {
+      this.fs.collection('/Messages').doc(message.id).update(message);
+      console.log('message updated successfully');
+    } catch (error) {
+      console.error('Error updating clinic:', error);
+    }
+  }
+
+  getAllNotification(){
+    return this.fs.collection('/Notifications').snapshotChanges();
+  }
+
+  addNotification(title:string, body:string, receiver:string, role:string){
+    const res = {
+      title: title,
+      body: body,
+      receiver: receiver,
+      role: role
+    }
+
+    return this.fs.collection('/Notifications').add(res);
+  }
+
+
+  getAllAppointments(){
+    return this.fs.collection('/Appointments').snapshotChanges();
+  }
+
+  addAppointment(appointment: any){
+    appointment.id = this.fs.createId();
+
+    this.addNotification('You have received an appointment', appointment.patientName + ' has made an appointment with ' + appointment.physicianName, appointment.clinicId, 'Patient');
+    this.addNotification('You have received an appointment', appointment.patientName + ' has made an appointment with ' + appointment.physicianName, appointment.physicianId, 'Patient');
+    this.addNotification('You have created an appointment', 'You have made an appointment with ' + appointment.physicianName, appointment.patientId, 'Patient');
+    return this.fs.collection('/Appointments').doc(appointment.id).set(appointment);
+  }
 }
