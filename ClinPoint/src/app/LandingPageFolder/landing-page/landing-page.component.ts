@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { gptAPI } from 'src/app/Models/BaseURL';
 
 @Component({
   selector: 'app-landing-page',
@@ -101,7 +102,7 @@ export class LandingPageComponent {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
             Authorization:
-              'Bearer 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',
+              'Bearer ' + gptAPI,
           }),
         };
 

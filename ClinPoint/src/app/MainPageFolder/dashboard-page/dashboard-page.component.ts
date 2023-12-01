@@ -25,6 +25,8 @@ export class DashboardPageComponent {
   clinicCount = 0;
   userCount = 0;
   patientCount = 0;
+  isActive = false;
+  token = '';
 
   constructor(private router:Router, private auth:AuthService, private data:DataService){}
 
@@ -36,23 +38,33 @@ export class DashboardPageComponent {
 
     this.role = this.auth.getAuth()!;
 
-    var token = this.auth.getToken()!;
+    this.token = this.auth.getToken()!;
     var user: any;
-    if(this.role == "Physician"){
-      user = await this.data.getPatientById(token);
-      this.name = user.firstname + " " + user.lastname;
-    }
-    else if(this.role == "Admin"){
-      this.name = "ClinPoint";
-    }
-    else if (this.role == "Patient"){
-      user  = await this.data.getPhysicianById(token);
-      this.name = user.firstname + " " + user.lastname;
-    }
-    else if(this.role == "Clinic"){
-      user = await this.data.getClinicById(token);
-      this.name = user.clinicName
-    }
+    try{
+      if(this.role == "Patient"){
+        user = await this.data.getPatientById(this.token);
+        console.log('test' + user)
+        this.name = user.firstname + " " + user.lastname;
+
+      }
+      else if(this.role == "Admin"){
+        this.name = "ClinPoint";
+      }
+      else if (this.role == "Physician"){
+        user  = await this.data.getPhysicianById(this.token);
+        this.name = user.firstname + " " + user.lastname;
+        if(user.status == 'Approved'){
+          this.isActive = true;
+        }
+      }
+      else if(this.role == "Clinic"){
+        user = await this.data.getClinicById(this.token);
+        this.name = user.clinicName;
+        if(user.status == 'Approved'){
+          this.isActive = true;
+        }
+      }
+      }catch{}
   }
 
   getAllClinics() {

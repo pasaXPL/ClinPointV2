@@ -1,5 +1,3 @@
-
-
 <div class="w-full" *ngIf="!successfullyCreated">
   <h1 class="text-2xl font-semibold tracking-wider text-gray-800 capitalize dark:text-white">
     Get your free account now.
@@ -77,7 +75,7 @@
     </div>
 
     <div *ngIf="role == 'Clinic'">
-      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Supporting File 1</label>
+      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Business Permit</label>
       <input type="file" placeholder="Supporting File"
         class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
         accept="application/pdf, image/*" (change)="getSupportingFile1($event)" />
@@ -104,15 +102,29 @@
         accept="image/*" (change)="getPhysicianLicense($event)" />
     </div>
 
+    <div *ngIf="role == 'Physician'">
+      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Specialization</label>
+      <input type="text" placeholder="Dentist/Therapist"
+        class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+        [(ngModel)]="PhysicianSpecialization" />
+    </div>
+
+    <div *ngIf="role == 'Physician'">
+      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Secretary Full Name</label>
+      <input type="text" placeholder="Lucy Ann"
+        class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+        [(ngModel)]="PhysicianSecretary" />
+    </div>
+
     <div *ngIf="role == 'Clinic'">
-      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Supporting File 2</label>
+      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Department of Health (DOH) Certificate</label>
       <input type="file" placeholder="Supporting File"
         class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
         accept="application/pdf, image/*" (change)="getSupportingFile2($event)" />
     </div>
 
     <div *ngIf="role == 'Clinic'">
-      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Supporting File 3</label>
+      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Tax Identity ID</label>
       <input type="file" placeholder="Supporting File"
         class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
         accept="application/pdf, image/*" (change)="getSupportingFile3($event)" />
@@ -150,7 +162,7 @@
       <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Birthdate</label>
       <input type="date"
         class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-      placeholder="Enter Birthdate" value="" [(ngModel)]="Birthdate" />
+        placeholder="Enter Birthdate" value="" [(ngModel)]="Birthdate" />
     </div>
 
     <div>
@@ -218,7 +230,8 @@
   <button class="bg-alili px-3 py-2 text-white font-semibold rounded" routerLink="/account/login">Login Now</button>
 </div>
 
-<div data-te-modal-init class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
   id="viewTermsAndCondition" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewTermsLabel" aria-hidden="true">
   <div data-te-modal-dialog-ref
     class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
@@ -247,71 +260,108 @@
           <h1>Terms of Use</h1>
 
           <p>
-            In these Terms of Use, any use of the words "you", "yours" or similar expressions shall mean any user of this website and the app whatsoever. Terms such as "we", "us, "our" or similar expressions shall mean the Football Association Premier League Limited.
+            In these Terms of Use, any use of the words "you", "yours" or similar expressions shall mean any user of
+            this website and the app whatsoever. Terms such as "we", "us, "our" or similar expressions shall mean the
+            Football Association Premier League Limited.
           </p>
 
           <p>
-            This website, <a href="https://www.premierleague.com">www.premierleague.com</a> (the “Website”), and the Premier League mobile application (the “App”) are operated by the Football Association Premier League Limited, a company registered in England and Wales under company number 02719699 with registered office at The Premier League, Brunel Building, 57 North Wharf Road, London, W2 1HQ. Our VAT number is 672 6255 22.
+            This website, <a href="https://www.premierleague.com">www.premierleague.com</a> (the “Website”), and the
+            Premier League mobile application (the “App”) are operated by the Football Association Premier League
+            Limited, a company registered in England and Wales under company number 02719699 with registered office at
+            The Premier League, Brunel Building, 57 North Wharf Road, London, W2 1HQ. Our VAT number is 672 6255 22.
           </p>
 
           <p>
-            Please read this page carefully as it sets out the terms that apply to your use of the Website and the App, and any part of their content and all materials appearing on them. By using the Website, you confirm that you accept these Terms of Use and agree to comply with them. If you do not agree to these Terms of Use, please refrain from using the Website and App.
+            Please read this page carefully as it sets out the terms that apply to your use of the Website and the App,
+            and any part of their content and all materials appearing on them. By using the Website, you confirm that
+            you accept these Terms of Use and agree to comply with them. If you do not agree to these Terms of Use,
+            please refrain from using the Website and App.
           </p>
 
           <h2>Your Use of the Website If You Are Under 18</h2>
 
           <p>
-            If you are under 18, you may need your parent/guardian to help you with your use of the Website and the App and with reading these Terms and Conditions. If anything is hard to understand, please ask your parent/guardian to explain. If you still have any questions, you or your parent/guardian can contact us at: <a href="mailto:info@premierleague.com">info@premierleague.com</a>.
+            If you are under 18, you may need your parent/guardian to help you with your use of the Website and the App
+            and with reading these Terms and Conditions. If anything is hard to understand, please ask your
+            parent/guardian to explain. If you still have any questions, you or your parent/guardian can contact us at:
+            <a href="mailto:info@premierleague.com">info@premierleague.com</a>.
           </p>
 
           <p>
-            If you are aged 13 or under, you cannot register for a Premier League account (“Account”) without the permission of your parent/guardian. You need to register if you want to play the Fantasy game. You do not need to register to use the Website or App.
+            If you are aged 13 or under, you cannot register for a Premier League account (“Account”) without the
+            permission of your parent/guardian. You need to register if you want to play the Fantasy game. You do not
+            need to register to use the Website or App.
           </p>
 
           <p>
-            We may collect your personal information when you use the Website and the App. You can find out more about how we use your personal information in our Questions and Answers. You can find a link here: <a href="link">link</a>.
+            We may collect your personal information when you use the Website and the App. You can find out more about
+            how we use your personal information in our Questions and Answers. You can find a link here: <a
+              href="link">link</a>.
           </p>
 
           <h2>Other Applicable Terms</h2>
 
           <p>
-            These Terms of Use are additional to, and should be read in conjunction with, our Privacy Policy and Cookie Policy.
+            These Terms of Use are additional to, and should be read in conjunction with, our Privacy Policy and Cookie
+            Policy.
           </p>
 
           <p>
-            If you are under 18, we have tried to explain these policies for you in our Questions and Answers. You can find a link here: <a href="link">link</a>.
+            If you are under 18, we have tried to explain these policies for you in our Questions and Answers. You can
+            find a link here: <a href="link">link</a>.
           </p>
 
           <h2>Changes to These Terms of Use</h2>
 
           <p>
-            We may change these terms at any time by amending this page. Please check this page regularly to take notice of any such changes as you will be deemed to accept them through your continued use of the Website and the App.
+            We may change these terms at any time by amending this page. Please check this page regularly to take notice
+            of any such changes as you will be deemed to accept them through your continued use of the Website and the
+            App.
           </p>
 
           <h2>Changes to the Website</h2>
 
           <p>
-            We aim to update the Website regularly and may change the content at any time. If the need arises, we may suspend access to the Website or close it indefinitely. We will not be liable if for any reason the Website is unavailable at any time or for any period. Any of the material on the Website may be out of date at any given time, and we are under no obligation to update such material.
+            We aim to update the Website regularly and may change the content at any time. If the need arises, we may
+            suspend access to the Website or close it indefinitely. We will not be liable if for any reason the Website
+            is unavailable at any time or for any period. Any of the material on the Website may be out of date at any
+            given time, and we are under no obligation to update such material.
           </p>
 
           <h2>Intellectual Property Rights</h2>
 
           <p>
-            The Website is protected by copyright, database rights, and other intellectual property and related rights ("Rights") which are owned by us and our suppliers. All such Rights are reserved. Except where otherwise indicated on the Website:
+            The Website is protected by copyright, database rights, and other intellectual property and related rights
+            ("Rights") which are owned by us and our suppliers. All such Rights are reserved. Except where otherwise
+            indicated on the Website:
           </p>
 
           <ul>
-            <li>You may download and print material from the Website as is reasonable for your own private and personal use;</li>
-            <li>You may also forward such material from the Website to other people for their private and personal use provided you credit us as its source and add the Website address: <a href="https://www.premierleague.com">www.premierleague.com</a>. You must draw their attention to these terms which also apply to them; and</li>
-            <li>You may provide links to the Website provided they go to the home page only and provided you do so in a way that is fair, legal and does not damage our reputation or take advantage of it. You must not establish a link in such a way as to suggest any form of association, approval or endorsement on the part of us where none exists.</li>
+            <li>You may download and print material from the Website as is reasonable for your own private and personal
+              use;</li>
+            <li>You may also forward such material from the Website to other people for their private and personal use
+              provided you credit us as its source and add the Website address: <a
+                href="https://www.premierleague.com">www.premierleague.com</a>. You must draw their attention to these
+              terms which also apply to them; and</li>
+            <li>You may provide links to the Website provided they go to the home page only and provided you do so in a
+              way that is fair, legal and does not damage our reputation or take advantage of it. You must not establish
+              a link in such a way as to suggest any form of association, approval or endorsement on the part of us
+              where none exists.</li>
           </ul>
 
           <p>
-            The Website must not be used in any other way, including for commercial purposes, and you may not otherwise reproduce, re-utilize or redistribute it (including, by way of example, creating a database (electronic or otherwise) that includes material downloaded or otherwise obtained from the Website), or frame or deep-link to it (or to any of its content) on any other website, without our prior written approval. If you print off, copy or download any part of the Website in breach of these terms, your right to use the Website will cease immediately, and you must return or destroy any copies of the materials you have made at our request.
+            The Website must not be used in any other way, including for commercial purposes, and you may not otherwise
+            reproduce, re-utilize or redistribute it (including, by way of example, creating a database (electronic or
+            otherwise) that includes material downloaded or otherwise obtained from the Website), or frame or deep-link
+            to it (or to any of its content) on any other website, without our prior written approval. If you print off,
+            copy or download any part of the Website in breach of these terms, your right to use the Website will cease
+            immediately, and you must return or destroy any copies of the materials you have made at our request.
           </p>
 
           <p>
-            The trademarks, logos, and brand names shown on the Website are owned by us or our suppliers, partners, or member Clubs. No rights are granted to use any of them without the prior written permission of the owner.
+            The trademarks, logos, and brand names shown on the Website are owned by us or our suppliers, partners, or
+            member Clubs. No rights are granted to use any of them without the prior written permission of the owner.
           </p>
 
           <h2>Account</h2>
@@ -321,11 +371,20 @@
           </p>
 
           <p>
-            In registering for an Account, you will be providing personal data to the Premier League. Any personal data which you do submit will be processed in accordance with the Premier League’s Privacy Policy and in accordance with relevant data protection legislation including the General Data Protection Regulation (“GDPR”) and the Data Protection Act 2018. If you are under 18, you can find out more about how we use your personal information in our Questions and Answers, which is available here: <a href="link">link</a>. We will only share personal data in accordance with our Privacy Policy or if required to do so by a competent authority or court within the United Kingdom.
+            In registering for an Account, you will be providing personal data to the Premier League. Any personal data
+            which you do submit will be processed in accordance with the Premier League’s Privacy Policy and in
+            accordance with relevant data protection legislation including the General Data Protection Regulation
+            (“GDPR”) and the Data Protection Act 2018. If you are under 18, you can find out more about how we use your
+            personal information in our Questions and Answers, which is available here: <a href="link">link</a>. We will
+            only share personal data in accordance with our Privacy Policy or if required to do so by a competent
+            authority or court within the United Kingdom.
           </p>
 
           <p>
-            You may (at your sole discretion) enable two-factor authentication on your Account. Two-factor authentication improves the security of users’ accounts. Before enabling two-factor authentication, we recommend that you read our guide on two-factor authentication which can be found here: <a href="link">link</a>.
+            You may (at your sole discretion) enable two-factor authentication on your Account. Two-factor
+            authentication improves the security of users’ accounts. Before enabling two-factor authentication, we
+            recommend that you read our guide on two-factor authentication which can be found here: <a
+              href="link">link</a>.
           </p>
 
           <p>
@@ -334,67 +393,88 @@
 
           <ul>
             <li>Ensuring that your equipment is enabled with appropriate up-to-date virus checking software;</li>
-            <li>Maintaining the security of your Account and/or password including (without limitation) by keeping passwords for your Account secure, frequently changing your password and keeping it confidential; and</li>
+            <li>Maintaining the security of your Account and/or password including (without limitation) by keeping
+              passwords for your Account secure, frequently changing your password and keeping it confidential; and</li>
             <li>Implementing two-factor authentication on your Account.</li>
           </ul>
 
           <h2>No Reliance on Information</h2>
 
           <p>
-            Reasonable skill and care have been used in producing the Website, but it is only designed for general information purposes. No guarantee is given by us or our suppliers that the Website (including any statistics contained on the Website) is accurate, complete or up-to-date. We, therefore, disclaim all liability and responsibility arising from any reliance placed on the content of the Website by you or by anyone who may be informed of the Website’s contents.
+            Reasonable skill and care have been used in producing the Website, but it is only designed for general
+            information purposes. No guarantee is given by us or our suppliers that the Website (including any
+            statistics contained on the Website) is accurate, complete or up-to-date. We, therefore, disclaim all
+            liability and responsibility arising from any reliance placed on the content of the Website by you or by
+            anyone who may be informed of the Website’s contents.
           </p>
 
           <h2>External Links</h2>
 
           <p>
-            The Website contains links to other websites and services operated by parties independent of us. We take reasonable precautions in selecting these; however, we do not endorse or take responsibility for the content or availability of these websites and cannot accept any liability for any material contained within them or for your use of them or any use of your personal data collected by their operators. If you decide to access linked websites, you do so at your own risk, and we encourage you to read the privacy statements applicable to each specific website.
+            The Website contains links to other websites and services operated by parties independent of us. We take
+            reasonable precautions in selecting these; however, we do not endorse or take responsibility for the content
+            or availability of these websites and cannot accept any liability for any material contained within them or
+            for your use of them or any use of your personal data collected by their operators. If you decide to access
+            linked websites, you do so at your own risk, and we encourage you to read the privacy statements applicable
+            to each specific website.
           </p>
 
           <p>
-            If you are under 18, you may need your parent/guardian to help you with your use of the Website and the App and with ensuring the content and availability of any linked websites and services are appropriate.
+            If you are under 18, you may need your parent/guardian to help you with your use of the Website and the App
+            and with ensuring the content and availability of any linked websites and services are appropriate.
           </p>
 
           <h2>Viruses</h2>
 
           <p>
-            We and our suppliers take reasonable precautions to prevent computer viruses, trojan horses, worms, time bombs, cancelbots, corrupted files, or any other items that may damage the operation of computers or property or otherwise engage in computer misuse ("Malicious Programmes") on the Website but cannot accept any liability for them. You are advised to take precautions against such Malicious Programmes, including the use of suitable protective software.
+            We and our suppliers take reasonable precautions to prevent computer viruses, trojan horses, worms, time
+            bombs, cancelbots, corrupted files, or any other items that may damage the operation of computers or
+            property or otherwise engage in computer misuse ("Malicious Programmes") on the Website but cannot accept
+            any liability for them. You are advised to take precautions against such Malicious Programmes, including the
+            use of suitable protective software.
           </p>
 
           <h2>Your Lawful Use of the Website</h2>
 
           <p>
-            You must not misuse the Website by knowingly introducing Malicious Programmes. You must not attempt to gain unauthorized access to the Website, the server on which the Website is stored, or any server, computer, or database connected to the Website. You must not attack the Website via a denial-of-service attack or a distributed denial-of-service attack. By breaching this provision, you would commit a criminal offense under the Computer Misuse Act 1990. We will report any such breach to the relevant law enforcement authorities and will cooperate with those authorities by disclosing your identity to them. In the event of such a breach, your right to use the Website will cease immediately.
+            You must not misuse the Website by knowingly introducing Malicious Programmes. You must not attempt to gain
+            unauthorized access to the Website, the server on which the Website is stored, or any server, computer, or
+            database connected to the Website. You must not attack the Website via a denial-of-service attack or a
+            distributed denial-of-service attack. By breaching this provision, you would commit a criminal offense under
+            the Computer Misuse Act 1990. We will report any such breach to the relevant law enforcement authorities and
+            will cooperate with those authorities by disclosing your identity to them. In the event of such a breach,
+            your right to use the Website will cease immediately.
           </p>
 
           <h2>Limitation of Liability</h2>
 
           <p>
-            Except in the case of death or personal injury caused by our negligence or any willful act, to the fullest extent permitted by law, we exclude all liability to you in respect of your Account and your use of the Website and App.
+            Except in the case of death or personal injury caused by our negligence or any willful act, to the fullest
+            extent permitted by law, we exclude all liability to you in respect of your Account and your use of the
+            Website and App.
           </p>
 
           <h2>Governing Law</h2>
 
           <p>
-            These Terms of Use are governed by and interpreted in accordance with the laws of England and Wales. Any disputes arising under or in connection with these terms shall be subject to the non-exclusive jurisdiction of the English courts.
+            These Terms of Use are governed by and interpreted in accordance with the laws of England and Wales. Any
+            disputes arising under or in connection with these terms shall be subject to the non-exclusive jurisdiction
+            of the English courts.
           </p>
 
           <h2>Contact</h2>
 
           <p>
-            If you have any comments or questions about the Website or the App, please contact us at <a href="mailto:info@premierleague.com">info@premierleague.com</a>.
+            If you have any comments or questions about the Website or the App, please contact us at <a
+              href="mailto:info@premierleague.com">info@premierleague.com</a>.
           </p>
 
         </div>
         <div class="mt-3 mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
           <input
             class="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
-            type="checkbox"
-            value=""
-            id="checkboxDefault"
-            [(ngModel)]="isButtonDisabled" />
-          <label
-            class="inline-block pl-[0.15rem] hover:cursor-pointer"
-            for="checkboxDefault">
+            type="checkbox" value="" id="checkboxDefault" [(ngModel)]="isButtonDisabled" />
+          <label class="inline-block pl-[0.15rem] hover:cursor-pointer" for="checkboxDefault">
             I understand and fully understand the terms and condition
           </label>
         </div>
@@ -408,9 +488,11 @@
           Close
         </button>
         <div>
-          <button type="button" [ngClass]="{ 'bg-gray-100 text-alili': !isButtonDisabled, 'bg-alili text-white': isButtonDisabled }"
-            class="ml-1 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"  data-te-modal-dismiss [disabled]="!isButtonDisabled" (click)="openOtp()"
-            data-te-ripple-init data-te-ripple-color="light" >
+          <button type="button"
+            [ngClass]="{ 'bg-gray-100 text-alili': !isButtonDisabled, 'bg-alili text-white': isButtonDisabled }"
+            class="ml-1 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+            data-te-modal-dismiss [disabled]="!isButtonDisabled" (click)="openOtp()" data-te-ripple-init
+            data-te-ripple-color="light">
             Sign up
           </button>
         </div>
@@ -421,8 +503,9 @@
 </div>
 
 
-<div data-te-modal-init class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="viewOTP" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewTermsLabel" aria-hidden="true">
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none" id="viewOTP"
+  data-te-keyboard="false" tabindex="-1" aria-labelledby="viewTermsLabel" aria-hidden="true">
   <div data-te-modal-dialog-ref
     class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
     <div
@@ -447,8 +530,10 @@
       <!--Modal body-->
       <div data-te-modal-body-ref class="relative p-4">
         <div class="w-full text-center">
-          <input class="border-b-2 border-alili border-dashed text-3xl md:text-5xl text-center" type="text" maxlength="6" placeholder="Enter 6 digit OTP" [(ngModel)]="otpReceived">
-          <p class="text-xs text-secondary-700">{{"OTP has been sent to  "+PhoneNumber}}</p>
+          <input class="border-b-2 border-alili border-dashed text-3xl md:text-5xl text-center" type="text"
+            maxlength="6" placeholder="Enter 6 digit OTP" (keypress)="validateNumericInput($event)"  [(ngModel)]="otpReceived"
+            />
+          <p class="text-xs text-secondary-700">{{"OTP has been sent to "+PhoneNumber}}</p>
         </div>
       </div>
       <!--Modal footer-->
@@ -460,8 +545,10 @@
           Close
         </button>
         <div>
-          <button type="button" [ngClass]="{ 'bg-gray-100 text-alili': !isButtonDisabled, 'bg-alili text-white': isButtonDisabled }"
-            class="ml-1 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" data-te-ripple-init data-te-ripple-color="light"data-te-modal-dismiss (click)="checkOtp()">
+          <button type="button"
+            [ngClass]="{ 'bg-gray-100 text-alili': !isButtonDisabled, 'bg-alili text-white': isButtonDisabled }"
+            class="ml-1 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+            data-te-ripple-init data-te-ripple-color="light" data-te-modal-dismiss (click)="checkOtp()">
             Sign up
           </button>
         </div>

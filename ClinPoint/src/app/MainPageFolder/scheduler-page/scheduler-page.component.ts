@@ -36,26 +36,6 @@ export class SchedulerPageComponent {
     this.daysInMonth = daysArray;
   }
 
-  // private calculateStartDate(): Date {
-  //   const today = new Date();
-  //   const year = today.getFullYear();
-  //   const month = today.getMonth();
-
-  //   let firstDayOfMonth = new Date(year, month, 1);
-  //   const dayOfWeek = firstDayOfMonth.getDay();
-
-  //   let difference = this.startDayOfWeek - dayOfWeek;
-
-  //   // If the start day is after the first day of the month, move to the next week
-  //   if (difference < 0) {
-  //     difference += 7;
-  //   }
-
-  //   firstDayOfMonth.setDate(1 + difference);
-
-  //   return firstDayOfMonth;
-  // }
-
   changeMonth(monthChange: number): void {
     this.currentDate.setMonth(this.currentDate.getMonth() + monthChange);
     this.functionSetDaysInMonth();

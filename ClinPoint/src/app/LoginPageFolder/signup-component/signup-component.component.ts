@@ -11,7 +11,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { baseURL } from 'src/app/Models/BaseURL';
+import { baseURL, clickSendUsername, clickSendPassword } from 'src/app/Models/BaseURL';
 
 @Component({
   selector: 'app-signup-component',
@@ -111,6 +111,8 @@ export class SignupComponentComponent {
   resultBirthDate: string = '';
   ClinicFile3: any =  null;
   clinicDTINumber = '';
+  PhysicianSpecialization = '';
+  PhysicianSecretary = '';
 
   isButtonDisabled = false;
   otpCode = '';
@@ -168,7 +170,9 @@ export class SignupComponentComponent {
         this.Address == '' ||
         this.UserUsername == '' ||
         this.UserPassword == '' ||
-        this.ConfirmPassword == ''
+        this.ConfirmPassword == '' ||
+        this.PhysicianSpecialization == '' ||
+        this.PhysicianSecretary == ''
       )
       {
         alert('Fill all input fields in the form');
@@ -235,10 +239,13 @@ export class SignupComponentComponent {
     this.viewOTP.nativeElement.click();
     if(this.otpCode == ""){
     this.otpCode = this.generateRandomNumber().toString();
+    console.log(this.otpCode)
 
     var apiUrl = 'https://rest.clicksend.com/v3/sms/send';
 
-    var credentials = btoa('pasa.johnpaul@gmail.com:06B70D06-F276-0E45-2ED4-207215C0CC05');
+    //var credentials = btoa('pasa.johnpaul@gmail.com:06B70D06-F276-0E45-2ED4-207215C0CC05');
+
+    var credentials = btoa(clickSendUsername + ':' + clickSendPassword);
 
     var headers = new HttpHeaders({
       'Authorization': 'Basic ' + credentials,
@@ -252,10 +259,10 @@ export class SignupComponentComponent {
       "messages": [
         {
           "source":"php",
-          "body":"Your Jnco OTP : " + this.otpCode + "\n\n\nJnco Solutions OTP powered by ClickSend",
+          "body":"Your ClinPoint OTP : " + this.otpCode + "\nClinPoint OTP powered by ClickSend",
           "to":"+63" + mn,
           "from": "Jnco Solutions",
-          "custom_string": "Your ClinPoint OTP : " + this.otpCode + "\n\n\nJnco Solutions OTP powered by ClickSend"
+          "custom_string": "Your ClinPoint OTP : " + this.otpCode + "\nClinPoint OTP powered by ClickSend"
         }
       ]
     };
@@ -375,6 +382,8 @@ export class SignupComponentComponent {
         this.physicianObj.birthdate = this.Birthdate;
         this.physicianObj.image = baseURL + 'uploads/' + this.PhysicianProfilePhoto.name;
         this.physicianObj.license = baseURL + 'uploads/' + this.PhysicianLicensePhoto.name;
+        this.physicianObj.specialty = this.PhysicianSpecialization;
+        this.physicianObj.gender = this.PhysicianSecretary;
 
         this.physicianObj.createdat = dateString;
         this.data.createPhysicianAccount(this.accountObj, this.physicianObj)

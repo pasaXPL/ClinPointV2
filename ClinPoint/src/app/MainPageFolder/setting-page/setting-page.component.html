@@ -30,6 +30,7 @@
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#updatePhysicianModal" *ngIf="role == 'Physician'">Update Account</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#updateClinicModal" *ngIf="role == 'Clinic'">Update Account</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#updatePatientModal" *ngIf="role == 'Patient'">Update Account</button>
+      <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#addScheduler" *ngIf="role == 'Physician'">Setup Schedule</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#changePasswordModal">Change Password</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" (click)="gotoServices()" *ngIf="role == 'Physician'">Set up Services</button>
     </div>
@@ -418,6 +419,20 @@
           </div>
 
           <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Specialization</label>
+            <input type="text" placeholder="John Doe"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="toBeUpdate.specialty" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Secretary</label>
+            <input type="text" placeholder="John Doe"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="toBeUpdate.gender" />
+          </div>
+
+          <div>
             <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Supporting File 1</label>
             <a [href]="toBeUpdate.license" target="_blank"
               class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View Doctor License</a>
@@ -758,6 +773,92 @@
           class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
           data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light">
           Change Password
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="addScheduler" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewPatientLabel" aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+
+    <div
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50 bg-alili text-white">
+        <!--Modal title-->
+        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200 text-white" id="viewPatientLabel">
+          Physician Scheduler
+        </h5>
+        <!--Close button-->
+        <button type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!--Modal body-->
+      <div data-te-modal-body-ref class="relative p-4">
+        <p class="px-5 py-3 text-center w-full text-gray-500">Update your time schedule for your patients to make an appointment. Reminder! Once you updated your schedule the appointments made before the update will remain on the day and time they set.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Starting Morning Time</label>
+            <select
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="morningStarting">
+              <option *ngFor="let time of amtime" [value]="time">{{ time }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Ending Morning Time</label>
+            <select
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="morningEnding">
+              <option *ngFor="let time of amtime" [value]="time">{{ time }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Starting Afternoon Time</label>
+            <select
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="afternoonStarting">
+              <option *ngFor="let time of pmtime" [value]="time">{{ time }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Ending Afternoon Time</label>
+            <select
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="afternoonEnding">
+              <option *ngFor="let time of pmtime" [value]="time">{{ time }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!--Modal footer-->
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <button type="button"
+          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+          Close
+        </button>
+        <button type="button" (click)="checkSchedule()"
+          class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+          data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light">
+          Update Schedule
         </button>
       </div>
     </div>

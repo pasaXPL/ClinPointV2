@@ -6,6 +6,8 @@ import { Modal, Ripple, Input, initTE, Select, Datepicker} from "tw-elements";
 import { HttpClient } from '@angular/common/http';
 import { baseURL } from 'src/app/Models/BaseURL';
 
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-patient-page',
   templateUrl: './patient-page.component.html',
@@ -61,6 +63,7 @@ export class PatientPageComponent {
 
   isPatient = false;
   searchString = "";
+  role = '';
 
   constructor(private http: HttpClient, private data: DataService, private auth:AuthService) { }
 
@@ -70,6 +73,8 @@ export class PatientPageComponent {
     if(this.auth.getAuth() === "Patient"){
       this.isPatient = true;
     }
+
+    this.role == this.auth.getAuth();
 
     this.getAllPatients();
   }
@@ -206,5 +211,56 @@ export class PatientPageComponent {
   displaybday(){
     var dateString = this.birthdate.split('-');
     this.resultBirthdate = dateString[1]+ "/" + dateString[2] + "/" + dateString[0];
+  }
+
+  downloadPatientReport(){
+    var report:any[] = [];
+
+    this.patientsList.forEach(att => {
+      var d = {
+        'First Name': att.firstname,
+        'Last Name': att.lastname,
+        'Email': att.email,
+        'Contact No': att.contactno,
+        'Birthdate': this.changeDateFormat(att.birthdate, 'MM/dd/yyyy'),
+        'Patient Image': att.image,
+        'Status': att.status,
+        'Created At': att.createdat
+      }
+      report.push(d);
+    });
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(report);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, 'exported_data.xlsx');
+  }
+  changeDateFormat(inputDate: string, format: string): string{
+    var idate = new Date(inputDate);
+    return this.formatDateV2(idate, format);
+  }
+  formatDateV2(inputDate: Date, format: string): string {
+    if (!inputDate) return '';
+
+    const padZero = (value: number) => (value < 10 ? `0${value}` : `${value}`);
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const parts: { [key: string]: number | string } = {
+      yyyy: inputDate.getFullYear(),
+      MM: padZero(inputDate.getMonth() + 1),
+      Mm: monthNames[inputDate.getMonth()],
+      dd: padZero(inputDate.getDate()),
+      HH: padZero(inputDate.getHours()),
+      hh: padZero(inputDate.getHours() > 12 ? inputDate.getHours() - 12 : inputDate.getHours()),
+      mm: padZero(inputDate.getMinutes()),
+      ss: padZero(inputDate.getSeconds()),
+      tt: inputDate.getHours() < 12 ? 'AM' : 'PM'
+    };
+
+    return format.replace(/yyyy|MM|Mm|dd|HH|hh|mm|ss|tt/g, (match) => parts[match].toString());
   }
 }

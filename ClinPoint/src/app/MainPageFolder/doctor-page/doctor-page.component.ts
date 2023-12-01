@@ -3,6 +3,7 @@ import { Physician } from 'src/app/Models/model.model';
 import { DataService } from 'src/app/Services/data.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Modal, Ripple, Input, initTE, Select, Datepicker} from "tw-elements";
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-doctor-page',
@@ -18,6 +19,7 @@ export class DoctorPageComponent {
   selectedFile : File | undefined;
   originalPhysiciansList: Physician[] = [];
   physiciansList: Physician[] = [];
+  toBeDownloaded: Physician[]= [];
   physicianObj: Physician = {
     addressId: '',
     id: '',
@@ -101,6 +103,7 @@ export class DoctorPageComponent {
         data.addressId = e.payload.doc.id;
         return data;
       })
+      this.toBeDownloaded = this.physiciansList;
       this.physiciansList = this.physiciansList.filter(att => att.status == 'Approved')
       this.originalPhysiciansList = this.physiciansList;
     }, err => {
@@ -200,6 +203,59 @@ export class DoctorPageComponent {
     }
 
     this.closeModal();
+  }
+
+  downloadPhysicianReport(){
+    var report:any[] = [];
+
+    this.toBeDownloaded.forEach(att => {
+      var d = {
+        'Physician Logo': att.image,
+        'Physician First Name': att.firstname,
+        'Physician Last Name': att.lastname,
+        'Clinic Address': att.address,
+        'Contact No': att.contactno,
+        'Email': att.email,
+        'Physician Address': att.address,
+        'Birthdate': this.changeDateFormat(att.birthdate, 'MM/dd/yyyy'),
+        'License Image': att.license,
+        'Created At': att.createdat,
+        'Status' : att.status
+      }
+      report.push(d);
+    });
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(report);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'exported_data.xlsx');
+  }
+  changeDateFormat(inputDate: string, format: string): string{
+    var idate = new Date(inputDate);
+    return this.formatDateV2(idate, format);
+  }
+  formatDateV2(inputDate: Date, format: string): string {
+    if (!inputDate) return '';
+
+    const padZero = (value: number) => (value < 10 ? `0${value}` : `${value}`);
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const parts: { [key: string]: number | string } = {
+      yyyy: inputDate.getFullYear(),
+      MM: padZero(inputDate.getMonth() + 1),
+      Mm: monthNames[inputDate.getMonth()],
+      dd: padZero(inputDate.getDate()),
+      HH: padZero(inputDate.getHours()),
+      hh: padZero(inputDate.getHours() > 12 ? inputDate.getHours() - 12 : inputDate.getHours()),
+      mm: padZero(inputDate.getMinutes()),
+      ss: padZero(inputDate.getSeconds()),
+      tt: inputDate.getHours() < 12 ? 'AM' : 'PM'
+    };
+
+    return format.replace(/yyyy|MM|Mm|dd|HH|hh|mm|ss|tt/g, (match) => parts[match].toString());
   }
 }
 

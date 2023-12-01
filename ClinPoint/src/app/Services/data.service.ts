@@ -88,6 +88,14 @@ export class DataService {
 
     this.fs.collection('/AccountsV2').doc(account.id).set(account);
     this.fs.collection('/PhysiciansV2').doc(physician.id).set(physician);
+    let d = {
+      id: physician.id,
+      morningStarting: '8:00 AM',
+      morningEnding: '11:30 AM',
+      afternoonStarting: '12:00 PM',
+      afternoonEnding: '9:00 PM'
+    };
+    this.fs.collection('/PhysicianSchedule').doc(physician.id).set(d);
     return null;
   }
 
@@ -315,5 +323,41 @@ export class DataService {
     this.addNotification('You have received an appointment', appointment.patientName + ' has made an appointment with ' + appointment.physicianName, appointment.physicianId, 'Patient');
     this.addNotification('You have created an appointment', 'You have made an appointment with ' + appointment.physicianName, appointment.patientId, 'Patient');
     return this.fs.collection('/Appointments').doc(appointment.id).set(appointment);
+  }
+
+  async updateAppointment(appointment: any): Promise<void> {
+    try {
+      if(appointment.status == 'Accepted'){
+        this.addNotification('An appointment has been accepted', appointment.patientName + ' appointment with ' + appointment.physicianName + ' has been accepted', appointment.clinicId, 'Patient');
+        this.addNotification('An appointment has been accepted', appointment.patientName + ' an appointment with ' + appointment.physicianName + ' has been accepted', appointment.physicianId, 'Patient');
+        this.addNotification('An appointment has been accepted', 'Your appointment has been accepted by ' + appointment.physicianName, appointment.patientId, 'Patient');
+      }
+      else if(appointment.status == 'Declined'){
+        this.addNotification('An appointment has been declined', appointment.patientName + ' appointment with ' + appointment.physicianName + ' has been declined', appointment.clinicId, 'Patient');
+        this.addNotification('An appointment has been declined', appointment.patientName + ' an appointment with ' + appointment.physicianName + ' has been declined', appointment.physicianId, 'Patient');
+        this.addNotification('An appointment has been declined', 'Your appointment has been declined by ' + appointment.physicianName, appointment.patientId, 'Patient');
+      }
+      else if(appointment.status == 'Cancelled'){
+        this.addNotification('An appointment has been cancelled', appointment.patientName + ' appointment with ' + appointment.physicianName + ' has been cancelled', appointment.clinicId, 'Patient');
+        this.addNotification('An appointment has been cancelled', appointment.patientName + ' an appointment with ' + appointment.physicianName + ' has been cancelled', appointment.physicianId, 'Patient');
+        this.addNotification('An appointment has been cancelled', 'Your appointment has been cancelled by ' + appointment.physicianName, appointment.patientId, 'Patient');
+      }
+      this.fs.collection('/Appointments').doc(appointment.id).update(appointment);
+      console.log('Appointment updated successfully');
+    } catch (error) {
+      console.error('Error updating Appointment:', error);
+    }
+  }
+
+  getAllPhysicianTimeSchedule(){
+    return this.fs.collection('/PhysicianSchedule').snapshotChanges();
+  }
+
+  addPhysicianTimeSchedule(schedule: any){
+    return this.fs.collection('/PhysicianSchedule').doc(schedule.id).set(schedule);
+  }
+
+  updatePhysicianTimeSchedule(schedule: any){
+    return this.fs.collection('/PhysicianSchedule').doc(schedule.id).update(schedule);
   }
 }

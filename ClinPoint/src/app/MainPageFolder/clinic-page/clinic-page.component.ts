@@ -4,6 +4,7 @@ import { DataService } from 'src/app/Services/data.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Modal, Ripple, Input, initTE, Select, Datepicker} from "tw-elements";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-clinic-page',
@@ -19,6 +20,7 @@ export class ClinicPageComponent {
 
   selectedFile : File | undefined;
   originalClinicsList: Clinic[] = [];
+  toBeDownloaded:Clinic[] = [];
   clinicsList: Clinic[] = [];
   clinicObj: Clinic = {
     addressId: '',
@@ -120,7 +122,7 @@ export class ClinicPageComponent {
       });
 
       console.log(this.clinicsList)
-
+      this.toBeDownloaded = this.clinicsList;
       if(this.role != 'Admin'){
         this.clinicsList = this.clinicsList.filter(att => att.status == 'Approved');
       }
@@ -232,6 +234,61 @@ export class ClinicPageComponent {
     var mapsURL = `https://maps.google.com/maps?q=${loc}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
     this.selectedLocation = this.sanitizer.bypassSecurityTrustResourceUrl(mapsURL);
     this.viewMap.nativeElement.click();
+  }
+
+  downloadClinicReport(){
+    var report:any[] = [];
+
+    this.toBeDownloaded.forEach(att => {
+      var d = {
+        'Clinic Logo': att.logo,
+        'Clinic Name': att.clinicName,
+        'Clinic Owner': att.clinicOwner,
+        'Clinic Description': att.description,
+        'Clinic Address': att.address,
+        'Contact No': att.contactno,
+        'Email': att.email,
+        'DTI Number': att.clinicDTINumber,
+        'Supporting Documents 1': att.file1,
+        'Supporting Documents 2': att.file2,
+        'Supporting Documents 3': att.file3,
+        'Created At': att.createdat,
+        'Status' : att.status
+      }
+      report.push(d);
+    });
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(report);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'exported_data.xlsx');
+  }
+  changeDateFormat(inputDate: string, format: string): string{
+    var idate = new Date(inputDate);
+    return this.formatDateV2(idate, format);
+  }
+  formatDateV2(inputDate: Date, format: string): string {
+    if (!inputDate) return '';
+
+    const padZero = (value: number) => (value < 10 ? `0${value}` : `${value}`);
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const parts: { [key: string]: number | string } = {
+      yyyy: inputDate.getFullYear(),
+      MM: padZero(inputDate.getMonth() + 1),
+      Mm: monthNames[inputDate.getMonth()],
+      dd: padZero(inputDate.getDate()),
+      HH: padZero(inputDate.getHours()),
+      hh: padZero(inputDate.getHours() > 12 ? inputDate.getHours() - 12 : inputDate.getHours()),
+      mm: padZero(inputDate.getMinutes()),
+      ss: padZero(inputDate.getSeconds()),
+      tt: inputDate.getHours() < 12 ? 'AM' : 'PM'
+    };
+
+    return format.replace(/yyyy|MM|Mm|dd|HH|hh|mm|ss|tt/g, (match) => parts[match].toString());
   }
 }
 

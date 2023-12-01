@@ -74,14 +74,14 @@
                          <!-- <span class="bg-gray-200 text-gray-800 ml-3 text-sm font-medium inline-flex items-center justify-center px-2 rounded-full">3</span> -->
                       </a>
                    </li>
-                   <li *ngIf="role === 'Admin'">
+                   <!-- <li *ngIf="role === 'Admin'">
                     <a routerLink="/dashboard/services" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
                        <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                        </svg>
                        <span class="ml-3 flex-1 whitespace-nowrap">Services</span>
                     </a>
-                  </li>
+                  </li> -->
                    <li *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin' || role == 'Patient'">
                       <a routerLink="/dashboard/physician" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()" >
                          <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +90,7 @@
                          <span class="ml-3 flex-1 whitespace-nowrap">Physician</span>
                       </a>
                    </li>
-                   <li *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin' && role !== 'Admin'">
+                   <li *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin'">
                       <a routerLink="/dashboard/patient" class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group " (click)="toggleSideBar()">
                          <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path>
@@ -172,7 +172,7 @@
   </div>
 
 
-  <div class="fixed bottom-5 right-5 divide-y">
+  <!-- <div class="fixed bottom-5 right-5 divide-y">
     <div class="fixed bottom-16 right-4 w-80 md:w-96 shadow-2xl" *ngIf="showAiChat">
       <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
         <div class="p-4 border-b bg-alili text-white rounded-t-lg flex justify-between items-center"
@@ -186,7 +186,6 @@
           </button>
         </div>
         <div id="chatbox" class="p-4 h-80 overflow-y-auto">
-          <!-- Chat messages will be displayed here -->
           <div class="mb-2"*ngFor="let m of messages" [ngClass]="{'text-right': m.role === 'user'}">
             <p class="rounded-lg py-2 px-4 inline-block" [ngClass]="{'bg-gray-200 text-gray-700': m.role === 'assistant', 'bg-alili text-white ': m.role === 'user', 'animate-bounce': m.content === ' o o o '}">{{m.content}}</p>
           </div>
@@ -208,7 +207,7 @@
       </svg>
       Chat with AI Support
     </button>
-  </div>
+  </div> -->
 </div>
 
 <div
@@ -251,9 +250,9 @@
       </div>
       <div class="relative grid p-4 gap-3" data-te-modal-body-ref>
         <span class="text-secondary-600">Notifications</span>
-        <div class="grid w-full max-h-80 overflow-y-auto gap-y-3">
+        <div class="grid w-full max-h-80 overflow-y-scroll gap-y-3">
 
-          <div class="flex w-full bg-white border border-alili shadowg-xl rounded-lg overflow-hidden" *ngFor="let n of notificationList">
+          <div class="flex w-full min-h-[10vh] bg-white border border-alili shadowg-xl rounded-lg overflow-hidden" *ngFor="let n of notificationList">
             <div class="w-2 bg-alili"></div>
             <div class="flex items-center px-2 py-3">
               <img class="w-8 h-8 object-cover rounded-full"  src="/assets/Images/CPLOOG-01.svg">

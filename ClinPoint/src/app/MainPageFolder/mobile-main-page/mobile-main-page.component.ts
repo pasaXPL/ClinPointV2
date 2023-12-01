@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Sidenav, initTE, } from "tw-elements";
+import { Sidenav, initTE, Modal } from "tw-elements";
 import { AuthService } from 'src/app/Services/auth.service';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/Services/data.service';
@@ -19,6 +19,12 @@ import { throwError } from 'rxjs';
 export class MobileMainPageComponent {
   role = "";
   name = "";
+  token = "";
+
+
+  isWeb = false;
+  isActive = false;
+  notificationList:any[] = []
 
   showButton = true;
   deferredPrompt: any;
@@ -54,21 +60,21 @@ export class MobileMainPageComponent {
   constructor(private authService: AuthService, private router: Router, private data: DataService, private http: HttpClient) {}
 
   async ngOnInit() {
-    initTE({ Sidenav });
+    initTE({ Sidenav, Modal });
     this.role = this.authService.getAuth()!;
     var token = this.authService.getToken()!;
     var user: any;
     try{
-      if(this.role == "Physician"){
+      if(this.role == "Patient"){
         user = await this.data.getPatientById(token);
         this.name = user.firstname + " " + user.lastname;
       }
       else if(this.role == "Admin"){
         this.name = "ClinPoint";
       }
-      else if (this.role == "Patient"){
+      else if (this.role == "Physician"){
         user  = await this.data.getPhysicianById(token);
-        this.name = user.firstname + " " + user.lastname;
+        this.name = user.gender;
       }
       else if(this.role == "Clinic"){
         user = await this.data.getClinicById(token);
@@ -81,6 +87,29 @@ export class MobileMainPageComponent {
     }else{
       this.router.navigate(['dashboard']);
     }
+
+
+    this.getAllNotifications();
+  }
+
+  getAllNotifications() {
+    this.data.getAllNotification().subscribe(res => {
+      this.notificationList = res.map((e: any) => {
+        const data = e.payload.doc.data();
+        data.addressId = e.payload.doc.id;
+        return data;
+      })
+
+      if(this.role == 'Admin'){
+        this.notificationList = this.notificationList.filter(att => att.role == 'Admin');
+      }
+      else{
+        this.notificationList = this.notificationList.filter(att => att.receiver == this.token);
+      }
+    }, err => {
+      alert('Error while fetching services data');
+    })
+
   }
 
   logoutUser(){

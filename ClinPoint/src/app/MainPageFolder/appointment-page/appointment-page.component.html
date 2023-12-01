@@ -6,18 +6,18 @@
     </div>
     <div class="flex items-center justify-between space-x-7">
 
-      <div class="space-x-8">
+      <div class="space-x-2 md:space-x-8">
         <div>
           <button data-te-ripple-init data-te-ripple-color="light" data-te-toggle="modal" data-te-target="#viewCalendar"
-            class="inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">View
+            class="inline-block rounded bg-alili px-3 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">View
             Calendar</button>
         </div>
       </div>
 
       <div class="space-x-8">
-        <div>
+        <div *ngIf="role == 'Patient'">
           <button data-te-ripple-init data-te-ripple-color="light" data-te-toggle="modal" data-te-target="#addAppointment"
-            class="inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">Add
+            class="inline-block rounded bg-alili px-3 md:px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">Book
             Appointment</button>
         </div>
       </div>
@@ -64,7 +64,15 @@
               </th>
               <th
                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Time
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Status
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Action
               </th>
             </tr>
           </thead>
@@ -91,13 +99,29 @@
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p class="text-gray-900 whitespace-no-wrap">
-                  {{appointment.appointmentDate}}
+                  {{ changeDateFormat(appointment.appointmentDate, 'MM/dd/yyyy')}}
                 </p>
               </td>
               <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                 <p class="text-gray-900 whitespace-no-wrap">
-                  {{appointment.status}}
+                  {{ appointment.appointmentTime }}
                 </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <!-- <p class="text-gray-900 whitespace-no-wrap">
+                  {{ getAppointmentStatus(appointment.appointmentDate, appointment.status) }}
+                </p> -->
+
+                <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                  <span aria-hidden class="absolute inset-0 rounded-full"
+                    [ngClass]="{ 'bg-success-100': appointment.status === 'Accepted', 'bg-warning-100': appointment.status === 'Declined', 'bg-danger-500': appointment.status == 'Cancelled', 'bg-secondary-300': appointment.status !== 'Cancelled' && appointment.status !== 'Accepted' && appointment.status !== 'Declined' }"></span>
+                  <span class="relative">{{ getAppointmentStatus(appointment.appointmentDate, appointment.status) }}</span>
+                </span>
+              </td>
+
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <button data-te-ripple-init data-te-ripple-color="light"
+                  class="inline-block rounded bg-alili px-3 py-1.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">View</button>
               </td>
             </tr>
           </tbody>
@@ -125,6 +149,10 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div>
+        <button class="text-white font-semibold px-3 py-2 bg-alili shadow-lg rounded" (click)="downloadAppointmentReport()" *ngIf="role == 'Admin'">Download All Appointment</button>
       </div>
     </div>
   </div>
@@ -257,6 +285,15 @@
               class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" value="" [(ngModel)]="appointmentDate" />
           </div>
 
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Appointment Time</label>
+            <select
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="appointmentTime">
+              <option *ngFor="let time of timescheds" [value]="time">{{ time }}</option>
+            </select>
+          </div>
+
           <div class="col-span-1 md:col-span-2">
             <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Appointment Description</label>
             <input type="text" placeholder="Appointment Description (Optional)"
@@ -301,7 +338,7 @@
         class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
         <!--Modal title-->
         <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="addServiceLabel">
-          Calendar
+          Calendar Appointment Count
         </h5>
         <!--Close button-->
         <button type="button"
@@ -337,9 +374,12 @@
               class="text-center font-semibold text-gray-600">{{ day }}</div>
 
             <!-- Days of the Month -->
-            <div *ngFor="let day of daysInMonth" class="text-center h-full">
-              <div class="h-full w-full rounded hover:bg-success-100">
+            <div *ngFor="let day of daysInMonth" class="grid min-h-[10vh] p-1 border cursor-pointer border-gray-200 hover:shadow-xl" (click)="appointmentDayClick(day)" data-te-modal-dismiss>
+              <div class="h-full w-full text-xs text-gray-300">
                 {{ day }}
+              </div>
+              <div class="text-center font-semibold px-2 py-1 text-alili">
+                {{ getAppointmentCount(day) }}
               </div>
             </div>
           </div>
@@ -442,6 +482,12 @@
               class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" value="" [(ngModel)]="selectedAppointment.appointmentDate" disabled/>
           </div>
 
+          <div>
+            <label class="block text-sm text-gray-600 dark:text-gray-200">Appointment Time</label>
+            <input type="text"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" value="" [(ngModel)]="selectedAppointment.appointmentTime" disabled/>
+          </div>
+
           <div class="col-span-1 md:col-span-2">
             <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Appointment Description</label>
             <input type="text" placeholder="Appointment Description (Optional)"
@@ -456,7 +502,7 @@
 
       <!--Modal footer-->
       <div
-        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50" *ngIf="selectedAppointment">
         <button type="button"
           class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
           data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
@@ -464,9 +510,76 @@
         </button>
         <button type="button" data-te-modal-dismiss
           class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-          data-te-ripple-init data-te-ripple-color="light" (click)="checkAppointment()">
-          Add Appointment
+          data-te-ripple-init data-te-ripple-color="light" (click)="viewUpdateAppointment()"
+           *ngIf="(selectedAppointment.status != 'Accepted' && selectedAppointment.status != 'Cancelled' && selectedAppointment.status != 'Done' && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) != 'Failed to update appointment' ) && role != 'Admin'">
+          Update Appointment
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-te-modal-init class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="viewAppointmentStatus" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewClinicStatusLabel" aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+    <div
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 bg-alili border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <!--Modal title-->
+        <h5 class="text-xl font-medium leading-normal text-white dark:text-neutral-200" id="viewClinicStatusLabel">
+          Appointment Status
+        </h5>
+        <!--Close button-->
+        <button type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!--Modal body-->
+      <div data-te-modal-body-ref class="relative p-4">
+        <div class="gap-5" *ngIf="role == 'Physician'">
+          <p>Would you like to <span class="font-bold">ACCEPT</span> or <span class="font-bold">DECLINE</span> the appointment?</p>
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">Accept</span> or <span class="font-bold">Decline</span> the appointment?</label>
+            <input type="text" placeholder="Accept / Decline" (keyup)="txtbxApproveDecline()"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointmentStatus" />
+          </div>
+        </div>
+
+        <div class="gap-5" *ngIf="role == 'Clinic' || role == 'Patient'">
+          <p>Would you like to <span class="font-bold">CANCEL</span> your the appointment?</p>
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">CANCEL</span> to cancel your appointment?</label>
+            <input type="text" placeholder="Cancel" (keyup)="txtbxApproveDecline()"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointmentStatus" />
+          </div>
+        </div>
+      </div>
+      <!--Modal footer-->
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <button type="button"
+          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-alili transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+          Close
+        </button>
+        <div>
+          <button type="button" [ngClass]="{ 'bg-gray-100 text-alili': isButtonDisabled, 'bg-alili text-white': !isButtonDisabled }"
+            class="ml-1 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" (click)="updateAppointment()" data-te-modal-dismiss [disabled]="isButtonDisabled"
+            data-te-ripple-init data-te-ripple-color="light" >
+            Update Appointment
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -474,6 +587,7 @@
 
 <div class="hidden">
   <button #openViewAppointment data-te-toggle="modal" data-te-target="#openViewAppointment"></button>
+  <button #viewAppointmentStatus data-te-toggle="modal" data-te-target="#viewAppointmentStatus"></button>
   <button #openViewMap data-te-toggle="modal" data-te-target="#openViewMap"></button>
   <button #closeModals data-te-modal-dismiss aria-label="Close"></button>
 </div>

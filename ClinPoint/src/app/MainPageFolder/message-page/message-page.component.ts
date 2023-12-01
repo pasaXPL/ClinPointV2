@@ -145,4 +145,6 @@ export class MessagePageComponent {
     this.data.sendMessage(messageList)
     this.messageText = "";
   }
+
+
 }

@@ -11,6 +11,7 @@ import {
 } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { baseURL, gptAPI } from 'src/app/Models/BaseURL';
 
 @Component({
   selector: 'app-main-page',
@@ -72,8 +73,6 @@ export class MainPageComponent {
     this.role = this.authService.getAuth()!;
     this.token = this.authService.getToken()!;
 
-    console.log(this.role);
-    console.log(this.token);
     var user: any;
     try{
     if(this.role == "Patient"){
@@ -87,7 +86,7 @@ export class MainPageComponent {
     }
     else if (this.role == "Physician"){
       user  = await this.data.getPhysicianById(this.token);
-      this.name = user.firstname + " " + user.lastname;
+      this.name = user.gender;
       if(user.status == 'Approved'){
         this.isActive = true;
       }
@@ -169,7 +168,7 @@ export class MainPageComponent {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
             Authorization:
-              'Bearer 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',
+              'Bearer ' + gptAPI,
           }),
         };
 

@@ -6,9 +6,8 @@ integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
 
 <div
   class="w-full overflow-y-scroll space-y-3 shadow-2xl z-10 h-screen">
-  <div class="realtive sticky top-0 h-20 w-full rounded-b-3xl bg-center bg-alili cursor-pointer object-cover z-10 shadow-lg"
-    >
-    <div class="p-4 rounded-lg flex flex-col w-full text-alili">
+  <div class="relative sticky top-0 h-20 w-full flex rounded-b-3xl bg-center bg-alili cursor-pointer object-cover z-10 shadow-lg">
+    <div class="p-4 rounded-lg flex flex-col w-full">
       <h4 class="text-xl text-white font-bold leading-tight truncate">{{name}}
       </h4>
       <div class="flex justify-between items-center ">
@@ -27,9 +26,28 @@ integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
         </div>
       </div>
     </div>
+    <div class="p-4 rounded-lg flex flex-col">
+      <div class="flex items-center text-xl font-semibold">
+        <div class="cursor-pointer hover:scale-105 transform flex items-center justify-center p-3 rounded-full bg-alili text-center text-white shadow-xl dark:text-gray-200" data-te-toggle="modal"
+        data-te-target="#rightTopModal"
+        data-te-ripple-init
+        data-te-ripple-color="light">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="h-6 w-6">
+              <path
+                fill-rule="evenodd"
+                d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
+       </div>
+    </div>
   </div>
 
-  <div class="px-2 pt-3 pb-8 space-y-4 z-0">
+  <div class="px-2 pt-3 pb-10 space-y-4 z-0">
     <router-outlet></router-outlet>
   </div>
   <div id="footer" class="fixed bottom-3.5 left-0 right-0 bg-alili px-3 m-2 flex items-center justify-between text-gray-400 rounded-2xl cursor-pointer">
@@ -46,7 +64,7 @@ integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
     </div>
     </a>
 
-    <div class="fixed bottom-32 w-[90vw] shadow-2xl" *ngIf="showAiChat">
+    <!-- <div class="fixed bottom-32 w-[90vw] shadow-2xl" *ngIf="showAiChat">
       <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
         <div class="p-4 border-b bg-alili text-white rounded-t-lg flex justify-between items-center"
           (click)="showChatBox()">
@@ -59,7 +77,6 @@ integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
           </button>
         </div>
         <div id="chatbox" class="p-4 h-80 overflow-y-auto">
-          <!-- Chat messages will be displayed here -->
           <div class="mb-2"*ngFor="let m of messages" [ngClass]="{'text-right': m.role === 'user'}">
             <p class="rounded-lg py-2 px-4 inline-block" [ngClass]="{'bg-gray-200 text-gray-700': m.role === 'assistant', 'bg-alili text-white ': m.role === 'user', 'animate-bounce': m.content === ' o o o '}">{{m.content}}</p>
           </div>
@@ -71,13 +88,13 @@ integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
             class="bg-alili text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300">Send</button>
         </div>
       </div>
-    </div>
+    </div> -->
 
 
     <div class="flex flex-col items-center hover:text-blue-400">
-      <div (click)="showChatBox()"
+      <div routerLink="/mobiledashboard/appointment"
         class="absolute bottom-5 shadow-2xl text-center flex items-center justify-center rounded-full border-4 text-3xl border-gray-50 bg-alili h-16 w-16 p-2 text-white transition ease-in duration-200 ">
-        <i class="far fa-solid fa-comments" style="color: #ffffff;" (click)="showChatBox()"></i>
+        <i class="far fa-solid fa-calendar" style="color: #ffffff;" ></i>
         <span   class="animate-ping absolute inline-flex h-full w-full rounded-full border-4 opacity-50"></span>
       </div>
     </div>
@@ -112,4 +129,63 @@ integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
 }
 </style>
 
+</div>
+
+<div
+  data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="rightTopModal"
+  tabindex="-1"
+  aria-labelledby="rightTopModalLabel"
+  aria-hidden="true">
+  <div
+    data-te-modal-dialog-ref
+    class="pointer-events-none absolute h-[80vh] w-full translate-x-[100%] opacity-0 transition-all duration-300 ease-in-out min-[400px]:mx-auto min-[400px]:mt-7 min-[400px]:max-w-[400px]">
+    <div
+      class="min-[400px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md bg-alili p-4 dark:border-b dark:border-neutral-500 dark:bg-transparent">
+        <h5
+          class="text-xl font-medium leading-normal text-white"
+          id="rightTopModalLabel">
+          Hi, {{name}}
+        </h5>
+        <button
+          type="button"
+          class="box-content rounded-none border-none text-white hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss
+          aria-label="Close">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="relative grid p-4 gap-3" data-te-modal-body-ref>
+        <span class="text-secondary-600">Notifications</span>
+        <div class="grid w-full max-h-[80vh] overflow-y-scroll gap-y-3">
+
+          <div class="flex w-full min-h-[10vh] bg-white border border-alili shadowg-xl rounded-lg overflow-hidden" *ngFor="let n of notificationList">
+            <div class="w-2 bg-alili"></div>
+            <div class="flex items-center px-2 py-3">
+              <img class="w-8 h-8 object-cover rounded-full"  src="/assets/Images/CPLOOG-01.svg">
+              <div class="mx-3">
+                <h2 class="font-semibold text-gray-800">{{n.title}}</h2>
+                <p class="text-gray-600 text-xs">{{n.body}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

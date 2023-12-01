@@ -3,6 +3,7 @@ import { DataService } from 'src/app/Services/data.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Modal, Ripple, Input, initTE, Select, Datepicker } from 'tw-elements';
 import { Services } from 'src/app/Models/model.model';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-appointment-page',
@@ -12,11 +13,13 @@ import { Services } from 'src/app/Models/model.model';
 export class AppointmentPageComponent {
   @ViewChild('openViewAppointment') viewServiceModal!: ElementRef;
   @ViewChild('closeModals') closeModals!: ElementRef;
+  @ViewChild('viewAppointmentStatus') viewAppointmentStatus!: ElementRef;
 
   servicesList: any[] = [];
   approvedPhysiciansList: any[] = [];
   clinicList: any[] = [];
   patientList: any[] = [];
+  toBeDownloaded: any[] = [];
 
   originalservicesList: any[] = [];
   originalapprovedPhysiciansList: any[] = [];
@@ -39,6 +42,7 @@ export class AppointmentPageComponent {
   selectedService: any;
   appointmentDate: string = '';
   appointmentDescription: string = '';
+  appointmentTime: string = '';
 
   searchString = '';
 
@@ -48,12 +52,50 @@ export class AppointmentPageComponent {
 
   role = '';
   token = '';
+  realcurrentdate: any;
+  isButtonDisabled = true;
+  selectedAppointmentStatus = '';
+
+  timeslots = [
+    '8:00 AM to 8:30 AM',
+    '8:30 AM to 9:00 AM',
+    '9:00 AM to 9:30 AM',
+    '9:30 AM to 10:00 AM',
+    '10:00 AM to 10:30 AM',
+    '10:30 AM to 11:00 AM',
+    '11:00 AM to 11:30 AM',
+    '11:30 AM to 12:00 PM',
+    '12:00 PM to 12:30 PM',
+    '12:30 PM to 1:00 PM',
+    '1:00 PM to 1:30 PM',
+    '1:30 PM to 2:00 PM',
+    '2:00 PM to 2:30 PM',
+    '2:30 PM to 3:00 PM',
+    '3:00 PM to 3:30 PM',
+    '3:30 PM to 4:00 PM',
+    '4:00 PM to 4:30 PM',
+    '4:30 PM to 5:00 PM',
+    '5:00 PM to 5:30 PM',
+    '5:30 PM to 6:00 PM',
+    '6:00 PM to 6:30 PM',
+    '6:30 PM to 7:00 PM',
+    '7:00 PM to 7:30 PM',
+    '7:30 PM to 8:00 PM',
+    '8:00 PM to 8:30 PM',
+    '8:30 PM to 9:00 PM',
+  ];
+
+  timescheds:string[] = [];
+
+  physicianTimeScheds:any[] = [];
 
   constructor(private data: DataService, private auth: AuthService) {}
 
   ngOnInit() {
     initTE({ Modal });
     var today = new Date();
+    var newtoday = new Date();
+    this.realcurrentdate = newtoday;
     this.currentDate = today;
     this.functionSetDaysInMonth();
 
@@ -65,6 +107,7 @@ export class AppointmentPageComponent {
     this.getAllClinicsPhysicians();
     this.getAllServices();
     this.getAllAppointment();
+    this.getAllPhysicianSchedule();
   }
 
   getAllServices() {
@@ -84,6 +127,20 @@ export class AppointmentPageComponent {
         }
 
         this.originalservicesList = this.servicesList;
+      },
+      (err) => {
+        alert('Error while fetching services data');
+      }
+    );
+  }
+
+  getAllPhysicianSchedule() {
+    this.data.getAllPhysicianTimeSchedule().subscribe(
+      (res) => {
+        this.physicianTimeScheds = res.map((e: any) => {
+          const data = e.payload.doc.data();
+          return data;
+        });
       },
       (err) => {
         alert('Error while fetching services data');
@@ -189,6 +246,7 @@ export class AppointmentPageComponent {
           return data;
         });
 
+        this.toBeDownloaded = this.appointmentList;
         if (this.role == 'Patient') {
           this.appointmentList = this.appointmentList.filter(att => att.patientId == this.token);
         }
@@ -213,6 +271,10 @@ export class AppointmentPageComponent {
   }
 
   openAppointmentModal(appointment:any){
+    var d = new Date(appointment.appointmentDate);
+    if(d < this.realcurrentdate && appointment.status != 'Accepted'){
+      appointment.status = 'Failed to update appointment';
+    }
     this.selectedAppointment = appointment;
     this.viewServiceModal.nativeElement.click();
   }
@@ -225,10 +287,11 @@ export class AppointmentPageComponent {
         (obj: any) =>
           obj.clinicName.toUpperCase().includes(text.toUpperCase()) ||
           obj.id.toUpperCase().includes(text.toUpperCase()) ||
-          obj.service.toUpperCase().includes(text.toUpperCase()) ||
+          obj.serviceName.toUpperCase().includes(text.toUpperCase()) ||
           obj.physicianName.toUpperCase().includes(text.toUpperCase()) ||
-          obj.status.toUpperCase().includes(text.toUpperCase() ||
-          obj.patientName.toUpperCase().includes(text.toUpperCase()))
+          obj.status.toUpperCase().includes(text.toUpperCase()) ||
+          this.changeDateFormat(obj.appointmentDate, 'MM/dd/yyyy').toUpperCase().includes(text.toUpperCase()) ||
+          obj.patientName.toUpperCase().includes(text.toUpperCase())
       );
     });
 
@@ -320,9 +383,9 @@ export class AppointmentPageComponent {
   }
 
   changeMonth(monthChange: number): void {
-    this.currentDate.setMonth(this.currentDate.getMonth() + monthChange);
+    var m = this.currentDate.getMonth() + monthChange;
+    this.currentDate.setMonth(m);
     this.functionSetDaysInMonth();
-    console.log(this.currentDate.toDateString());
   }
 
   formatDate(inputDate: Date, format: string): string {
@@ -434,7 +497,7 @@ export class AppointmentPageComponent {
   }
 
   onClinicBlur() {
-    console.log('Input focus is removed');
+
     setTimeout(() => {
       try {
         if (this.selectedClinic == null) {
@@ -466,6 +529,8 @@ export class AppointmentPageComponent {
     this.selectedServicePrice = item.price;
     this.selectedService = item;
     this.filteredServices = [];
+
+    this.setPhysicianScheds();
   }
 
   hasServiceRunOnFocus: boolean = false;
@@ -488,7 +553,7 @@ export class AppointmentPageComponent {
   }
 
   onServiceBlur() {
-    console.log('Input focus is removed');
+
     setTimeout(() => {
       if (this.selectedService == null) {
         try {
@@ -502,6 +567,8 @@ export class AppointmentPageComponent {
       this.hasServiceRunOnFocus = false;
       this.filteredServices = [];
     }, 100);
+
+    this.setPhysicianScheds();
   }
 
   //Physicians
@@ -542,7 +609,7 @@ export class AppointmentPageComponent {
   }
 
   onPhysicianBlur() {
-    console.log('Input focus is removed');
+
     setTimeout(() => {
       if (this.selectedApprovedPhysicians === null) {
         this.selectedPhysicianName = this.filteredPhysicians[0].physicianName;
@@ -553,6 +620,83 @@ export class AppointmentPageComponent {
       this.hasPhysicianRunOnFocus = false;
       this.filteredPhysicians = [];
     }, 100);
+  }
+
+
+  setPhysicianScheds(){
+    this.timescheds = [];
+    let sched = this.physicianTimeScheds.find(att => att.id == this.selectedApprovedPhysicians.physicianId || att.id == this.token);
+    const startIndex = this.timeslots.indexOf(sched.morningStarting + ' to ' + this.geteTime(sched.morningStarting));
+    const endIndex = this.timeslots.indexOf(this.getsTime(sched.morningEnding) + ' to ' + sched.morningEnding);
+
+    if (startIndex !== -1 && endIndex !== -1) {
+      const subset = this.timeslots.slice(startIndex, endIndex + 1);
+      this.timescheds = this.timescheds.concat(subset);
+    } else {
+      console.log("Elements 'b' and 'd' not found in the array.");
+    }
+
+    const startIndex1 = this.timeslots.indexOf(sched.afternoonStarting + ' to ' + this.geteTime(sched.afternoonStarting));
+    const endIndex1 = this.timeslots.indexOf(this.getsTime(sched.afternoonEnding) + ' to ' + sched.afternoonEnding);
+
+    if (startIndex1 !== -1 && endIndex1 !== -1) {
+      const subset = this.timeslots.slice(startIndex1, endIndex1 + 1);
+      this.timescheds = this.timescheds.concat(subset);
+
+
+    } else {
+      console.log("Elements 'b' and 'd' not found in the array.");
+    }
+  }
+
+  geteTime(time:string):string{
+    const [timePart, ampmPart] = time.split(' ');
+
+    if (timePart && ampmPart) {
+        let [hours, minutes] = timePart.split(':').map(Number);
+
+        if (ampmPart.toLowerCase() === 'pm' && hours < 12) {
+            hours += 12;
+        }
+
+        const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
+        inputTime.setMinutes(inputTime.getMinutes() + 30);
+
+        const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        });
+
+        return resultTimeString;
+    }
+
+    return 'Invalid Time Format';
+  }
+
+  getsTime(time:string):string{
+    const [timePart, ampmPart] = time.split(' ');
+
+    if (timePart && ampmPart) {
+        let [hours, minutes] = timePart.split(':').map(Number);
+
+        if (ampmPart.toLowerCase() === 'pm' && hours < 12) {
+            hours += 12;
+        }
+
+        const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
+        inputTime.setMinutes(inputTime.getMinutes() - 30);
+
+        const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        });
+
+        return resultTimeString;
+    }
+
+    return 'Invalid Time Format';
   }
 
   //Patients
@@ -583,7 +727,7 @@ export class AppointmentPageComponent {
   }
 
   onPatientBlur() {
-    console.log('Input focus is removed');
+
     setTimeout(() => {
       if (this.selectedPatient == null) {
         this.selectedPatientName =
@@ -608,6 +752,48 @@ export class AppointmentPageComponent {
       alert('Please fill out the form properly. Thank you');
     }
     else{
+      var doubleAppointment = this.toBeDownloaded.find(att =>
+        att.clinicId == this.selectedClinic.id &&
+        att.physicianId == this.selectedApprovedPhysicians.physicianId &&
+        att.patientId == this.selectedPatient.id &&
+        att.appointmentDate == this.appointmentDate
+      );
+
+      var appointmentToPhysicianCount = this.toBeDownloaded.filter(att =>
+        att.physicianId == this.selectedApprovedPhysicians.physicianId &&
+        att.appointmentDate == this.appointmentDate &&
+        att.status == 'Accepted'
+      ).length;
+
+      var hasAnAppointment = this.toBeDownloaded.filter( att =>
+        att.patientId == this.selectedPatient.id &&
+        att.appointmentDate == this.appointmentDate &&
+        att.appointmentTime == this.appointmentTime
+      );
+
+      var d = new Date(this.appointmentDate)
+      if(d < this.realcurrentdate){
+        console.log(d.toLocaleString())
+        console.log(this.realcurrentdate.toLocaleString())
+        alert('Oops, Please create an appointment for future dates not past dates')
+        return
+      }
+
+      if(doubleAppointment){
+        alert('Oops, You already have an exact appointment')
+        return
+      }
+
+      // if(appointmentToPhysicianCount > 5){
+      //   alert('The Physician is already fully booked on that day')
+      //   return
+      // }
+      console.log(hasAnAppointment)
+      if(hasAnAppointment.length > 0){
+        alert('You already have an appointment that specific date and time')
+        return
+      }
+
       if (window.confirm('Are you sure about the details of your appointment?')){
         var appointmentDetails = {
           id: '',
@@ -623,6 +809,7 @@ export class AppointmentPageComponent {
           servicePrice: this.selectedServicePrice,
           appointmentDetails: this.appointmentDescription,
           appointmentDate: this.appointmentDate,
+          appointmentTime: this.appointmentTime,
           status: 'Waiting'
         }
 
@@ -631,7 +818,6 @@ export class AppointmentPageComponent {
       }
     }
 
-    this.dataReset();
   }
 
   dataReset(){
@@ -645,5 +831,147 @@ export class AppointmentPageComponent {
       this.selectedPhysicianName = '';
       this.selectedService = '';
       this.selectedClinicName = '';
+  }
+
+  downloadAppointmentReport(){
+    var report:any[] = [];
+
+    var res:any[] = this.appointmentList;
+    if(this.role == 'Admin'){
+      res = this.toBeDownloaded;
+    }
+    res.forEach(att => {
+      var d = {
+        'Appointment Ref': att.id,
+        'Appointment Date': att.appointmentDate,
+        'Appointment Time': att.appointmentTime,
+        'Appointment Detail': att.appointmentDetails,
+        'Clinic Name': att.clinicName,
+        'Patient Name': att.patientName,
+        'Physician Name': att.physicianName,
+        'Service Name': att.serviceName,
+        'Service Description': att.serviceDescription,
+        'Service Total Price': att.servicePrice,
+        'Status' : att.status
+      }
+      report.push(d);
+    });
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(report);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'exported_data.xlsx');
+  }
+  changeDateFormat(inputDate: string, format: string): string{
+    var idate = new Date(inputDate);
+    return this.formatDateV2(idate, format);
+  }
+  formatDateV2(inputDate: Date, format: string): string {
+    if (!inputDate) return '';
+
+    const padZero = (value: number) => (value < 10 ? `0${value}` : `${value}`);
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const parts: { [key: string]: number | string } = {
+      yyyy: inputDate.getFullYear(),
+      MM: padZero(inputDate.getMonth() + 1),
+      Mm: monthNames[inputDate.getMonth()],
+      dd: padZero(inputDate.getDate()),
+      HH: padZero(inputDate.getHours()),
+      hh: padZero(inputDate.getHours() > 12 ? inputDate.getHours() - 12 : inputDate.getHours()),
+      mm: padZero(inputDate.getMinutes()),
+      ss: padZero(inputDate.getSeconds()),
+      tt: inputDate.getHours() < 12 ? 'AM' : 'PM'
+    };
+
+    return format.replace(/yyyy|MM|Mm|dd|HH|hh|mm|ss|tt/g, (match) => parts[match].toString());
+  }
+
+  getAppointmentCount(day:string):string{
+    const cdate = this.currentDate;
+    var res = "";
+    var y: number = +day;
+    if(y > 0){
+      cdate.setDate(y)
+      var apps = this.originalAppointmentList.filter(att => att.appointmentDate == this.formatDateV2(cdate, 'yyyy-MM-dd')).length;
+      if(apps > 0){
+        res = apps.toString();
+      }
+    }
+    return res;
+  }
+
+  appointmentDayClick(day:string){
+    const cdate = this.currentDate;
+    var res = "";
+    var y: number = +day;
+    if(y > 0){
+      cdate.setDate(y);
+    }
+
+    var list = this.originalAppointmentList;
+    list = list.filter(att => this.changeDateFormat(att.appointmentDate, 'MM/dd/yyyy').toUpperCase().includes(this.formatDateV2(cdate, 'MM/dd/yyyy').toUpperCase()));
+    this.appointmentList = list;
+  }
+
+  getAppointmentStatus(date:string , status:string):string{
+    var d = new Date(date);
+    if(d < this.realcurrentdate && status != 'Accepted'){
+      return 'Failed to update appointment';
+    }
+    else{
+      return status;
+    }
+  }
+
+
+  txtbxApproveDecline(){
+
+    if(this.role == 'Patient' || this.role == 'Clinic'){
+      if(this.selectedAppointmentStatus == 'Cancel'){
+        this.isButtonDisabled = false;
+      }
+      else{
+        this.isButtonDisabled = true;
+      }
+    }
+    else if(this.role == 'Physician'){
+      if(this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Accept'){
+        this.isButtonDisabled = false;
+      }
+      else{
+        this.isButtonDisabled = true;
+      }
+    }
+  }
+
+  updateAppointment(){
+    if(this.selectedAppointmentStatus == 'Accept' || this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Cancel'){
+      if (window.confirm('Are you sure you want to update this appointment?')) {
+        if(this.selectedAppointmentStatus == 'Accept'){
+          this.selectedAppointment.status = 'Accepted';
+        }
+        else if(this.selectedAppointmentStatus == 'Decline'){
+          this.selectedAppointment.status = 'Declined';
+        }
+        else if(this.selectedAppointmentStatus == 'Cancel'){
+          this.selectedAppointment.status = 'Cancelled'
+        }
+        this.data.updateAppointment(this.selectedAppointment);
+      }
+    }
+    else{
+      alert('Type Approve or Decline or Cancel to make sure of your adjustments')
+    }
+
+    this.closeModal();
+  }
+
+  viewUpdateAppointment() {
+    this.closeModals.nativeElement.click();
+    this.viewAppointmentStatus.nativeElement.click();
   }
 }
