@@ -40,16 +40,26 @@ import { ServicesPageComponent } from './MainPageFolder/services-page/services-p
 import { AppointmentResultPageComponent } from './MainPageFolder/appointment-result-page/appointment-result-page.component';
 import { CreateAppointmentPageComponent } from './MainPageFolder/create-appointment-page/create-appointment-page.component';
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBnTUq3eFmvr1XTmZrU-ThBMZBEFKosxDU",
+//   authDomain: "clinicpoint-c1afd.firebaseapp.com",
+//   databaseURL: "https://clinicpoint-c1afd-default-rtdb.firebaseio.com",
+//   projectId: "clinicpoint-c1afd",
+//   storageBucket: "clinicpoint-c1afd.appspot.com",
+//   messagingSenderId: "12464416315",
+//   appId: "1:12464416315:web:cb91206351053989d51e1e",
+//   measurementId: "G-4H4V8N85X5"
+// };
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBnTUq3eFmvr1XTmZrU-ThBMZBEFKosxDU",
-  authDomain: "clinicpoint-c1afd.firebaseapp.com",
-  databaseURL: "https://clinicpoint-c1afd-default-rtdb.firebaseio.com",
-  projectId: "clinicpoint-c1afd",
-  storageBucket: "clinicpoint-c1afd.appspot.com",
-  messagingSenderId: "12464416315",
-  appId: "1:12464416315:web:cb91206351053989d51e1e",
-  measurementId: "G-4H4V8N85X5"
+  apiKey: "AIzaSyC9EjL9uIqtfng8RRzsoXup1XkH0MCt9gY",
+  authDomain: "clinpointserver.firebaseapp.com",
+  projectId: "clinpointserver",
+  storageBucket: "clinpointserver.appspot.com",
+  messagingSenderId: "894851413088",
+  appId: "1:894851413088:web:146a41e4081230cdabbf05"
 };
+
 
 @NgModule({
   declarations: [

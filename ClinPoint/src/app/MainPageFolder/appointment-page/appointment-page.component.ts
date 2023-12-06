@@ -85,11 +85,11 @@ export class AppointmentPageComponent {
     '8:30 PM to 9:00 PM',
   ];
 
-  timescheds:string[] = [];
+  timescheds: string[] = [];
 
-  physicianTimeScheds:any[] = [];
+  physicianTimeScheds: any[] = [];
 
-  constructor(private data: DataService, private auth: AuthService) {}
+  constructor(private data: DataService, private auth: AuthService) { }
 
   ngOnInit() {
     initTE({ Modal });
@@ -250,10 +250,10 @@ export class AppointmentPageComponent {
         if (this.role == 'Patient') {
           this.appointmentList = this.appointmentList.filter(att => att.patientId == this.token);
         }
-        else if(this.role == 'Clinic'){
+        else if (this.role == 'Clinic') {
           this.appointmentList = this.appointmentList.filter(att => att.clinicId == this.token);
         }
-        else if(this.role == 'Physician'){
+        else if (this.role == 'Physician') {
           this.appointmentList = this.appointmentList.filter(att => att.physicianId == this.token);
         }
 
@@ -270,10 +270,10 @@ export class AppointmentPageComponent {
     this.viewServiceModal.nativeElement.click();
   }
 
-  openAppointmentModal(appointment:any){
+  openAppointmentModal(appointment: any) {
     var d = new Date(appointment.appointmentDate);
-    if(d < this.realcurrentdate && appointment.status != 'Accepted'){
-      appointment.status = 'Failed to update appointment';
+    if (d < this.realcurrentdate && appointment.status == 'Waiting') {
+      appointment.status = 'Failed Appointment';
     }
     this.selectedAppointment = appointment;
     this.viewServiceModal.nativeElement.click();
@@ -431,55 +431,19 @@ export class AppointmentPageComponent {
   //CLINICS
   filteredClinics: any[] = [];
   filterClinics(event: any): void {
-    const filterValue = event.target.value.toLowerCase();
-    //if role == 'Clinic' none will happen
-    if (this.role == 'Physician') {
-      try {
-        this.filteredClinics = this.clinicList.filter(
-          (att) =>
-            att.clinicName.toLowerCase().includes(filterValue) &&
-            this.approvedPhysiciansList.some(
-              (physician) => physician.clinicId === att.id
-            )
-        );
-      } catch {}
-    } else {
-      this.filteredClinics = this.clinicList;
-    }
-
-    if (this.role != 'Physician') {
-      this.selectedApprovedPhysicians = null;
-      this.selectedPhysicianName = '';
-
-      this.selectedService = null;
-      this.selectedServiceDescription = '';
-      this.selectedServicePrice = '';
-      this.selectedServiceName = '';
-    }
-  }
-
-  selectClinic(item: any): void {
-    this.selectedClinicName = item.clinicName;
-    this.selectedClinic = item;
-    this.filteredClinics = [];
-  }
-
-  hasClinicRunOnFocus: boolean = false;
-  onClinicFocus() {
-    if (!this.hasClinicRunOnFocus) {
-      this.selectedClinicName = '';
-      this.selectedClinic = null;
-      this.hasClinicRunOnFocus = true;
+    try {
+      const filterValue = event.target.value.toLowerCase();
+      //if role == 'Clinic' none will happen
       if (this.role == 'Physician') {
         try {
           this.filteredClinics = this.clinicList.filter(
             (att) =>
-              att.clinicName.toLowerCase().includes('') &&
+              att.clinicName.toLowerCase().includes(filterValue) &&
               this.approvedPhysiciansList.some(
                 (physician) => physician.clinicId === att.id
               )
           );
-        } catch {}
+        } catch { }
       } else {
         this.filteredClinics = this.clinicList;
       }
@@ -493,137 +457,186 @@ export class AppointmentPageComponent {
         this.selectedServicePrice = '';
         this.selectedServiceName = '';
       }
-    }
+    } catch { }
+  }
+
+  selectClinic(item: any): void {
+    try {
+      this.selectedClinicName = item.clinicName;
+      this.selectedClinic = item;
+      this.filteredClinics = [];
+
+      console.log(item)
+    } catch { }
+  }
+
+  hasClinicRunOnFocus: boolean = false;
+  onClinicFocus() {
+    try {
+      if (!this.hasClinicRunOnFocus) {
+        this.selectedClinicName = '';
+        this.selectedClinic = null;
+        this.hasClinicRunOnFocus = true;
+        if (this.role == 'Physician') {
+          try {
+            this.filteredClinics = this.clinicList.filter(
+              (att) =>
+                att.clinicName.toLowerCase().includes('') &&
+                this.approvedPhysiciansList.some(
+                  (physician) => physician.clinicId === att.id
+                )
+            );
+          } catch { }
+        } else {
+          this.filteredClinics = this.clinicList;
+          //console.l
+        }
+      }
+    } catch { }
   }
 
   onClinicBlur() {
-
-    setTimeout(() => {
-      try {
-        if (this.selectedClinic == null) {
-          this.selectedClinicName = this.filteredClinics[0].clinicName;
-          this.selectedClinic = this.filteredClinics[0];
-        }
-        this.hasClinicRunOnFocus = false;
-        this.filteredClinics = [];
-      } catch {}
-    }, 200);
+    try {
+      setTimeout(() => {
+        try {
+          if (this.selectedClinic == null) {
+            this.selectedClinicName = this.filteredClinics[0].clinicName;
+            this.selectedClinic = this.filteredClinics[0];
+          }
+          this.hasClinicRunOnFocus = false;
+          this.filteredClinics = [];
+        } catch { }
+      }, 400);
+    } catch { }
   }
 
   //Services
   filteredServices: any[] = [];
   filterServices(event: any): void {
-    const filterValue = event.target.value.toLowerCase();
     try {
-      this.filteredServices = this.servicesList.filter(
-        (att) =>
-          att.name.toLowerCase().includes(filterValue) &&
-          att.physicianId == this.selectedApprovedPhysicians.physicianId
-      );
-    } catch {}
+      const filterValue = event.target.value.toLowerCase();
+      try {
+        this.filteredServices = this.servicesList.filter(
+          (att) =>
+            att.name.toLowerCase().includes(filterValue) &&
+            att.physicianId == this.selectedApprovedPhysicians.physicianId
+        );
+      } catch { }
+    } catch { }
   }
 
   selectService(item: any): void {
-    this.selectedServiceName = item.name;
-    this.selectedServiceDescription = item.description;
-    this.selectedServicePrice = item.price;
-    this.selectedService = item;
-    this.filteredServices = [];
+    try {
+      this.selectedServiceName = item.name;
+      this.selectedServiceDescription = item.description;
+      this.selectedServicePrice = item.price;
+      this.selectedService = item;
+      this.filteredServices = [];
 
-    this.setPhysicianScheds();
+      this.setPhysicianScheds();
+    } catch { }
   }
 
   hasServiceRunOnFocus: boolean = false;
   onServiceFocus() {
-    if (!this.hasServiceRunOnFocus) {
-      this.selectedServiceName = '';
-      this.selectedServiceDescription = '';
-      this.selectedServicePrice = '';
-      this.selectedService = null;
-      this.hasServiceRunOnFocus = true;
-      try {
-        this.filteredServices = this.servicesList.filter(
-          (att) =>
-            att.name.toLowerCase().includes('') &&
-            att.physicianId == this.selectedApprovedPhysicians.physicianId
-        );
-        console.log(this.filteredServices);
-      } catch {}
-    }
+    try {
+      if (!this.hasServiceRunOnFocus) {
+        this.selectedServiceName = '';
+        this.selectedServiceDescription = '';
+        this.selectedServicePrice = '';
+        this.selectedService = null;
+        this.hasServiceRunOnFocus = true;
+        try {
+          this.filteredServices = this.servicesList.filter(
+            (att) =>
+              att.name.toLowerCase().includes('') &&
+              att.physicianId == this.selectedApprovedPhysicians.physicianId
+          );
+        } catch { }
+      }
+    } catch { }
   }
 
   onServiceBlur() {
+    try {
+      setTimeout(() => {
+        if (this.selectedService == null) {
+          try {
+            this.selectedServiceName = this.filteredServices[0].name;
+            this.selectedService = this.filteredServices[0];
+            this.selectedServiceDescription =
+              this.filteredServices[0].description;
+            this.selectedServicePrice = this.filteredServices[0].price;
+          } catch { }
+        }
+        this.hasServiceRunOnFocus = false;
+        this.filteredServices = [];
+      }, 400);
 
-    setTimeout(() => {
-      if (this.selectedService == null) {
-        try {
-          this.selectedServiceName = this.filteredServices[0].name;
-          this.selectedService = this.filteredServices[0];
-          this.selectedServiceDescription =
-            this.filteredServices[0].description;
-          this.selectedServicePrice = this.filteredServices[0].price;
-        } catch {}
-      }
-      this.hasServiceRunOnFocus = false;
-      this.filteredServices = [];
-    }, 100);
-
-    this.setPhysicianScheds();
+      this.setPhysicianScheds();
+    } catch { }
   }
 
   //Physicians
   filteredPhysicians: any[] = [];
   filterPhysicians(event: any): void {
-    const filterValue = event.target.value.toLowerCase();
-    this.filteredPhysicians = this.approvedPhysiciansList.filter(
-      (att) =>
-        att.physicianName.toLowerCase().includes(filterValue) &&
-        this.selectedClinic.id == att.clinicId
-    );
+    try {
+      const filterValue = event.target.value.toLowerCase();
+      this.filteredPhysicians = this.approvedPhysiciansList.filter(
+        (att) =>
+          att.physicianName.toLowerCase().includes(filterValue) &&
+          this.selectedClinic.id == att.clinicId
+      );
+    } catch { }
   }
 
   selectPhysician(item: any): void {
-    this.selectedPhysicianName = item.physicianName;
-    this.selectedApprovedPhysicians = item;
-    this.filteredPhysicians = [];
+    try {
+      this.selectedPhysicianName = item.physicianName;
+      this.selectedApprovedPhysicians = item;
+      this.filteredPhysicians = [];
+    } catch { }
   }
 
   hasPhysicianRunOnFocus: boolean = false;
   onPhysicianFocus() {
-    if (!this.hasPhysicianRunOnFocus) {
-      if (this.role != 'Physician') {
-        this.selectedService = null;
-        this.selectedServiceDescription = '';
-        this.selectedServicePrice = '';
-        this.selectedServiceName = '';
+    try {
+      if (!this.hasPhysicianRunOnFocus) {
+        if (this.role != 'Physician') {
+          this.selectedService = null;
+          this.selectedServiceDescription = '';
+          this.selectedServicePrice = '';
+          this.selectedServiceName = '';
+        }
+        this.selectedPhysicianName = '';
+        this.selectedApprovedPhysicians = null;
+        this.hasPhysicianRunOnFocus = true;
+        this.filteredPhysicians = this.approvedPhysiciansList.filter(
+          (att) =>
+            att.physicianName.toLowerCase().includes('') &&
+            this.selectedClinic.id == att.clinicId
+        );
       }
-      this.selectedPhysicianName = '';
-      this.selectedApprovedPhysicians = null;
-      this.hasPhysicianRunOnFocus = true;
-      this.filteredPhysicians = this.approvedPhysiciansList.filter(
-        (att) =>
-          att.physicianName.toLowerCase().includes('') &&
-          this.selectedClinic.id == att.clinicId
-      );
-    }
+    } catch { }
   }
 
   onPhysicianBlur() {
+    try {
+      setTimeout(() => {
+        if (this.selectedApprovedPhysicians === null) {
+          this.selectedPhysicianName = this.filteredPhysicians[0].physicianName;
+          this.selectedApprovedPhysicians = this.filteredPhysicians[0];
 
-    setTimeout(() => {
-      if (this.selectedApprovedPhysicians === null) {
-        this.selectedPhysicianName = this.filteredPhysicians[0].physicianName;
-        this.selectedApprovedPhysicians = this.filteredPhysicians[0];
-
-        console.log(this.selectedApprovedPhysicians);
-      }
-      this.hasPhysicianRunOnFocus = false;
-      this.filteredPhysicians = [];
-    }, 100);
+          console.log(this.selectedApprovedPhysicians);
+        }
+        this.hasPhysicianRunOnFocus = false;
+        this.filteredPhysicians = [];
+      }, 400);
+    } catch { }
   }
 
 
-  setPhysicianScheds(){
+  setPhysicianScheds() {
     this.timescheds = [];
     let sched = this.physicianTimeScheds.find(att => att.id == this.selectedApprovedPhysicians.physicianId || att.id == this.token);
     const startIndex = this.timeslots.indexOf(sched.morningStarting + ' to ' + this.geteTime(sched.morningStarting));
@@ -649,51 +662,51 @@ export class AppointmentPageComponent {
     }
   }
 
-  geteTime(time:string):string{
+  geteTime(time: string): string {
     const [timePart, ampmPart] = time.split(' ');
 
     if (timePart && ampmPart) {
-        let [hours, minutes] = timePart.split(':').map(Number);
+      let [hours, minutes] = timePart.split(':').map(Number);
 
-        if (ampmPart.toLowerCase() === 'pm' && hours < 12) {
-            hours += 12;
-        }
+      if (ampmPart.toLowerCase() === 'pm' && hours < 12) {
+        hours += 12;
+      }
 
-        const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
-        inputTime.setMinutes(inputTime.getMinutes() + 30);
+      const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
+      inputTime.setMinutes(inputTime.getMinutes() + 30);
 
-        const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-        });
+      const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      });
 
-        return resultTimeString;
+      return resultTimeString;
     }
 
     return 'Invalid Time Format';
   }
 
-  getsTime(time:string):string{
+  getsTime(time: string): string {
     const [timePart, ampmPart] = time.split(' ');
 
     if (timePart && ampmPart) {
-        let [hours, minutes] = timePart.split(':').map(Number);
+      let [hours, minutes] = timePart.split(':').map(Number);
 
-        if (ampmPart.toLowerCase() === 'pm' && hours < 12) {
-            hours += 12;
-        }
+      if (ampmPart.toLowerCase() === 'pm' && hours < 12) {
+        hours += 12;
+      }
 
-        const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
-        inputTime.setMinutes(inputTime.getMinutes() - 30);
+      const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
+      inputTime.setMinutes(inputTime.getMinutes() - 30);
 
-        const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-        });
+      const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      });
 
-        return resultTimeString;
+      return resultTimeString;
     }
 
     return 'Invalid Time Format';
@@ -702,43 +715,50 @@ export class AppointmentPageComponent {
   //Patients
   filteredPatients: any[] = [];
   filterPatients(event: any): void {
-    const filterValue = event.target.value.toLowerCase();
-    this.filteredPatients = this.patientList.filter(
-      (att) =>
-        att.firstname.toLowerCase().includes(filterValue) ||
-        att.lastname.toLowerCase().includes(filterValue)
-    );
+    try {
+      const filterValue = event.target.value.toLowerCase();
+      this.filteredPatients = this.patientList.filter(
+        (att) =>
+          att.firstname.toLowerCase().includes(filterValue) ||
+          att.lastname.toLowerCase().includes(filterValue)
+      );
+    } catch { }
   }
 
   selectPatient(item: any): void {
-    this.selectedPatientName = item.firstname + ' ' + item.lastname;
-    this.selectedPatient = item;
-    this.filteredPatients = [];
+    try {
+      this.selectedPatientName = item.firstname + ' ' + item.lastname;
+      this.selectedPatient = item;
+      this.filteredPatients = [];
+    } catch { }
   }
 
   hasPatientRunOnFocus: boolean = false;
   onPatientFocus() {
-    if (!this.hasPatientRunOnFocus) {
-      this.selectedPatientName = '';
-      this.selectedPatient = null;
-      this.hasPatientRunOnFocus = true;
-      this.filteredPatients = this.patientList;
-    }
+    try {
+      if (!this.hasPatientRunOnFocus) {
+        this.selectedPatientName = '';
+        this.selectedPatient = null;
+        this.hasPatientRunOnFocus = true;
+        this.filteredPatients = this.patientList;
+      }
+    } catch { }
   }
 
   onPatientBlur() {
-
-    setTimeout(() => {
-      if (this.selectedPatient == null) {
-        this.selectedPatientName =
-          this.filteredPatients[0].firstname +
-          ' ' +
-          this.filteredPatients[0].lastname;
-        this.selectedPatient = this.filteredPatients[0];
-      }
-      this.hasPatientRunOnFocus = false;
-      this.filteredPatients = [];
-    }, 100);
+    try {
+      setTimeout(() => {
+        if (this.selectedPatient == null) {
+          this.selectedPatientName =
+            this.filteredPatients[0].firstname +
+            ' ' +
+            this.filteredPatients[0].lastname;
+          this.selectedPatient = this.filteredPatients[0];
+        }
+        this.hasPatientRunOnFocus = false;
+        this.filteredPatients = [];
+      }, 400);
+    } catch { }
   }
 
   checkAppointment() {
@@ -751,7 +771,7 @@ export class AppointmentPageComponent {
     ) {
       alert('Please fill out the form properly. Thank you');
     }
-    else{
+    else {
       var doubleAppointment = this.toBeDownloaded.find(att =>
         att.clinicId == this.selectedClinic.id &&
         att.physicianId == this.selectedApprovedPhysicians.physicianId &&
@@ -765,21 +785,21 @@ export class AppointmentPageComponent {
         att.status == 'Accepted'
       ).length;
 
-      var hasAnAppointment = this.toBeDownloaded.filter( att =>
+      var hasAnAppointment = this.toBeDownloaded.filter(att =>
         att.patientId == this.selectedPatient.id &&
         att.appointmentDate == this.appointmentDate &&
         att.appointmentTime == this.appointmentTime
       );
 
       var d = new Date(this.appointmentDate)
-      if(d < this.realcurrentdate){
+      if (d < this.realcurrentdate) {
         console.log(d.toLocaleString())
         console.log(this.realcurrentdate.toLocaleString())
         alert('Oops, Please create an appointment for future dates not past dates')
         return
       }
 
-      if(doubleAppointment){
+      if (doubleAppointment) {
         alert('Oops, You already have an exact appointment')
         return
       }
@@ -789,12 +809,12 @@ export class AppointmentPageComponent {
       //   return
       // }
       console.log(hasAnAppointment)
-      if(hasAnAppointment.length > 0){
+      if (hasAnAppointment.length > 0) {
         alert('You already have an appointment that specific date and time')
         return
       }
 
-      if (window.confirm('Are you sure about the details of your appointment?')){
+      if (window.confirm('Are you sure about the details of your appointment?')) {
         var appointmentDetails = {
           id: '',
           patientName: this.selectedPatientName,
@@ -820,24 +840,24 @@ export class AppointmentPageComponent {
 
   }
 
-  dataReset(){
-      this.selectedClinic = null;
-      this.selectedPatient = null ;
-      this.selectedApprovedPhysicians = null;
-      this.selectedService = null;
-      this.appointmentDate = '';
-      this.appointmentDescription = '';
-      this.selectedPatientName = '';
-      this.selectedPhysicianName = '';
-      this.selectedService = '';
-      this.selectedClinicName = '';
+  dataReset() {
+    this.selectedClinic = null;
+    this.selectedPatient = null;
+    this.selectedApprovedPhysicians = null;
+    this.selectedService = null;
+    this.appointmentDate = '';
+    this.appointmentDescription = '';
+    this.selectedPatientName = '';
+    this.selectedPhysicianName = '';
+    this.selectedService = '';
+    this.selectedClinicName = '';
   }
 
-  downloadAppointmentReport(){
-    var report:any[] = [];
+  downloadAppointmentReport() {
+    var report: any[] = [];
 
-    var res:any[] = this.appointmentList;
-    if(this.role == 'Admin'){
+    var res: any[] = this.appointmentList;
+    if (this.role == 'Admin') {
       res = this.toBeDownloaded;
     }
     res.forEach(att => {
@@ -852,7 +872,7 @@ export class AppointmentPageComponent {
         'Service Name': att.serviceName,
         'Service Description': att.serviceDescription,
         'Service Total Price': att.servicePrice,
-        'Status' : att.status
+        'Status': att.status
       }
       report.push(d);
     });
@@ -862,7 +882,7 @@ export class AppointmentPageComponent {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'exported_data.xlsx');
   }
-  changeDateFormat(inputDate: string, format: string): string{
+  changeDateFormat(inputDate: string, format: string): string {
     var idate = new Date(inputDate);
     return this.formatDateV2(idate, format);
   }
@@ -890,25 +910,25 @@ export class AppointmentPageComponent {
     return format.replace(/yyyy|MM|Mm|dd|HH|hh|mm|ss|tt/g, (match) => parts[match].toString());
   }
 
-  getAppointmentCount(day:string):string{
+  getAppointmentCount(day: string): string {
     const cdate = this.currentDate;
     var res = "";
     var y: number = +day;
-    if(y > 0){
+    if (y > 0) {
       cdate.setDate(y)
       var apps = this.originalAppointmentList.filter(att => att.appointmentDate == this.formatDateV2(cdate, 'yyyy-MM-dd')).length;
-      if(apps > 0){
+      if (apps > 0) {
         res = apps.toString();
       }
     }
     return res;
   }
 
-  appointmentDayClick(day:string){
+  appointmentDayClick(day: string) {
     const cdate = this.currentDate;
     var res = "";
     var y: number = +day;
-    if(y > 0){
+    if (y > 0) {
       cdate.setDate(y);
     }
 
@@ -917,53 +937,53 @@ export class AppointmentPageComponent {
     this.appointmentList = list;
   }
 
-  getAppointmentStatus(date:string , status:string):string{
+  getAppointmentStatus(date: string, status: string): string {
     var d = new Date(date);
-    if(d < this.realcurrentdate && status != 'Accepted'){
-      return 'Failed to update appointment';
+    if (d < this.realcurrentdate && (status == 'Waiting')) {
+      return 'Failed Appointment';
     }
-    else{
+    else {
       return status;
     }
   }
 
 
-  txtbxApproveDecline(){
+  txtbxApproveDecline() {
 
-    if(this.role == 'Patient' || this.role == 'Clinic'){
-      if(this.selectedAppointmentStatus == 'Cancel'){
+    if (this.role == 'Patient' || this.role == 'Clinic') {
+      if (this.selectedAppointmentStatus == 'Cancel') {
         this.isButtonDisabled = false;
       }
-      else{
+      else {
         this.isButtonDisabled = true;
       }
     }
-    else if(this.role == 'Physician'){
-      if(this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Accept'){
+    else if (this.role == 'Physician') {
+      if (this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Accept') {
         this.isButtonDisabled = false;
       }
-      else{
+      else {
         this.isButtonDisabled = true;
       }
     }
   }
 
-  updateAppointment(){
-    if(this.selectedAppointmentStatus == 'Accept' || this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Cancel'){
+  updateAppointment() {
+    if (this.selectedAppointmentStatus == 'Accept' || this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Cancel') {
       if (window.confirm('Are you sure you want to update this appointment?')) {
-        if(this.selectedAppointmentStatus == 'Accept'){
+        if (this.selectedAppointmentStatus == 'Accept') {
           this.selectedAppointment.status = 'Accepted';
         }
-        else if(this.selectedAppointmentStatus == 'Decline'){
+        else if (this.selectedAppointmentStatus == 'Decline') {
           this.selectedAppointment.status = 'Declined';
         }
-        else if(this.selectedAppointmentStatus == 'Cancel'){
+        else if (this.selectedAppointmentStatus == 'Cancel') {
           this.selectedAppointment.status = 'Cancelled'
         }
         this.data.updateAppointment(this.selectedAppointment);
       }
     }
-    else{
+    else {
       alert('Type Approve or Decline or Cancel to make sure of your adjustments')
     }
 
@@ -973,5 +993,30 @@ export class AppointmentPageComponent {
   viewUpdateAppointment() {
     this.closeModals.nativeElement.click();
     this.viewAppointmentStatus.nativeElement.click();
+  }
+
+
+  checkTime(): boolean {
+    const dateString = this.selectedAppointment.appointmentDate;
+    const timeString = this.selectedAppointment.appointmentTime;
+
+
+    const dateObject: Date = new Date(`${dateString} ${timeString.split(' ')[0]}`);
+    const currentDate: Date = new Date();
+
+    if (isNaN(dateObject.getTime())) {
+      console.error('Invalid date format');
+      return false;
+    } else {
+      const timeDifference: number = dateObject.getTime() - currentDate.getTime();
+
+      const totalHoursDifference: number = timeDifference / (1000 * 60 * 60);
+      if (totalHoursDifference > 2) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
   }
 }

@@ -61,9 +61,12 @@ export class PatientPageComponent {
     image: ''
   };
 
+  appointmentList:any [] = [];
+
   isPatient = false;
   searchString = "";
   role = '';
+  token = '';
 
   constructor(private http: HttpClient, private data: DataService, private auth:AuthService) { }
 
@@ -74,9 +77,21 @@ export class PatientPageComponent {
       this.isPatient = true;
     }
 
-    this.role == this.auth.getAuth();
+    this.role = this.auth.getAuth()!;
+    this.token = this.auth.getToken()!;
 
-    this.getAllPatients();
+    //this.getAllAppointment();
+    //this.getAllPatients();
+
+    if(this.role == 'Admin'){
+      this.getAllPatients();
+    }
+    else if(this.role == 'Clinic'){
+      this.getAllAppointmentClinic();
+    }
+    else if(this.role == 'Physician'){
+      this.getAllAppointmentPhysician();
+    }
   }
 
   getAllPatients() {
@@ -91,7 +106,93 @@ export class PatientPageComponent {
     }, err => {
       alert('Error while fetching student data');
     })
+  }
 
+  getAllAppointmentClinic() {
+    this.data.getAllAppointments().subscribe(
+      (res) => {
+        this.appointmentList = res.map((e: any) => {
+          const data = e.payload.doc.data();
+          data.addressId = e.payload.doc.id;
+          return data;
+        });
+
+        this.appointmentList = this.appointmentList.filter(att => att.clinicId == this.token);
+
+        this.data.getAllPatients().subscribe(res => {
+          this.patientsList = res.map((e: any) => {
+            const data = e.payload.doc.data();
+            data.addressId = e.payload.doc.id;
+            return data;
+          })
+
+          let plist:any[] = [];
+
+          
+          let listpatientid:any[] = [...new Set(this.appointmentList.map(att => att.patientId))];
+          
+          listpatientid.forEach(att => {
+            let p = this.patientsList.find(pl => pl.id == att);
+            if(p){
+              plist.push(p)
+            }
+          });
+
+          this.patientsList = plist;
+
+        }, err => {
+          alert('Error while fetching student data');
+        })
+
+      },
+      (err) => {
+        alert('Error while fetching services data');
+      }
+    );
+  }
+
+  
+  getAllAppointmentPhysician() {
+    this.data.getAllAppointments().subscribe(
+      (res) => {
+        this.appointmentList = res.map((e: any) => {
+          const data = e.payload.doc.data();
+          data.addressId = e.payload.doc.id;
+          return data;
+        });
+
+        this.appointmentList = this.appointmentList.filter(att => att.physicianId == this.token);
+
+        this.data.getAllPatients().subscribe(res => {
+          this.patientsList = res.map((e: any) => {
+            const data = e.payload.doc.data();
+            data.addressId = e.payload.doc.id;
+            return data;
+          })
+
+          let plist:any[] = [];
+
+          
+          let listpatientid:any[] = [...new Set(this.appointmentList.map(att => att.patientId))];
+          
+          listpatientid.forEach(att => {
+            let p = this.patientsList.find(pl => pl.id == att);
+            if(p){
+              plist.push(p)
+            }
+          });
+
+          this.patientsList = plist;
+
+        }, err => {
+          alert('Error while fetching student data');
+        })
+
+      },
+      (err) => {
+        alert('Error while fetching services data');
+      }
+    );
   }
 
   searchPatients(){

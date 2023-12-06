@@ -86,7 +86,7 @@ export class MainPageComponent {
     }
     else if (this.role == "Physician"){
       user  = await this.data.getPhysicianById(this.token);
-      this.name = user.gender;
+      this.name = user.firstname + ' ' + user.lastname;
       if(user.status == 'Approved'){
         this.isActive = true;
       }

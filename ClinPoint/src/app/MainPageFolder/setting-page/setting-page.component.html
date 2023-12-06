@@ -32,7 +32,7 @@
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#updatePatientModal" *ngIf="role == 'Patient'">Update Account</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#addScheduler" *ngIf="role == 'Physician'">Setup Schedule</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#changePasswordModal">Change Password</button>
-      <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" (click)="gotoServices()" *ngIf="role == 'Physician'">Set up Services</button>
+      <!-- <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" (click)="gotoServices()" *ngIf="role == 'Physician'">Set up Services</button> -->
     </div>
 
     <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-danger-800 text-white text-semibold text-2xl" (click)="logoutUser()">Logout</button>

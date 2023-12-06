@@ -21,6 +21,7 @@ export class DashboardPageComponent {
   userList: any[] = [];
   physicianList: any[] = [];
 
+
   role = "";
   name = "";
 
@@ -45,16 +46,19 @@ export class DashboardPageComponent {
     this.token = this.auth.getToken()!;
     var user: any;
 
-    if(this.role == "Admin"){
-      this.getAllAppointments();
-      this.getAllUsers();
-      this.getAllPatients();
+    this.getAllAppointments();
+    this.getAllUsers();
+    this.getAllAppointments();
+    this.getAllClinics();
+
+    if(this.role == 'Admin')
+    {
       this.getAllPhysicians();
+      this.getAllPatients();
     }
     else{
-      this.getAllAppointments();
+      this.getAllClinicsPhysicians();
     }
-    this.getAllClinics();
 
     try{
       if(this.role == "Patient"){
@@ -141,12 +145,18 @@ export class DashboardPageComponent {
 
       if(this.role == 'Physician'){
         this.appointmentList = this.appointmentList.filter(att => att.physicianId == this.token);
+        
+        let listpatientid:any[] = [...new Set(this.appointmentList.map(att => att.patientId))];
+        this.patientCount = listpatientid.length;
       }
       else if(this.role == 'Patient'){
         this.appointmentList = this.appointmentList.filter(att => att.patientId == this.token);
       }
       else if(this.role == 'Clinic'){
         this.appointmentList = this.appointmentList.filter(att => att.clinicId == this.token);
+        
+        let listpatientid:any[] = [...new Set(this.appointmentList.map(att => att.patientId))];
+        this.patientCount = listpatientid.length;
       }
 
 
@@ -158,6 +168,26 @@ export class DashboardPageComponent {
       this.appointmentCount = 0;
       alert('Error while fetching appointments data');
     })
+  }
+
+  getAllClinicsPhysicians() {
+    this.data.getAllClinicPhysicianApplication().subscribe(
+      (res) => {
+        this.physicianList = res.map((e: any) => {
+          const data = e.payload.doc.data();
+          data.addressId = e.payload.doc.id;
+          return data;
+        });
+        this.physicianList = this.physicianList.filter(
+            (att) => att.clinicId == this.token && att.status == 'Approved'
+          );
+
+        this.physicianCount = this.physicianList.length;
+      },
+      (err) => {
+        alert('Error while fetching services data');
+      }
+    );
   }
 
   
