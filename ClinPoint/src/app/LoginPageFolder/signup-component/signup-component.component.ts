@@ -171,8 +171,7 @@ export class SignupComponentComponent {
         this.UserUsername == '' ||
         this.UserPassword == '' ||
         this.ConfirmPassword == '' ||
-        this.PhysicianSpecialization == '' ||
-        this.PhysicianSecretary == ''
+        this.PhysicianSpecialization == ''
       )
       {
         alert('Fill all input fields in the form');
