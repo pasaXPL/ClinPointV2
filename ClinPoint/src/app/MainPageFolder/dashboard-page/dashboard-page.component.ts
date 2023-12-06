@@ -46,7 +46,6 @@ export class DashboardPageComponent {
     var user: any;
 
     if(this.role == "Admin"){
-      this.getAllClinics();
       this.getAllAppointments();
       this.getAllUsers();
       this.getAllPatients();
@@ -55,6 +54,7 @@ export class DashboardPageComponent {
     else{
       this.getAllAppointments();
     }
+    this.getAllClinics();
 
     try{
       if(this.role == "Patient"){
