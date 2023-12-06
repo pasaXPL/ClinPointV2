@@ -1,6 +1,6 @@
 <div class="md:p-8 mb-20">
 
- <div class="mt-4 w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" *ngIf="role == 'Admin'">
+ <div class="mt-4 w-full grid grid-cols-2 md:grid-cols-4 gap-4" *ngIf="role == 'Admin'">
     <div class="bg-white shadow rounded-lg p-2 sm:p-6 xl:p-8 ">
        <div class="flex items-center">
           <div class="flex-shrink-0">
@@ -20,12 +20,30 @@
     <div class="bg-white shadow rounded-lg p-2 sm:p-6 xl:p-8 ">
        <div class="flex items-center">
           <div class="flex-shrink-0">
-             <span class="text-2xl leading-none font-bold text-gray-900">{{userCount}}</span>
-             <h3 class="text-base font-normal text-gray-500">Total Users</h3>
+             <span class="text-2xl leading-none font-bold text-gray-900">{{getAllClinics}}</span>
+             <h3 class="text-base font-normal text-gray-500">Total Clinics</h3>
           </div>
        </div>
     </div>
+
+    <div class="bg-white shadow rounded-lg p-2 sm:p-6 xl:p-8 ">
+      <div class="flex items-center">
+         <div class="flex-shrink-0">
+            <span class="text-2xl leading-none font-bold text-gray-900">{{getAllClinics}}</span>
+            <h3 class="text-base font-normal text-gray-500">Total Physicians</h3>
+         </div>
+      </div>
+   </div>
  </div>
+
+<div class="grid p-5 border border-gray-200 shadow-xl rounded-lg">
+  <div>
+    <p class="text-gray-500 text-semibold underline">Appointments this week</p>
+  </div>
+  <div class="w-full h-[30vh]">
+    <canvas  id="myAppointments" >{{ appointmentChart }}</canvas>
+  </div>
+</div>
 
   <h4 class="font-semibold mt-2 md:hidden">Features</h4>
   <div class="w-full mt-5 px-2 grid grid-cols-4 gap-7 justify-center md:hidden">

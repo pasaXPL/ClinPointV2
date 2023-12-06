@@ -25,7 +25,7 @@
           ClinPoint Clinic Management System</h1>
         <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Streamlining
           and Enhancing Appointment Scheduling for Clinicians and Patients</p>
-        <a routerLink="/account/login"
+        <a routerLink="/account/signup"
           class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-[#179182] hover:bg-[#179182] focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
           Get started
           <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -244,7 +244,7 @@
     </div>
   </footer>
 
-  <div class="fixed bottom-5 right-5 divide-y">
+  <!-- <div class="fixed bottom-5 right-5 divide-y">
     <div class="fixed bottom-16 right-4 w-80 md:w-96 shadow-2xl" *ngIf="showAiChat">
       <div class="bg-white shadow-md rounded-lg max-w-lg w-full">
         <div class="p-4 border-b bg-alili text-white rounded-t-lg flex justify-between items-center"
@@ -258,7 +258,6 @@
           </button>
         </div>
         <div id="chatbox" class="p-4 h-80 overflow-y-auto">
-          <!-- Chat messages will be displayed here -->
           <div class="mb-2"*ngFor="let m of messages" [ngClass]="{'text-right': m.role === 'user'}">
             <p class="rounded-lg py-2 px-4 inline-block" [ngClass]="{'bg-gray-200 text-gray-700': m.role === 'assistant', 'bg-alili text-white ': m.role === 'user', 'animate-bounce': m.content === ' o o o '}">{{m.content}}</p>
           </div>
@@ -280,7 +279,7 @@
       </svg>
       Chat with AI Support
     </button>
-  </div>
+  </div> -->
 </div>
 
 <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>
