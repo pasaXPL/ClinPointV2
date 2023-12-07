@@ -114,7 +114,7 @@
 
                 <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
                   <span aria-hidden class="absolute inset-0 rounded-full"
-                    [ngClass]="{ 'bg-success-100': appointment.status === 'Accepted', 'bg-warning-100': appointment.status === 'Declined', 'bg-danger-500': appointment.status == 'Cancelled', 'bg-secondary-300': appointment.status !== 'Cancelled' && appointment.status !== 'Accepted' && appointment.status !== 'Declined' }"></span>
+                    [ngClass]="{ 'bg-success-100': appointment.status === 'Accepted', 'bg-success-200': appointment.status === 'Done','bg-warning-100': appointment.status === 'Declined', 'bg-danger-500': appointment.status == 'Cancelled', 'bg-secondary-300': appointment.status !== 'Cancelled' && appointment.status !== 'Accepted' && appointment.status !== 'Declined' && appointment.status !== 'Done' }"></span>
                   <span class="relative">{{ getAppointmentStatus(appointment.appointmentDate, appointment.status) }}</span>
                 </span>
               </td>
@@ -290,7 +290,7 @@
             <select
               class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
               [(ngModel)]="appointmentTime">
-              <option *ngFor="let time of timescheds" [value]="time">{{ time }}</option>
+              <option *ngFor="let time of timescheds">{{ time }}</option>
             </select>
           </div>
 
@@ -511,7 +511,7 @@
         <button type="button" data-te-modal-dismiss
           class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
           data-te-ripple-init data-te-ripple-color="light" (click)="viewUpdateAppointment()"
-           *ngIf="checkTime() && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) == 'Waiting' && role != 'Admin'">
+           *ngIf="(checkTime() && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) == 'Waiting' && role != 'Admin') || (role == 'Physician' && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) == 'Accepted' && !checkTime())">
           Update Appointment
         </button>
       </div>
@@ -544,7 +544,7 @@
 
       <!--Modal body-->
       <div data-te-modal-body-ref class="relative p-4">
-        <div class="gap-5" *ngIf="role == 'Physician'">
+        <div class="gap-5" *ngIf="role == 'Physician' && selectedAppointment.status == 'Waiting'">
           <p>Would you like to <span class="font-bold">ACCEPT</span> or <span class="font-bold">DECLINE</span> the appointment?</p>
           <div class="col-span-1 md:col-span-2">
             <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">Accept</span> or <span class="font-bold">Decline</span> the appointment?</label>
@@ -554,7 +554,17 @@
           </div>
         </div>
 
-        <div class="gap-5" *ngIf="role == 'Clinic' || role == 'Patient'">
+        <div class="gap-5" *ngIf="role == 'Physician' && selectedAppointment.status == 'Accepted'">
+          <p>Are you done with the appointment?</p>
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">DONE</span> to finish appointment?</label>
+            <input type="text" placeholder="Done" (keyup)="txtbxApproveDecline()"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedAppointmentStatus" />
+          </div>
+        </div>
+
+        <div class="gap-5" *ngIf="role == 'Patient'">
           <p>Would you like to <span class="font-bold">CANCEL</span> your the appointment?</p>
           <div class="col-span-1 md:col-span-2">
             <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">CANCEL</span> to cancel your appointment?</label>

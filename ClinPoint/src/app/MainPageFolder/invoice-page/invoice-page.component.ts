@@ -24,6 +24,7 @@ export class InvoicePageComponent {
   @ViewChild('viewPayment') viewPayment!: ElementRef;
   @ViewChild('closeModals') closeModals!: ElementRef;
   @ViewChild('viewPaymentStatus') viewPaymentStatus!: ElementRef;
+  @ViewChild('addPaymentReceipt') addPaymentReceipt!: ElementRef;
 
   paymentList: Payment[] = [];
   originalPaymentList: Payment[] = [];
@@ -145,19 +146,32 @@ export class InvoicePageComponent {
     this.paymentList = list;
   }
 
+  
+
+  selectPlatinum(selection: string){
+    if(selection == 'plat'){
+      
+      this.subscriptionType = "Platinum Subscription : 1 Year for P4,500";
+      this.totalprice = 'P 4,500'
+      this.addPaymentReceipt.nativeElement.click();
+    }
+    else{
+    this.totalprice = 'P 2,500'
+    this.subscriptionType = "Gold Subscription : 6 Months for P2,500"
+    this.addPaymentReceipt.nativeElement.click();
+    }
+  }
+
+
   addPayment() {
     if (
-      this.fromdate == '' ||
-      this.todate == '' ||
-      this.datesent == '' ||
-      this.totalprice == '' ||
-      this.receiptImage == null ||
-      this.subscriptionType == ''
+      this.receiptImage == null 
     ) {
-      alert('Fill all input fields in the form');
+      alert('Please add a receipt to proceed');
       return;
     }
     const currentDate: Date = new Date();
+    this.datesent = currentDate.toDateString();
 
     if (this.receiptImage) {
       try {
@@ -224,6 +238,14 @@ export class InvoicePageComponent {
           : this.selectedPaymentStatus + 'd',
     };
     await this.data.updatePayments(data);
+
+    if(data.status == 'Approved')
+    var approveClinicData:any = {
+      id: this.selectedPayment.clinicId,
+      status: 'Approved'
+    }
+
+    await this.data.updateClinic(approveClinicData);
 
     this.selectedPaymentStatus = '';
     this.closeModal();

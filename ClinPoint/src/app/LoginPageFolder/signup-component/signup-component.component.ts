@@ -120,6 +120,8 @@ export class SignupComponentComponent {
 
   successfullyCreated = false;
 
+  accountList:any[] = [];
+
 
 
   constructor(private http: HttpClient, private auth:AuthService, private router:Router, private data:DataService, private fileSaverService:FileSaverService){}
@@ -130,6 +132,8 @@ export class SignupComponentComponent {
     if (this.auth.isLoggedIn()) {
       this.router.navigate(['dashboard']);
     }
+
+    this.getAllAccounts();
   }
 
   getClinicButtonClass(): string {
@@ -177,6 +181,7 @@ export class SignupComponentComponent {
         alert('Fill all input fields in the form');
         return;
       }
+
     }
 
     else if(this.role === "Patient"){
@@ -227,6 +232,14 @@ export class SignupComponentComponent {
 
     if(this.isEmailValid() == false){
       alert('You use invalid email, Please input a valid email!')
+      return;
+    }
+
+    let user = this.accountList.filter(att => att.username == this.UserUsername);
+    console.log(user)
+    if(user.length > 0){
+      
+      alert('Username is already in used, please choose another username');
       return;
     }
 
@@ -525,5 +538,18 @@ export class SignupComponentComponent {
     return !!this.EmailAddress && emailRegex.test(this.EmailAddress);
   }
 
+
+  
+  getAllAccounts() {
+    this.data.getAllAccounts().subscribe(res => {
+      this.accountList = res.map((e: any) => {
+        const data = e.payload.doc.data();
+        data.addressId = e.payload.doc.id;
+        return data;
+      })
+    }, err => {
+      alert('Error while fetching student data');
+    })
+  }
 
 }

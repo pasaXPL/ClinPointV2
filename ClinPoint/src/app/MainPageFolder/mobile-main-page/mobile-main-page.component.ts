@@ -62,22 +62,22 @@ export class MobileMainPageComponent {
   async ngOnInit() {
     initTE({ Sidenav, Modal });
     this.role = this.authService.getAuth()!;
-    var token = this.authService.getToken()!;
+    this.token = this.authService.getToken()!;
     var user: any;
     try{
       if(this.role == "Patient"){
-        user = await this.data.getPatientById(token);
+        user = await this.data.getPatientById(this.token);
         this.name = user.firstname + " " + user.lastname;
       }
       else if(this.role == "Admin"){
         this.name = "ClinPoint";
       }
       else if (this.role == "Physician"){
-        user  = await this.data.getPhysicianById(token);
+        user  = await this.data.getPhysicianById(this.token);
         this.name = user.gender;
       }
       else if(this.role == "Clinic"){
-        user = await this.data.getClinicById(token);
+        user = await this.data.getClinicById(this.token);
         this.name = user.clinicName
       }
     }catch{}
@@ -106,6 +106,9 @@ export class MobileMainPageComponent {
       else{
         this.notificationList = this.notificationList.filter(att => att.receiver == this.token);
       }
+
+      console.log(this.token)
+      console.log(this.notificationList)
     }, err => {
       alert('Error while fetching services data');
     })

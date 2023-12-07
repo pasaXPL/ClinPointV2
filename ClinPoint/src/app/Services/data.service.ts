@@ -22,6 +22,11 @@ export class DataService {
     return this.fs.collection('/PatientsV2').snapshotChanges();
   }
 
+  
+  getAllAccounts(){
+    return this.fs.collection('/AccountsV2').snapshotChanges();
+  }
+
   async updatePatient(patient: Patient | any): Promise<void> {
     try {
       this.fs.collection('/PatientsV2').doc(patient.id).update(patient);

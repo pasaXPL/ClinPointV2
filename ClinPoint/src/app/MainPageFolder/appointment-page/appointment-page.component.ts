@@ -958,8 +958,16 @@ export class AppointmentPageComponent {
         this.isButtonDisabled = true;
       }
     }
-    else if (this.role == 'Physician') {
+    else if (this.role == 'Physician' && this.selectedAppointment.status == 'Waiting') {
       if (this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Accept') {
+        this.isButtonDisabled = false;
+      }
+      else {
+        this.isButtonDisabled = true;
+      }
+    }
+    else if (this.role == 'Physician' && this.selectedAppointment.status == 'Accepted') {
+      if (this.selectedAppointmentStatus == 'Done') {
         this.isButtonDisabled = false;
       }
       else {
@@ -979,6 +987,9 @@ export class AppointmentPageComponent {
         }
         else if (this.selectedAppointmentStatus == 'Cancel') {
           this.selectedAppointment.status = 'Cancelled'
+        }
+        else if(this.selectedAppointmentStatus == 'Done'){
+          this.selectedAppointment.status = 'Done'
         }
         this.data.updateAppointment(this.selectedAppointment);
       }

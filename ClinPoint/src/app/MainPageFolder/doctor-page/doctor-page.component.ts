@@ -104,7 +104,9 @@ export class DoctorPageComponent {
         return data;
       })
       this.toBeDownloaded = this.physiciansList;
-      this.physiciansList = this.physiciansList.filter(att => att.status == 'Approved')
+      if(this.role != 'Admin'){
+        this.physiciansList = this.physiciansList.filter(att => att.status == 'Approved')
+      }
       this.originalPhysiciansList = this.physiciansList;
     }, err => {
       alert('Error while fetching student data');
@@ -144,8 +146,9 @@ export class DoctorPageComponent {
       obj.firstname.toUpperCase().includes(text.toUpperCase()) ||
       obj.lastname.toUpperCase().includes(text.toUpperCase()) ||
       obj.email.toUpperCase().includes(text.toUpperCase()) ||
+      obj.specialty.toUpperCase().includes(text.toUpperCase()) ||
       obj.contactno.toUpperCase().includes(text.toUpperCase()) ||
-      ((obj.status?.toString() || '').toUpperCase().includes(text.toUpperCase()) && this.role == 'Clinic') ||
+      ((obj.status?.toString() || '').toUpperCase().includes(text.toUpperCase()) && (this.role == 'Clinic' || this.role == 'Admin')) ||
       obj.address.toUpperCase().includes(text.toUpperCase()));
     })
 

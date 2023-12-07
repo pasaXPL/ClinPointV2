@@ -1,0 +1,18 @@
+[debug] [2023-12-06T12:34:14.137Z] ----------------------------------------------------------------------
+[debug] [2023-12-06T12:34:14.138Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\John Paul\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2023-12-06T12:34:14.139Z] CLI Version:   12.9.1
+[debug] [2023-12-06T12:34:14.139Z] Platform:      win32
+[debug] [2023-12-06T12:34:14.139Z] Node Version:  v18.12.1
+[debug] [2023-12-06T12:34:14.139Z] Time:          Wed Dec 06 2023 20:34:14 GMT+0800 (Singapore Standard Time)
+[debug] [2023-12-06T12:34:14.140Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-12-06T12:34:14.142Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[debug] [2023-12-06T12:34:17.448Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2023-12-06T12:34:17.448Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=865361963&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
