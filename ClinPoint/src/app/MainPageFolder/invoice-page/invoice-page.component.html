@@ -7,8 +7,9 @@
     <div class="flex items-center justify-between">
       <div class="space-x-8">
         <div>
-          <button *ngIf="role == 'Clinic'" data-te-ripple-init data-te-ripple-color="light" data-te-toggle="modal" data-te-target="#addPayment"
-            class="inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" >Add
+          <button *ngIf="role == 'Clinic'" data-te-ripple-init data-te-ripple-color="light" data-te-toggle="modal"
+            data-te-target="#addPayment"
+            class="inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">Add
             Payment</button>
         </div>
       </div>
@@ -68,7 +69,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="hover:bg-gray-300 cursor-pointer" (click)="openViewPaymentModal(payment)"
+            <tr class="hover:bg-gray-300 cursor-pointer"  (click)="openViewPaymentModal(payment)"
               *ngFor="let payment of paymentList">
               <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm" *ngIf="role == 'Admin'">
                 <p class="text-gray-900 whitespace-no-wrap">{{payment.clinicName}}</p>
@@ -118,25 +119,28 @@
 
 
       <div class="grid md:hidden min-w-full shadow rounded-lg overflow-hidden gap-y-6">
-        <div class="border rounded bg-white shadow-md w-full px-4 py-2" *ngFor="let payment of paymentList" (click)="openViewPaymentModal(payment)">
+        <div class="border rounded bg-white shadow-md w-full px-4 py-2" *ngFor="let payment of paymentList"
+          (click)="openViewPaymentModal(payment)">
 
           <div class="grid grid-cols items-center gap-x-5">
             <div>
               <p class="font-bold text-gray-900 whitespace-no-wrap" *ngIf="role == 'Admin'">
                 {{payment.clinicName}}
-              </p> <p class="text-xs text-gray-900 whitespace-no-wrap">
+              </p>
+              <p class="text-xs text-gray-900 whitespace-no-wrap">
                 {{ "Reference No: " + payment.refno }}
               </p>
               <p class="text-xs text-gray-900 whitespace-no-wrap">
-                {{ "From: " +  payment.fromdate + " To: " + payment.todate}}
-              </p> <p class="text-xs text-gray-900 whitespace-no-wrap">
+                {{ "From: " + payment.fromdate + " To: " + payment.todate}}
+              </p>
+              <p class="text-xs text-gray-900 whitespace-no-wrap">
                 {{"Price : P" + payment.totalprice}}
               </p>
               <span class="relative inline-block text-sm px-3 py-1 font-semibold text-gray-900 leading-tight">
-                  <span aria-hidden class="absolute inset-0 rounded-full"
-                    [ngClass]="{ 'bg-green-100': payment.status === 'Approved', 'bg-red-100': payment.status === 'Declined', 'bg-secondary-600': payment.status === 'Cancelled', 'bg-yellow-100': payment.status !== 'Approved' && payment.status !== 'Declined' && payment.status !== 'Cancelled' }"></span>
-                  <span class="relative">{{payment.status}}</span>
-                </span>
+                <span aria-hidden class="absolute inset-0 rounded-full"
+                  [ngClass]="{ 'bg-green-100': payment.status === 'Approved', 'bg-red-100': payment.status === 'Declined', 'bg-secondary-600': payment.status === 'Cancelled', 'bg-yellow-100': payment.status !== 'Approved' && payment.status !== 'Declined' && payment.status !== 'Cancelled' }"></span>
+                <span class="relative">{{payment.status}}</span>
+              </span>
             </div>
           </div>
         </div>
@@ -144,7 +148,8 @@
     </div>
   </div>
   <div>
-    <button class="text-white font-semibold px-3 py-2 bg-alili shadow-lg rounded" (click)="downloadInvoiceReport()" *ngIf="role == 'Admin'">Download All Invoice</button>
+    <button class="text-white font-semibold px-3 py-2 bg-alili shadow-lg rounded" (click)="downloadInvoiceReport()"
+      *ngIf="role == 'Admin'">Download All Invoice</button>
   </div>
 </div>
 
@@ -184,67 +189,28 @@
               <p class="text-bold text-2xl">Option 1</p>
               <p class="text-xs">Gold Subscription gives you access to ClinPoint for 6 Months for the price of 2,500</p>
               <p class="mt-2 text-2xl text-bold">P 2,500</p>
-              <button (click)="selectPlatinum('gold')"
-              data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" class="w-full text-semibold text-lg rounded bg-alili text-white shadow-lg hover:scale-105 px-3 py-1.5">Apply Gold</button>
+              <button (click)="selectPlatinum('gold')" data-te-ripple-init data-te-modal-dismiss
+                data-te-ripple-color="light"
+                class="w-full text-semibold text-lg rounded bg-alili text-white shadow-lg hover:scale-105 px-3 py-1.5">Apply
+                Gold</button>
             </div>
           </div>
 
           <div class="border border-gray-200 rounded-lg shadow-xl px-3 py-4">
             <div class="text-center text-gray-600 space-y-2">
               <p class="text-bold text-2xl">Option 2</p>
-              <p class="text-xs">Platinum Subscription gives you access to ClinPoint for 1 Year for the price of 4,500</p>
+              <p class="text-xs">Platinum Subscription gives you access to ClinPoint for 1 Year for the price of 4,500
+              </p>
               <p class="mt-2 text-2xl text-bold">P 4,500</p>
-              <button (click)="selectPlatinum('plat')"
-                data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light"
-                class="w-full text-semibold text-lg rounded bg-alili text-white shadow-lg hover:scale-105 px-3 py-1.5">Apply Platinum</button>
+              <button (click)="selectPlatinum('plat')" data-te-ripple-init data-te-modal-dismiss
+                data-te-ripple-color="light"
+                class="w-full text-semibold text-lg rounded bg-alili text-white shadow-lg hover:scale-105 px-3 py-1.5">Apply
+                Platinum</button>
             </div>
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-<!-- 
-          <div>
-            <label class="block text-sm text-gray-600 dark:text-gray-200">From Date</label>
-            <input type="date"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter from date" value="" [(ngModel)]="fromdate" />
-          </div>
-
-
-          <div>
-            <label class="block text-sm text-gray-600 dark:text-gray-200">To Date</label>
-            <input type="date"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter to date" value="" [(ngModel)]="todate" />
-          </div>
-
-
-          <div>
-            <label class="block text-sm text-gray-600 dark:text-gray-200">Date Sent</label>
-            <input type="date"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter date sent" value="" [(ngModel)]="datesent" />
-          </div>
-
-          <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Total Payment</label>
-            <input type="text" placeholder="XXXXXX"
-               class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
-              [(ngModel)]="totalprice" (keypress)="validateNumericInput($event)" />
-          </div>
-
-          <div class="md:col-span-2">
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Subscription Type</label>
-            <select
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
-              [(ngModel)]="subscriptionType">
-              <option *ngFor="let s of subscriptionList" [value]="s">{{ s }}</option>
-            </select>
-          </div>
- -->
-
-          <!-- <div *ngIf="role == 'Clinic'">
-            <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Receipt Image</label>
-            <input type="file" placeholder="Logo"
-              class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-              accept="image/*" (change)="getReceiptPhoto($event)" />
-          </div> -->
+          
         </div>
       </div>
 
@@ -252,16 +218,7 @@
       <!--Modal footer-->
       <div
         class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <!-- <button type="button"
-          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
-          Close
-        </button>
-        <button type="button"
-          class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-          data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" (click)="addPayment()">
-          Add Payment
-        </button> -->
+        
       </div>
     </div>
   </div>
@@ -269,8 +226,8 @@
 
 <div data-te-modal-init
   class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="addPaymentReceipt" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="addServiceLabel"
-  aria-hidden="true">
+  id="addPaymentReceipt" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1"
+  aria-labelledby="addServiceLabel" aria-hidden="true">
   <div data-te-modal-dialog-ref
     class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
 
@@ -304,275 +261,206 @@
               class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
               accept="image/*" (change)="getReceiptPhoto($event)" />
           </div>
-      </div>
+        </div>
 
 
-      <!--Modal footer-->
-      <div
-        class="gap-x-5 flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <button type="button"
-          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
-          Close
-        </button>
+        <!--Modal footer-->
+        <div
+          class="gap-x-5 flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+          <button type="button"
+            class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+            data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+            Close
+          </button>
 
-        <button type="button"
-          class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-          data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" (click)="addPayment()">
-          Add Payment
-        </button>
+          <button type="button"
+            class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+            data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" (click)="addPayment()">
+            Add Payment
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-
-
-<div data-te-modal-init
-  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="viewPayment" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="addServiceLabel"
-  aria-hidden="true">
-  <div data-te-modal-dialog-ref
-    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
-
-    <div
-      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
-      <div
-        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <!--Modal title-->
-        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="addServiceLabel">
-          View Payment
-        </h5>
-        <!--Close button-->
-        <button type="button"
-          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-          data-te-modal-dismiss aria-label="Close">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="h-6 w-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <!--Modal body-->
-      <div data-te-modal-body-ref class="relative p-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div class="md:col-span-2" *ngIf="role == 'Admin'">
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Clinic Name</label>
-            <input type="text" placeholder="John Doe Clinic"
-               class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
-              [(ngModel)]="selectedPayment.clinicName" />
-          </div>
-
-          <div class="md:col-span-2">
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Reference Number</label>
-            <input type="text" placeholder="XXXXXX"
-               class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
-              [(ngModel)]="selectedPayment.refno"/>
-          </div>
-
-          <div>
-            <label class="block text-sm text-gray-600 dark:text-gray-200">From Date</label>
-            <input type="date"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter from date" value="" [(ngModel)]="selectedPayment.fromdate" />
-          </div>
-
-
-          <div>
-            <label class="block text-sm text-gray-600 dark:text-gray-200">To Date</label>
-            <input type="date"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter to date" value="" [(ngModel)]="selectedPayment.todate" />
-          </div>
-
-
-          <div>
-            <label class="block text-sm text-gray-600 dark:text-gray-200">Date Sent</label>
-            <input type="date"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter date sent" value="" [(ngModel)]="selectedPayment.datesent" />
-          </div>
-
-          <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Total Payment</label>
-            <input type="text" placeholder="XXXXXX"
-               class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
-              [(ngModel)]="selectedPayment.totalprice" (keypress)="validateNumericInput($event)" />
-          </div>
-
-          <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Receipt Image</label>
-            <a [href]="selectedPayment.receiptPhoto" target="_blank"
-              class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View Receipt Image</a>
-            <!-- <input type="file" placeholder="Supporting File" class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40" accept="application/pdf, image/*" (change)="getSupportingFile2($event)"/> -->
-          </div>
-        </div>
-      </div>
-
-
-      <!--Modal footer-->
-      <div
-        class="gap-x-5 flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <button type="button"
-          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
-          Close
-        </button>
-        <button type="button" *ngIf="selectedPayment.status == 'Approved'"
-          class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-          data-te-ripple-init data-te-ripple-color="light" (click)="downloadAsPDF()">
-          Download Receipt
-        </button>
-
-        <button type="button" *ngIf="selectedPayment.status == 'On Process'"
-          class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-          data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" (click)="viewUpdatePayment()">
-          Update Payment
-        </button>
-      </div>
-    </div>
   </div>
-</div>
 
-<div data-te-modal-init class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="viewPaymentStatus" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewClinicStatusLabel" aria-hidden="true">
-  <div data-te-modal-dialog-ref
-    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
-    <div
-      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+
+
+  <div data-te-modal-init
+    class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+    id="viewPayment" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="addServiceLabel"
+    aria-hidden="false">
+    <div data-te-modal-dialog-ref
+      class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+
       <div
-        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 bg-alili border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <!--Modal title-->
-        <h5 class="text-xl font-medium leading-normal text-white dark:text-neutral-200" id="viewClinicStatusLabel">
-          Payment Status
-        </h5>
-        <!--Close button-->
-        <button type="button"
-          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-          data-te-modal-dismiss aria-label="Close">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="h-6 w-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+        class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+        <div
+          class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
 
-      <!--Modal body-->
-      <div data-te-modal-body-ref class="relative p-4">
-        <div class="gap-5" *ngIf="role == 'Admin'">
-          <p>Would you like to <span class="font-bold">APPROVE</span> or <span class="font-bold">DECLINE</span> the clinic's application?</p>
-          <div class="col-span-1 md:col-span-2">
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">Approve</span> or <span class="font-bold">Decline</span> the clinic's application</label>
-            <input type="text" placeholder="Approve / Decline" (keyup)="txtbxApproveDecline()"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
-              [(ngModel)]="selectedPaymentStatus" />
-          </div>
-        </div>
-
-        <div class="gap-5" *ngIf="role != 'Admin'">
-          <p>Would you like to <span class="font-bold">CANCEL</span> your the payment application?</p>
-          <div class="col-span-1 md:col-span-2">
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">CANCEL</span> to cancel your payment application</label>
-            <input type="text" placeholder="Cancel" (keyup)="txtbxApproveDecline()"
-              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
-              [(ngModel)]="selectedPaymentStatus" />
-          </div>
-        </div>
-      </div>
-      <!--Modal footer-->
-      <div
-        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <button type="button"
-          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-alili transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
-          Close
-        </button>
-        <div>
-          <button type="button" [ngClass]="{ 'bg-gray-100 text-alili': isButtonDisabled, 'bg-alili text-white': !isButtonDisabled }"
-            class="ml-1 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" (click)="updatePayment()" data-te-modal-dismiss [disabled]="isButtonDisabled"
-            data-te-ripple-init data-te-ripple-color="light" >
-            Update Payment
+          <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="addServiceLabel">
+            View Payment
+          </h5>
+          <button type="button"
+            class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+            data-te-modal-dismiss aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="h-6 w-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
 
+        <div data-te-modal-body-ref class="relative p-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="md:col-span-2" *ngIf="role == 'Admin'">
+              <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Clinic Name</label>
+              <input type="text" placeholder="John Doe Clinic"
+                class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+                [(ngModel)]="selectedPayment.clinicName" disabled/>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Reference Number</label>
+              <input type="text" placeholder="XXXXXX"
+                class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+                [(ngModel)]="selectedPayment.refno" disabled/>
+            </div>
+
+
+            <div>
+              <label class="block text-sm text-gray-600 dark:text-gray-200">Date Sent</label>
+              <input type="text"
+                class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                placeholder="Enter date sent" value="" [(ngModel)]="selectedPayment.datesent" disabled/>
+            </div>
+
+            <div>
+              <label class="block text-sm text-gray-600 dark:text-gray-200">Subscription Type</label>
+              <input type="text"
+                class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                placeholder="Enter date sent" value="" [(ngModel)]="selectedPayment.subscriptionType" disabled/>
+            </div>
+
+            <div>
+              <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Total Payment</label>
+              <input type="text" placeholder="XXXXXX"
+                class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+                [(ngModel)]="selectedPayment.totalprice" (keypress)="validateNumericInput($event)" disabled/>
+            </div>
+
+            <div>
+              <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Receipt Image</label>
+              <a [href]="selectedPayment.receiptPhoto" target="_blank"
+                class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View
+                Receipt Image</a>
+            </div>
+          </div>
+        </div>
+
+
+        <div
+          class="gap-x-5 flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+          <button type="button"
+            class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+            data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+            Close
+          </button>
+          <button type="button" *ngIf="selectedPayment.status == 'Approved'"
+            class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+            data-te-ripple-init data-te-ripple-color="light" (click)="downloadAsPDF()">
+            Download Receipt
+          </button>
+
+          <button type="button" *ngIf="selectedPayment.status == 'On Process'"
+            class="ml-1 inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+            data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" (click)="viewUpdatePayment()">
+            Update Payment
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-<div class="hidden">
-  <button #addPaymentReceipt data-te-toggle="modal" data-te-target="#addPaymentReceipt"></button>
-  <button #viewPaymentStatus data-te-toggle="modal" data-te-target="#viewPaymentStatus"></button>
-  <button #viewPayment data-te-toggle="modal" data-te-target="#viewPayment"></button>
-  <button #closeModals data-te-modal-dismiss aria-label="Close"></button>
-</div>
 
 
-<div data-te-modal-init
-  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="test" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="addServiceLabel"
-  aria-hidden="true">
-  <div data-te-modal-dialog-ref
-    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
-
-    <div
-      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+  <div data-te-modal-init
+    class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+    id="viewPaymentStatus" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewClinicStatusLabel"
+    aria-hidden="true">
+    <div data-te-modal-dialog-ref
+      class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
       <div
-        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-        <!--Modal title-->
-        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="addServiceLabel">
-          View Payment
-        </h5>
-        <!--Close button-->
-        <button type="button"
-          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-          data-te-modal-dismiss aria-label="Close">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="h-6 w-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+        class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+        <div
+          class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 bg-alili border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+          <!--Modal title-->
+          <h5 class="text-xl font-medium leading-normal text-white dark:text-neutral-200" id="viewClinicStatusLabel">
+            Payment Status
+          </h5>
+          <!--Close button-->
+          <button type="button"
+            class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+            data-te-modal-dismiss aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="h-6 w-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
 
-      <!--Modal body-->
-      <div data-te-modal-body-ref class="relative p-4">
+        <!--Modal body-->
+        <div data-te-modal-body-ref class="relative p-4">
+          <div class="gap-5" *ngIf="role == 'Admin'">
+            <p>Would you like to <span class="font-bold">APPROVE</span> or <span class="font-bold">DECLINE</span> the
+              clinic's application?</p>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span
+                  class="font-bold">Approve</span> or <span class="font-bold">Decline</span> the clinic's
+                application</label>
+              <input type="text" placeholder="Approve / Decline" (keyup)="txtbxApproveDecline()"
+                class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+                [(ngModel)]="selectedPaymentStatus" />
+            </div>
+          </div>
 
-<div id="pdfPrinter" #pdfPrinter class="w-full">
-  <div>
-    <div class="bg-alili text-white text-center p-2 text-sm">ClinPoint</div>
-    <div class="grid grid-cols-2 text-xs">
-      <div class="col-span-2 text-center text-secondary-500">
-        This is the official receipt of ClinPoint recognizing that ClinPoint received a certain amount for the subscription of the clinic.
-      </div>
+          <div class="gap-5" *ngIf="role != 'Admin'">
+            <p>Would you like to <span class="font-bold">CANCEL</span> your the payment application?</p>
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span
+                  class="font-bold">CANCEL</span> to cancel your payment application</label>
+              <input type="text" placeholder="Cancel" (keyup)="txtbxApproveDecline()"
+                class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+                [(ngModel)]="selectedPaymentStatus" />
+            </div>
+          </div>
+        </div>
+        <!--Modal footer-->
+        <div
+          class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+          <button type="button"
+            class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-alili transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+            data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+            Close
+          </button>
+          <div>
+            <button type="button"
+              [ngClass]="{ 'bg-gray-100 text-alili': isButtonDisabled, 'bg-alili text-white': !isButtonDisabled }"
+              class="ml-1 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              (click)="updatePayment()" data-te-modal-dismiss [disabled]="isButtonDisabled" data-te-ripple-init
+              data-te-ripple-color="light">
+              Update Payment
+            </button>
+          </div>
 
-
-      <div>
-        {{'Reference No: ' + selectedPayment.id}}
-      </div>
-      <div>
-        {{'Received From: ' + selectedPayment.clinicName }}
-      </div>
-
-      <div>
-        {{'Subscription From: ' + selectedPayment.fromdate}}
-      </div>
-      <div>
-        {{'Subscription To: ' + selectedPayment.todate }}
-      </div>
-
-      <div>
-        {{'Sent on: ' + selectedPayment.fromdate }}
-      </div>
-      <div>
-        {{'Amount: ' + selectedPayment.todate }}
-      </div>
-      <div>
-        {{'Date today: ' + currentDate }}
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-      </div>
-    </div>
+  <div class="hidden">
+    <button #addPaymentReceipt data-te-toggle="modal" data-te-target="#addPaymentReceipt"></button>
+    <button #viewPaymentStatus data-te-toggle="modal" data-te-target="#viewPaymentStatus"></button>
+    <button #viewPayment data-te-toggle="modal" data-te-target="#viewPayment"></button>
+    <button #closeModals data-te-modal-dismiss aria-label="Close"></button>
   </div>
-</div>
 

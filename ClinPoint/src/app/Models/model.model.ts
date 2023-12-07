@@ -89,4 +89,5 @@ export interface Payment{
   clinicId: string;
   datecreated: string;
   receiptPhoto: string;
+  subscriptionType: string;
 }

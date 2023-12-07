@@ -40,6 +40,7 @@ export class InvoicePageComponent {
     clinicId: '',
     datecreated: '',
     receiptPhoto: '',
+    subscriptionType: ''
   };
 
   searchString = '';
@@ -70,7 +71,7 @@ export class InvoicePageComponent {
   ) {}
 
   async ngOnInit() {
-    initTE({ Modal });
+    initTE({ Modal, Ripple, Input, Select });
     this.role = this.auth.getAuth()!;
 
     if (this.role == 'Admin') {
@@ -156,9 +157,9 @@ export class InvoicePageComponent {
       this.addPaymentReceipt.nativeElement.click();
     }
     else{
-    this.totalprice = 'P 2,500'
-    this.subscriptionType = "Gold Subscription : 6 Months for P2,500"
-    this.addPaymentReceipt.nativeElement.click();
+      this.totalprice = 'P 2,500'
+      this.subscriptionType = "Gold Subscription : 6 Months for P2,500"
+      this.addPaymentReceipt.nativeElement.click();
     }
   }
 
