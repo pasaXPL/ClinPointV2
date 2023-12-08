@@ -103,8 +103,9 @@ export class SchedulerPageComponent {
       return;
     }
 
-    if(this.isEmailValid()){
+    if(!this.isEmailValid()){
       alert('Please input a valid email');
+      return;
     }
 
     if (window.confirm('Are you sure you want to add ' + this.firstname + ' ' + this.lastname + ' as your secretary?')){

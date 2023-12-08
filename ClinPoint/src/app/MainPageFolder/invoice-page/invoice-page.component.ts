@@ -59,6 +59,7 @@ export class InvoicePageComponent {
   currentDate = '';
 
   isAlreadySubscribed = true;
+  totalEarnings = 0;
 
 
   subscriptionList=  [
@@ -126,6 +127,16 @@ export class InvoicePageComponent {
           b.datecreated.localeCompare(a.datecreated)
         );
         this.originalPaymentList = this.paymentList;
+
+        let a = 0;
+        this.originalPaymentList.forEach(att => {
+          if(att.status == 'Approved'){
+          let b = parseInt(att.totalprice.replaceAll('P', '').replaceAll(' ', '').replaceAll(',', ''), 10);
+          a += b;
+          }
+        })
+
+        this.totalEarnings = a;
       },
       (err) => {
         alert('Error while fetching services data');
@@ -368,7 +379,7 @@ export class InvoicePageComponent {
     doc.text('Reference No: ' + this.selectedPayment.id, 20, 53);
 
     doc.rect(15, 60, 90, 10);
-    doc.text('Received From: ' + this.selectedPayment.clinicName, 20, 68);
+    doc.text('Received From: ' + this.selectedPayment.clinicName, 20, 63);
 
     doc.rect(15, 75, 90, 10);
     doc.text('Subscription From: ' + this.selectedPayment.fromdate, 20, 83);

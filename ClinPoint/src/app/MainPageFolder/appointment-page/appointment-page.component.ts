@@ -923,7 +923,7 @@ export class AppointmentPageComponent {
 
     var res: any[] = this.appointmentList;
     if (this.role == 'Admin') {
-      res = this.toBeDownloaded;
+      res = this.appointmentList;
     }
     res.forEach(att => {
       var d = {
@@ -983,7 +983,7 @@ export class AppointmentPageComponent {
     var y: number = +day;
     if (y > 0) {
       cdate.setDate(y)
-      var apps = this.originalAppointmentList.filter(att => att.appointmentDate == this.formatDateV2(cdate, 'yyyy-MM-dd')).length;
+      var apps = this.originalAppointmentList.filter(att => att.appointmentDate == this.formatDateV2(cdate, 'yyyy-MM-dd') && att.status == 'Accepted').length;
       if (apps > 0) {
         res = apps.toString();
       }

@@ -99,7 +99,9 @@ export class DashboardPageComponent {
         return data;
       });
 
-      this.clinicList = this.clinicList.filter(att => att.status == 'Approved');
+      if(this.role != 'Admin'){
+        this.clinicList = this.clinicList.filter(att => att.status == 'Approved');
+      }
       this.clinicCount = this.clinicList.length;
     }, err => {
       this.clinicCount = 0;
@@ -115,7 +117,9 @@ export class DashboardPageComponent {
         return data;
       });
 
-      this.physicianList = this.physicianList.filter(att => att.status == 'Approved');
+      if(this.role != 'Admin'){
+        this.physicianList = this.physicianList.filter(att => att.status == 'Approved');
+      }
       this.physicianCount = this.physicianList.length;
     }, err => {
       this.physicianCount = 0;

@@ -239,7 +239,7 @@ export class ClinicPageComponent {
   downloadClinicReport(){
     var report:any[] = [];
 
-    this.toBeDownloaded.forEach(att => {
+    this.clinicsList.forEach(att => {
       var d = {
         'Clinic Logo': att.logo,
         'Clinic Name': att.clinicName,

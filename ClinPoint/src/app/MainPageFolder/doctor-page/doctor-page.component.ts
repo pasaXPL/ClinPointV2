@@ -211,7 +211,7 @@ export class DoctorPageComponent {
   downloadPhysicianReport(){
     var report:any[] = [];
 
-    this.toBeDownloaded.forEach(att => {
+    this.physiciansList.forEach(att => {
       var d = {
         'Physician Logo': att.image,
         'Physician First Name': att.firstname,
