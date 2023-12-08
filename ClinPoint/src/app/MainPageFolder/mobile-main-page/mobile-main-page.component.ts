@@ -72,9 +72,13 @@ export class MobileMainPageComponent {
       else if(this.role == "Admin"){
         this.name = "ClinPoint";
       }
-      else if (this.role == "Physician"){
+      else if (this.role == "Physician" || this.role == 'Secretary'){
         user  = await this.data.getPhysicianById(this.token);
-        this.name = user.gender;
+        this.name = user.firstname + ' ' + user.lastname;
+
+        if(this.role == 'Secretary'){
+          this.name = 'Secretary';
+        }
       }
       else if(this.role == "Clinic"){
         user = await this.data.getClinicById(this.token);

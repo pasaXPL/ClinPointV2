@@ -56,38 +56,55 @@ export class AppointmentPageComponent {
   isButtonDisabled = true;
   selectedAppointmentStatus = '';
 
+  // timeslots = [
+  //   '8:00 AM to 8:30 AM',
+  //   '8:30 AM to 9:00 AM',
+  //   '9:00 AM to 9:30 AM',
+  //   '9:30 AM to 10:00 AM',
+  //   '10:00 AM to 10:30 AM',
+  //   '10:30 AM to 11:00 AM',
+  //   '11:00 AM to 11:30 AM',
+  //   '11:30 AM to 12:00 PM',
+  //   '12:00 PM to 12:30 PM',
+  //   '12:30 PM to 1:00 PM',
+  //   '1:00 PM to 1:30 PM',
+  //   '1:30 PM to 2:00 PM',
+  //   '2:00 PM to 2:30 PM',
+  //   '2:30 PM to 3:00 PM',
+  //   '3:00 PM to 3:30 PM',
+  //   '3:30 PM to 4:00 PM',
+  //   '4:00 PM to 4:30 PM',
+  //   '4:30 PM to 5:00 PM',
+  //   '5:00 PM to 5:30 PM',
+  //   '5:30 PM to 6:00 PM',
+  //   '6:00 PM to 6:30 PM',
+  //   '6:30 PM to 7:00 PM',
+  //   '7:00 PM to 7:30 PM',
+  //   '7:30 PM to 8:00 PM',
+  //   '8:00 PM to 8:30 PM',
+  //   '8:30 PM to 9:00 PM',
+  // ];
+
   timeslots = [
-    '8:00 AM to 8:30 AM',
-    '8:30 AM to 9:00 AM',
-    '9:00 AM to 9:30 AM',
-    '9:30 AM to 10:00 AM',
-    '10:00 AM to 10:30 AM',
-    '10:30 AM to 11:00 AM',
-    '11:00 AM to 11:30 AM',
-    '11:30 AM to 12:00 PM',
-    '12:00 PM to 12:30 PM',
-    '12:30 PM to 1:00 PM',
-    '1:00 PM to 1:30 PM',
-    '1:30 PM to 2:00 PM',
-    '2:00 PM to 2:30 PM',
-    '2:30 PM to 3:00 PM',
-    '3:00 PM to 3:30 PM',
-    '3:30 PM to 4:00 PM',
-    '4:00 PM to 4:30 PM',
-    '4:30 PM to 5:00 PM',
-    '5:00 PM to 5:30 PM',
-    '5:30 PM to 6:00 PM',
-    '6:00 PM to 6:30 PM',
-    '6:30 PM to 7:00 PM',
-    '7:00 PM to 7:30 PM',
-    '7:30 PM to 8:00 PM',
-    '8:00 PM to 8:30 PM',
-    '8:30 PM to 9:00 PM',
+    '8:00 AM to 9:00 AM',
+    '9:00 AM to 10:00 AM',
+    '10:00 AM to 11:00 AM',
+    '11:00 AM to 12:00 PM',
+    '12:00 PM to 1:00 PM',
+    '1:00 PM to 2:00 PM',
+    '2:00 PM to 3:00 PM',
+    '3:00 PM to 4:00 PM',
+    '4:00 PM to 5:00 PM',
+    '5:00 PM to 6:00 PM',
+    '6:00 PM to 7:00 PM',
+    '7:00 PM to 8:00 PM',
+    '8:00 PM to 9:00 PM',
   ];
 
   timescheds: string[] = [];
 
   physicianTimeScheds: any[] = [];
+  currentDate:any;
 
   constructor(private data: DataService, private auth: AuthService) { }
 
@@ -97,17 +114,20 @@ export class AppointmentPageComponent {
     var newtoday = new Date();
     this.realcurrentdate = newtoday;
     this.currentDate = today;
+    this.currentDate.setDate(1);
     this.functionSetDaysInMonth();
 
     this.token = this.auth.getToken()!;
     this.role = this.auth.getAuth()!;
 
-    this.getAllClinics();
-    this.getAllPatient();
-    this.getAllClinicsPhysicians();
-    this.getAllServices();
+    if(this.role == 'Patient'){
+      this.getAllClinics();
+      this.getAllPatient();
+      this.getAllPhysicianSchedule();
+      this.getAllClinicsPhysicians();
+      this.getAllServices();
+    }
     this.getAllAppointment();
-    this.getAllPhysicianSchedule();
   }
 
   getAllServices() {
@@ -119,7 +139,7 @@ export class AppointmentPageComponent {
           return data;
         });
 
-        if (this.role == 'Physician') {
+        if (this.role == 'Physician' || this.role == 'Secretary') {
           this.servicesList = this.servicesList.filter(
             (att) => att.physicianId == this.token
           );
@@ -189,7 +209,7 @@ export class AppointmentPageComponent {
           this.approvedPhysiciansList = this.approvedPhysiciansList.filter(
             (att) => att.clinicId == this.token && att.status == 'Approved'
           );
-        } else if (this.role == 'Physician') {
+        } else if (this.role == 'Physician' || this.role == 'Secretary') {
           this.approvedPhysiciansList = this.approvedPhysiciansList.filter(
             (att) => att.physicianId == this.token && att.status == 'Approved'
           );
@@ -253,7 +273,7 @@ export class AppointmentPageComponent {
         else if (this.role == 'Clinic') {
           this.appointmentList = this.appointmentList.filter(att => att.clinicId == this.token);
         }
-        else if (this.role == 'Physician') {
+        else if (this.role == 'Physician' || this.role == 'Secretary') {
           this.appointmentList = this.appointmentList.filter(att => att.physicianId == this.token);
         }
 
@@ -303,8 +323,8 @@ export class AppointmentPageComponent {
       alert('Fill all input fields in the form');
       return;
     }
-    const currentDate: Date = new Date();
-    const dateString: string = currentDate.toLocaleDateString('en-US', {
+    const cd: Date = new Date();
+    const dateString: string = cd.toLocaleDateString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -358,7 +378,7 @@ export class AppointmentPageComponent {
   }
 
   //CALENDAR
-  currentDate: Date = new Date();
+  //currentDate: Date = new Date();
   startDayOfWeek: number = 0;
   daysInMonth: string[] = [];
 
@@ -382,14 +402,54 @@ export class AppointmentPageComponent {
     this.daysInMonth = daysArray;
   }
 
-  changeMonth(monthChange: number): void {
-    var m = this.currentDate.getMonth() + monthChange;
-    this.currentDate.setMonth(m);
-    this.functionSetDaysInMonth();
-  }
+  // changeMonth(monthChange: number): void {
+  //   var m = this.currentDate.getMonth() + monthChange;
+  //   this.currentDate.setMonth(m);
+  //   this.functionSetDaysInMonth();
+  // }
 
-  formatDate(inputDate: Date, format: string): string {
-    if (!inputDate) return '';
+   prevMonth() {
+    console.log('Before: ', this.currentDate.toISOString());
+
+    console.log(this.currentDate.getMonth());
+    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+
+    // Adjust the year if the month goes below 0
+    // console.log(this.currentDate.getMonth());
+    // if (this.currentDate.getMonth() < 0) {
+    //     this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
+    //     this.currentDate.setMonth(11); // Set the month to December (11)
+    // }
+
+    //this.currentDate.setDate(1); // Set the day to the first day of the month
+    this.functionSetDaysInMonth();
+
+    console.log('After: ', this.currentDate.toISOString());
+}
+
+ nextMonth() {
+    console.log('Before: ', this.currentDate.toISOString());
+
+    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+
+    // // Adjust the year if the month goes above 11
+    // if (this.currentDate.getMonth() > 11) {
+    //     this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
+    //     this.currentDate.setMonth(0); // Set the month to January (0)
+    // }
+
+    //this.currentDate.setDate(1); // Set the day to the first day of the month
+    this.functionSetDaysInMonth();
+
+    console.log('After: ', this.currentDate.toISOString());
+}
+
+
+
+  formatDate(sd: Date, format: string): string {
+    if (!sd) return '';
+
+    let inputDate = sd;
 
     const padZero = (value: number) => (value < 10 ? `0${value}` : `${value}`);
     const monthNames = [
@@ -434,7 +494,7 @@ export class AppointmentPageComponent {
     try {
       const filterValue = event.target.value.toLowerCase();
       //if role == 'Clinic' none will happen
-      if (this.role == 'Physician') {
+      if (this.role == 'Physician' || this.role == 'Secretary') {
         try {
           this.filteredClinics = this.clinicList.filter(
             (att) =>
@@ -448,7 +508,7 @@ export class AppointmentPageComponent {
         this.filteredClinics = this.clinicList;
       }
 
-      if (this.role != 'Physician') {
+      if (this.role != 'Physician' && this.role != 'Secretary') {
         this.selectedApprovedPhysicians = null;
         this.selectedPhysicianName = '';
 
@@ -477,7 +537,7 @@ export class AppointmentPageComponent {
         this.selectedClinicName = '';
         this.selectedClinic = null;
         this.hasClinicRunOnFocus = true;
-        if (this.role == 'Physician') {
+        if (this.role == 'Physician' || this.role == 'Secretary') {
           try {
             this.filteredClinics = this.clinicList.filter(
               (att) =>
@@ -602,7 +662,7 @@ export class AppointmentPageComponent {
   onPhysicianFocus() {
     try {
       if (!this.hasPhysicianRunOnFocus) {
-        if (this.role != 'Physician') {
+        if (this.role != 'Physician' && this.role != 'Secretary') {
           this.selectedService = null;
           this.selectedServiceDescription = '';
           this.selectedServicePrice = '';
@@ -642,8 +702,13 @@ export class AppointmentPageComponent {
     const startIndex = this.timeslots.indexOf(sched.morningStarting + ' to ' + this.geteTime(sched.morningStarting));
     const endIndex = this.timeslots.indexOf(this.getsTime(sched.morningEnding) + ' to ' + sched.morningEnding);
 
+    console.log(sched)
+    console.log(sched.morningStarting + ' to ' + this.geteTime(sched.morningStarting));
+    console.log(this.getsTime(sched.morningEnding) + ' to ' + sched.morningEnding)
+    console.log(startIndex + ' ' + endIndex);
     if (startIndex !== -1 && endIndex !== -1) {
       const subset = this.timeslots.slice(startIndex, endIndex + 1);
+      console.log(subset)
       this.timescheds = this.timescheds.concat(subset);
     } else {
       console.log("Elements 'b' and 'd' not found in the array.");
@@ -673,7 +738,7 @@ export class AppointmentPageComponent {
       }
 
       const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
-      inputTime.setMinutes(inputTime.getMinutes() + 30);
+      inputTime.setMinutes(inputTime.getMinutes() + 60);
 
       const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
         hour: 'numeric',
@@ -698,7 +763,7 @@ export class AppointmentPageComponent {
       }
 
       const inputTime: Date = new Date(2000, 0, 1, hours, minutes);
-      inputTime.setMinutes(inputTime.getMinutes() - 30);
+      inputTime.setMinutes(inputTime.getMinutes() - 60);
 
       const resultTimeString: string = inputTime.toLocaleTimeString('en-US', {
         hour: 'numeric',
@@ -886,8 +951,10 @@ export class AppointmentPageComponent {
     var idate = new Date(inputDate);
     return this.formatDateV2(idate, format);
   }
-  formatDateV2(inputDate: Date, format: string): string {
-    if (!inputDate) return '';
+  formatDateV2(sd: Date, format: string): string {
+    if (!sd) return '';
+
+    let inputDate = sd;
 
     const padZero = (value: number) => (value < 10 ? `0${value}` : `${value}`);
     const monthNames = [
@@ -958,7 +1025,7 @@ export class AppointmentPageComponent {
         this.isButtonDisabled = true;
       }
     }
-    else if (this.role == 'Physician' && this.selectedAppointment.status == 'Waiting') {
+    else if ((this.role == 'Physician' || this.role == 'Secretary') && this.selectedAppointment.status == 'Waiting') {
       if (this.selectedAppointmentStatus == 'Decline' || this.selectedAppointmentStatus == 'Accept') {
         this.isButtonDisabled = false;
       }
@@ -966,7 +1033,7 @@ export class AppointmentPageComponent {
         this.isButtonDisabled = true;
       }
     }
-    else if (this.role == 'Physician' && this.selectedAppointment.status == 'Accepted') {
+    else if ((this.role == 'Physician' || this.role == 'Secretary') && this.selectedAppointment.status == 'Accepted') {
       if (this.selectedAppointmentStatus == 'Done') {
         this.isButtonDisabled = false;
       }
@@ -1013,13 +1080,13 @@ export class AppointmentPageComponent {
 
 
     const dateObject: Date = new Date(`${dateString} ${timeString.split(' ')[0]}`);
-    const currentDate: Date = new Date();
+    const cd: Date = new Date();
 
     if (isNaN(dateObject.getTime())) {
       console.error('Invalid date format');
       return false;
     } else {
-      const timeDifference: number = dateObject.getTime() - currentDate.getTime();
+      const timeDifference: number = dateObject.getTime() - cd.getTime();
 
       const totalHoursDifference: number = timeDifference / (1000 * 60 * 60);
       if (totalHoursDifference > 2) {

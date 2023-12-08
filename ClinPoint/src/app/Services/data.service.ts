@@ -55,6 +55,7 @@ export class DataService {
   createPatientAccount(account: Account, patient: Patient){
     account.id = this.fs.createId();
     patient.id = account.id;
+    account.status = 'Active';
 
     this.fs.collection('/AccountsV2').doc(account.id).set(account);
     this.fs.collection('/PatientsV2').doc(patient.id).set(patient);
@@ -63,7 +64,7 @@ export class DataService {
 
   async loginAccount(username: string, password: string): Promise<Account | null>{
     const querySnapshot = await this.fs.collection('/AccountsV2', ref =>
-      ref.where('username', '==', username).where('password', '==', password).limit(1)
+      ref.where('username', '==', username).where('password', '==', password).where('status', '==', 'Active').limit(1)
     ).get().toPromise();
 
     //return null;
@@ -90,7 +91,7 @@ export class DataService {
   createPhysicianAccount(account: Account, physician: Physician){
     account.id = this.fs.createId();
     physician.id = account.id;
-
+    account.status = 'Active';
     this.fs.collection('/AccountsV2').doc(account.id).set(account);
     this.fs.collection('/PhysiciansV2').doc(physician.id).set(physician);
     let d = {
@@ -156,6 +157,8 @@ export class DataService {
         }
       ]
     }
+
+    account.status = 'Active';
 
     this.fs.collection('/AccountsV2').doc(account.id).set(account);
     this.fs.collection('/ClinicsV2').doc(clinic.id).set(clinic);
@@ -365,4 +368,32 @@ export class DataService {
   updatePhysicianTimeSchedule(schedule: any){
     return this.fs.collection('/PhysicianSchedule').doc(schedule.id).update(schedule);
   }
+
+
+  //secretary module
+  addSecretary(secretary: any, account: any){
+    secretary.addressId = this.fs.createId();
+    account.addressId = secretary.addressId;
+    this.fs.collection('/AccountsV2').doc(account.addressId).set(account);
+    this.fs.collection('/PhysicianSecretary').doc(secretary.addressId).set(secretary);
+  }
+
+  updateSecretary(secretary: any){
+    let acc = {
+      status: secretary.status
+    }
+    this.fs.collection('/AccountsV2').doc(secretary.addressId).update(acc);
+    return this.fs.collection('/PhysicianSecretary').doc(secretary.addressId).update(secretary);
+  }
+
+  getAllSecretary(){
+    return this.fs.collection('/PhysicianSecretary').snapshotChanges();
+  }
+
+
+  updateAccount(acc:any){
+    this.fs.collection('/AccountsV2').doc(acc.addressId).update(acc);
+  }
+
+
 }

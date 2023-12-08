@@ -1,3 +1,5 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export interface Model {
 }
 
@@ -7,6 +9,7 @@ export interface Account {
   username: string;
   password: string;
   role: string;
+  status: string;
 }
 
 export interface Patient {
@@ -90,4 +93,6 @@ export interface Payment{
   datecreated: string;
   receiptPhoto: string;
   subscriptionType: string;
+  dateUpdated: any;
+  expirationDate: any;
 }

@@ -28,7 +28,8 @@ export class SignupComponentComponent {
     id: '',
     username: '',
     password: '',
-    role: ''
+    role: '',
+    status: ''
   }
 
   patientObj : Patient = {
@@ -484,7 +485,7 @@ export class SignupComponentComponent {
         this.successfullyCreated = true;
       }
 
-      this.closeModal.nativeElement.close();
+      this.closeModal.nativeElement.click();
     }
   }
 

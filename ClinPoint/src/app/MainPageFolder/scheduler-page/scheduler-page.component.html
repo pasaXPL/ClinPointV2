@@ -1,29 +1,354 @@
-<div class="w-full mx-auto bg-white p-6 rounded-md shadow-md">
-  <h1 class="text-2xl font-bold mb-4">Calendar</h1>
-
-  <!-- Month Navigation Buttons -->
-  <div class="flex justify-between mb-4">
-    <button (click)="changeMonth(-1)" class="text-gray-600 hover:text-gray-800 focus:outline-none">
-      Previous Month
-    </button>
-    <p class="text-lg font-semibold">
-      {{ formatDate(currentDate, 'Mm yyyy') }}
-    </p>
-    <button (click)="changeMonth(1)" class="text-gray-600 hover:text-gray-800 focus:outline-none">
-      Next Month
-    </button>
-  </div>
-
-  <!-- Calendar Grid -->
-  <div class="grid grid-cols-7 gap-2">
-    <!-- Weekday Labels -->
-    <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" class="text-center font-semibold text-gray-600">{{ day }}</div>
-
-    <!-- Days of the Month -->
-    <div *ngFor="let day of daysInMonth" class="text-center">
-      <div class="py-2 px-3 rounded-full hover:bg-gray-200">
-        {{ day }}
+<div class="bg-white px-3 md:p-8 rounded-md w-full">
+  <div class=" flex items-center justify-between pb-6">
+    <div>
+      <h2 class="text-gray-600 font-semibold text-lg">My Secretary</h2>
+      <span class="text-xs">All Secretary</span>
+    </div>
+    <div class="flex items-center justify-between">
+      <div class="space-x-8">
+        <div>
+          <button data-te-ripple-init data-te-ripple-color="light" data-te-toggle="modal"
+            data-te-target="#addSecretary"
+            class="inline-block rounded bg-alili px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">Add
+            Secretary</button>
+        </div>
       </div>
     </div>
   </div>
+  <div class="flex pb-6">
+    <div class="w-full flex space-x-5">
+
+      <input type="text" placeholder="Search (Name, Contact Number, or Address)"
+        class="block w-full px-6 pb-2 pt-2.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+        />
+
+      <div>
+        <button data-te-ripple-init data-te-ripple-color="light"
+          class="w-full inline-block rounded bg-alili px-6 pb-2 pt-2.5 font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">Search</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+      <div class="hidden md:inline-block min-w-full shadow rounded-lg overflow-hidden">
+        <table class="min-w-full leading-normal">
+          <thead>
+            <tr>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Name
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Contact No
+              </th>
+              <!-- <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                From Date
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                To Date
+              </th> -->
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Email
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Status
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hover:bg-gray-300 cursor-pointer" *ngFor="let s of secretaryList" (click)="selectSecretary(s)">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{s.firstname + ' ' + s.lastname}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{s.contactno}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                  {{s.email}}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <span class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
+                  <span aria-hidden class="absolute inset-0 rounded-full"
+                    [ngClass]="{ 'bg-green-100': s.status === 'Active', 'bg-red-100': s.status === 'Inactive'}"></span>
+                  <span class="relative">{{s.status}}</span>
+                </span>
+              </td>
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <button data-te-ripple-init data-te-ripple-color="light"
+                  class="inline-block rounded bg-alili px-3 py-1.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-alili hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-alili focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-alili active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="grid md:hidden min-w-full shadow rounded-lg overflow-hidden gap-y-6">
+        <div class="border rounded bg-white shadow-md w-full px-4 py-2" *ngFor="let s of secretaryList" (click)="selectSecretary(s)">
+
+          <div class="grid grid-cols items-center gap-x-5">
+            <div>
+              <p class="font-bold text-gray-900 whitespace-no-wrap">
+                {{ 'Name: ' + s.firstname + ' ' + s.lastname}}
+              </p>
+              <p class="text-xs text-gray-900 whitespace-no-wrap">
+                {{ "Contact No: " + s.refno }}
+              </p>
+              <p class="text-xs text-gray-900 whitespace-no-wrap">
+                {{ "Email: " + s.email }}
+              </p>
+              <span class="relative inline-block text-sm px-3 py-1 font-semibold text-gray-900 leading-tight">
+                <span aria-hidden class="absolute inset-0 rounded-full"
+                  [ngClass]="{ 'bg-green-100': s.status === 'Active', 'bg-red-100': s.status === 'Inactive'}"></span>
+                <span class="relative">{{s.status}}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="addSecretary" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewServiceLabel"
+  aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+
+    <div
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <!--Modal title-->
+        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="viewServiceLabel">
+          Add Secretary
+        </h5>
+        <!--Close button-->
+        <button type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!--Modal body-->
+      <div data-te-modal-body-ref class="relative p-4">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Secretary Photo</label>
+            <input type="file" placeholder="Profile Photo"
+             class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+            accept="image/*" (change)="getSecretaryLogo($event)" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">First Name</label>
+            <input type="text" value="" placeholder="John Clinic"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="firstname" />
+          </div>
+
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Last Name</label>
+            <input type="text" placeholder="John Doe"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="lastname" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-600 dark:text-gray-200">Birthdate</label>
+            <input type="date"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter Birthdate" value="" [(ngModel)]="birthdate" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Phone number</label>
+            <input type="text" placeholder="XXX-XX-XXXX-XXX"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="contactno"  maxlength="11" (keypress)="validateNumericInput($event)"/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Email address</label>
+            <input type="email" placeholder="johnsnow@example.com"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="email" />
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Address</label>
+            <input type="text" placeholder="Enter your address"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="address" />
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Username</label>
+            <input type="text" placeholder="Enter your username"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="username" />
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Password</label>
+            <input type="password" placeholder="Enter your Password"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="password" />
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Confirm Password</label>
+            <input type="password" placeholder="Confirm your password"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="confirmpassword" />
+          </div>
+        </div>
+      </div>
+
+
+      <!--Modal footer-->
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <button type="button"
+          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+          Close
+        </button>
+        <button type="button"
+          class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+          data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" (click)="addSecretary()">
+          Add Secretary
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="viewSecretary" data-te-backdrop="static" data-te-keyboard="false" tabindex="-1" aria-labelledby="viewServiceLabel"
+  aria-hidden="true">
+  <div data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+
+    <div
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <!--Modal title-->
+        <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="viewServiceLabel">
+          Add Secretary
+        </h5>
+        <!--Close button-->
+        <button type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!--Modal body-->
+      <div data-te-modal-body-ref class="relative p-4" *ngIf="selectedSecretary">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div class="md:col-span-2">
+            <div class="flex items-center justify-center">
+              <div class="rounded-full overflow-hidden border border-gray-200 w-32 h-32">
+                <img [src]="selectedSecretary.secretaryImage" alt="Secretary Image" class="w-full h-full object-cover object-center">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">First Name</label>
+            <input type="text" value="" placeholder="John Clinic"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedSecretary.firstname" disabled/>
+          </div>
+
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Last Name</label>
+            <input type="text" placeholder="John Doe"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedSecretary.lastname" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-600 dark:text-gray-200">Birthdate</label>
+            <input type="date"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Enter Birthdate" value="" [(ngModel)]="selectedSecretary.birthdate" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Phone number</label>
+            <input type="text" placeholder="XXX-XX-XXXX-XXX"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedSecretary.contactno" disabled/>
+          </div>
+
+          <div>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Email address</label>
+            <input type="email" placeholder="johnsnow@example.com"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedSecretary.email" disabled/>
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Address</label>
+            <input type="text" placeholder="Enter your address"
+              class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40"
+              [(ngModel)]="selectedSecretary.address" disabled/>
+          </div>
+        </div>
+      </div>
+
+
+      <!--Modal footer-->
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <button type="button"
+          class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+          data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
+          Close
+        </button>
+        <button type="button"
+          class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+          data-te-ripple-init data-te-modal-dismiss data-te-ripple-color="light" (click)="archiveSecretary()">
+          Archive Secretary
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hidden">
+  <button #viewSecretary data-te-toggle="modal" data-te-target="#viewSecretary"></button>
+  <button #closeModals data-te-modal-dismiss aria-label="Close"></button>
 </div>

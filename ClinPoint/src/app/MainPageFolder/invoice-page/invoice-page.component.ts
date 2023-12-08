@@ -40,7 +40,9 @@ export class InvoicePageComponent {
     clinicId: '',
     datecreated: '',
     receiptPhoto: '',
-    subscriptionType: ''
+    subscriptionType: '',
+    dateUpdated: null,
+    expirationDate: null
   };
 
   searchString = '';
@@ -55,6 +57,8 @@ export class InvoicePageComponent {
   selectedPaymentStatus = '';
   isButtonDisabled = true;
   currentDate = '';
+
+  isAlreadySubscribed = true;
 
 
   subscriptionList=  [
@@ -101,6 +105,8 @@ export class InvoicePageComponent {
           b.datecreated.localeCompare(a.datecreated)
         );
         this.originalPaymentList = this.paymentList;
+
+        this.checkSubscription();
       },
       (err) => {
         alert('Error while fetching services data');
@@ -164,6 +170,17 @@ export class InvoicePageComponent {
   }
 
 
+  checkSubscription(){
+    let cdate = new Date;
+    let latestPayment = this.originalPaymentList.filter(att => att.status == 'Approved' && att.dateUpdated.toDate() <= cdate && att.expirationDate.toDate() >= cdate);
+    if(latestPayment.length > 0){
+      this.isAlreadySubscribed = true;
+    }
+    else{
+      this.isAlreadySubscribed = false;
+    }
+  }
+
   addPayment() {
     if (
       this.receiptImage == null 
@@ -171,6 +188,16 @@ export class InvoicePageComponent {
       alert('Please add a receipt to proceed');
       return;
     }
+
+    // if(true){
+    //   let latestPayment = this.originalPaymentList.filter(att => att.status == 'Approved')[0];
+    //   console.log(latestPayment.dateUpdated.toDate().toDateString());
+
+    //   alert(latestPayment.dateUpdated.toDate().toDateString());
+    //   return;
+    // }
+
+
     const currentDate: Date = new Date();
     this.datesent = currentDate.toDateString();
 
@@ -231,13 +258,31 @@ export class InvoicePageComponent {
   }
 
   async updatePayment() {
+    let edate = new Date;
+    let cdate = new Date;
+
+    if(this.selectedPayment.subscriptionType == 'Platinum Subscription : 1 Year for P4,500'){
+      edate.setFullYear(edate.getFullYear() + 1);
+    }
+    else{
+      const targetMonth = (edate.getMonth() + 6) % 12;
+      const targetYear = edate.getFullYear() + Math.floor((edate.getMonth() + 6) / 12);
+
+      // Set the target month and year
+      edate.setMonth(targetMonth);
+      edate.setFullYear(targetYear);
+    }
+
     var data = {
       id: this.selectedPayment.id,
       status:
         this.selectedPaymentStatus === 'Cancel'
           ? this.selectedPaymentStatus + 'led'
           : this.selectedPaymentStatus + 'd',
+      dateUpdated: cdate,
+      expirationDate: edate
     };
+
     await this.data.updatePayments(data);
 
     if(data.status == 'Approved')

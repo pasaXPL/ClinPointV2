@@ -35,6 +35,8 @@ export class DashboardPageComponent {
 
   appointmentChart: any;
   appointmentCharts: any;
+
+  originalCurrentDate:any;
   
 
   constructor(private router:Router, private auth:AuthService, private data:DataService){}
@@ -45,6 +47,7 @@ export class DashboardPageComponent {
 
     this.token = this.auth.getToken()!;
     var user: any;
+    this.originalCurrentDate = new Date;
 
     this.getAllAppointments();
     this.getAllUsers();
@@ -70,7 +73,7 @@ export class DashboardPageComponent {
       else if(this.role == "Admin"){
         this.name = "ClinPoint";
       }
-      else if (this.role == "Physician"){
+      else if (this.role == "Physician" || this.role == "Secretary"){
         user  = await this.data.getPhysicianById(this.token);
         this.name = user.firstname + " " + user.lastname;
         if(user.status == 'Approved'){
@@ -143,7 +146,9 @@ export class DashboardPageComponent {
         return data;
       });
 
-      if(this.role == 'Physician'){
+      console.log(this.appointmentList)
+
+      if(this.role == 'Physician' || this.role == 'Secretary'){
         this.appointmentList = this.appointmentList.filter(att => att.physicianId == this.token);
         
         let listpatientid:any[] = [...new Set(this.appointmentList.map(att => att.patientId))];
@@ -286,7 +291,7 @@ export class DashboardPageComponent {
   }
 
   displayPreviousDays(): string[] {
-    let currentDate = new Date();
+    let currentDate = this.originalCurrentDate;
     const currentWeek: string[] = [];
     const dayCurrent = [ "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
 
@@ -307,7 +312,7 @@ export class DashboardPageComponent {
 
   getDatas(s:string): number[] {
     let realCurrentDate = new Date;
-    let currentDate = new Date;
+    let currentDate = this.originalCurrentDate;
     const currentWeek: string[] = [];
     const totalAppointment: number[] = [];
     const sunday = new Date(currentDate);
@@ -326,6 +331,15 @@ export class DashboardPageComponent {
       });
 
     return totalAppointment;
+  }
+
+  previousWeek(){
+    this.originalCurrentDate.setDate(this.originalCurrentDate.getDate() - 7);
+    this.SetAppointmentChart();
+  }
+  nextWeek(){
+    this.originalCurrentDate.setDate(this.originalCurrentDate.getDate() + 7);
+    this.SetAppointmentChart();
   }
 }
 

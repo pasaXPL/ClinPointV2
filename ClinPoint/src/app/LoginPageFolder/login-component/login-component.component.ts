@@ -24,7 +24,8 @@ export class LoginComponentComponent {
     id: '',
     username: '',
     password: '',
-    role: ''
+    role: '',
+    status: '',
   };
 
   ngOnInit() {

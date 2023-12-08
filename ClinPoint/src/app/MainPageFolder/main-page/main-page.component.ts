@@ -75,7 +75,7 @@ export class MainPageComponent {
 
     var user: any;
     try{
-    if(this.role == "Patient"){
+    if(this.role == "Patient" ){
       user = await this.data.getPatientById(this.token);
       console.log('test' + user)
       this.name = user.firstname + " " + user.lastname;
@@ -84,9 +84,13 @@ export class MainPageComponent {
     else if(this.role == "Admin"){
       this.name = "ClinPoint";
     }
-    else if (this.role == "Physician"){
+    else if (this.role == "Physician"|| this.role == 'Secretary'){
       user  = await this.data.getPhysicianById(this.token);
+
       this.name = user.firstname + ' ' + user.lastname;
+      if(this.role == 'Secretary'){
+        this.name = 'Secretary'
+      }
       if(user.status == 'Approved'){
         this.isActive = true;
       }

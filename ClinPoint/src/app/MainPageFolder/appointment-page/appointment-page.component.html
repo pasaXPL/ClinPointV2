@@ -356,13 +356,13 @@
         <div class="h-98">
           <!-- Month Navigation Buttons -->
           <div class="flex justify-between">
-            <button (click)="changeMonth(-1)" class="text-secondary-600 hover:text-secodary-800 focus:outline-none">
+            <button (click)="prevMonth()" class="text-secondary-600 hover:text-secodary-800 focus:outline-none">
               Previous Month
             </button>
             <p class="text-lg font-semibold">
               {{ formatDate(currentDate, 'Mm yyyy') }}
             </p>
-            <button (click)="changeMonth(1)" class="text-secondary-600 hover:text-secondary-800 focus:outline-none">
+            <button (click)="nextMonth()" class="text-secondary-600 hover:text-secondary-800 focus:outline-none">
               Next Month
             </button>
           </div>
@@ -501,8 +501,8 @@
 
 
       <!--Modal footer-->
-      <div
-        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50" *ngIf="selectedAppointment">
+      <div *ngIf="selectedAppointment"
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
         <button type="button"
           class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
           data-te-modal-dismiss data-te-ripple-init data-te-ripple-color="light">
@@ -511,7 +511,7 @@
         <button type="button" data-te-modal-dismiss
           class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
           data-te-ripple-init data-te-ripple-color="light" (click)="viewUpdateAppointment()"
-           *ngIf="(checkTime() && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) == 'Waiting' && role != 'Admin') || (role == 'Physician' && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) == 'Accepted' && !checkTime())">
+           *ngIf="(checkTime() && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) == 'Waiting' && role != 'Admin') || ((role == 'Physician' || role == 'Secretary') && getAppointmentStatus(selectedAppointment.appointmentDate, selectedAppointment.status) == 'Accepted' && !checkTime()) || (role == 'Patient' && selectedAppointment.status == 'Accepted' && checkTime())">
           Update Appointment
         </button>
       </div>
@@ -543,8 +543,9 @@
       </div>
 
       <!--Modal body-->
-      <div data-te-modal-body-ref class="relative p-4">
-        <div class="gap-5" *ngIf="role == 'Physician' && selectedAppointment.status == 'Waiting'">
+      <div data-te-modal-body-ref class="relative p-4" >
+        <div *ngIf="selectedAppointment">
+        <div class="gap-5" *ngIf="(role == 'Physician' || role == 'Secretary') && selectedAppointment.status == 'Waiting'">
           <p>Would you like to <span class="font-bold">ACCEPT</span> or <span class="font-bold">DECLINE</span> the appointment?</p>
           <div class="col-span-1 md:col-span-2">
             <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">Accept</span> or <span class="font-bold">Decline</span> the appointment?</label>
@@ -553,8 +554,10 @@
               [(ngModel)]="selectedAppointmentStatus" />
           </div>
         </div>
+        </div>
 
-        <div class="gap-5" *ngIf="role == 'Physician' && selectedAppointment.status == 'Accepted'">
+        <div *ngIf="selectedAppointment">
+        <div class="gap-5" *ngIf="(role == 'Physician' || role == 'Secretary') && selectedAppointment.status == 'Accepted'">
           <p>Are you done with the appointment?</p>
           <div class="col-span-1 md:col-span-2">
             <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Type <span class="font-bold">DONE</span> to finish appointment?</label>
@@ -563,7 +566,7 @@
               [(ngModel)]="selectedAppointmentStatus" />
           </div>
         </div>
-
+        </div>
         <div class="gap-5" *ngIf="role == 'Patient'">
           <p>Would you like to <span class="font-bold">CANCEL</span> your the appointment?</p>
           <div class="col-span-1 md:col-span-2">

@@ -37,8 +37,13 @@
  </div>
 
 <div class="mt-3 grid p-5 border border-gray-200 shadow-xl rounded-lg" *ngIf="role != 'Patient'">
-  <div>
-    <p class="text-gray-500 text-semibold underline">Appointments this week</p>
+  <div class="flex">
+    <p class="text-gray-500 text-semibold underline w-full">Appointments this week</p>
+    <div class="w-full"></div>
+    <div class="flex space-x-2">
+      <p class="cursor-pointer" (click)="previousWeek()">Previous</p>
+      <p class="cursor-pointer" (click)="nextWeek()">Next</p>
+    </div>
   </div>
   <div class="w-full h-[30vh]">
     <canvas  id="myAppointments" >{{ appointmentChart }}</canvas>
@@ -47,30 +52,30 @@
 
   <h4 class="font-semibold mt-2 md:hidden">Features</h4>
   <div class="w-full mt-5 px-2 grid grid-cols-4 gap-7 justify-center md:hidden">
-    <div routerLink="/mobiledashboard/clinic"
+    <div routerLink="/mobiledashboard/clinic" *ngIf="role != 'Secretary'"
       class="flex flex-col items-center justify-center w-20  h-20  bg-green-200 rounded-2xl text-green-600 shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
       <i class="far fa-hospital"></i>
       <p class="text-sm mt-1">Clinics</p>
     </div>
-    <div routerLink="/mobiledashboard/physician"  *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin' || role == 'Patient'"
+    <div routerLink="/mobiledashboard/physician"  *ngIf="((role == 'Clinic') && isActive) || role == 'Admin' || role == 'Patient'"
       class="flex flex-col items-center justify-center w-20  h-20  bg-green-200 rounded-2xl text-green-600 shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
       <i class="far fa-user"></i>
       <p class="text-sm mt-1">Physicians</p>
     </div>
 
-    <div routerLink="/mobiledashboard/patient" *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin'"
+    <div routerLink="/mobiledashboard/patient" *ngIf="((role == 'Clinic' || role == 'Physician' || role == 'Secretary') && isActive) || role == 'Admin'"
       class="flex flex-col items-center justify-center w-20  h-20  bg-yellow-200 rounded-2xl text-yellow-600  shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
       <i class="far fa-user"></i>
       <p class="text-sm mt-1">Patients</p>
     </div>
 
-    <div *ngIf="role == 'Physician'" routerLink="/mobiledashboard/services"
+    <div *ngIf="role == 'Physician' || role == 'Secretary'" routerLink="/mobiledashboard/services"
       class="flex flex-col items-center justify-center w-20  h-20  bg-indigo-200  rounded-2xl  text-indigo-500 shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
       <i class="far fa-notes-medical"></i>
       <p class="text-sm mt-1">Services</p>
     </div>
 
-    <div routerLink="/mobiledashboard/appointment" *ngIf="((role == 'Clinic' || role == 'Physician') && isActive) || role == 'Admin' || role == 'Patient'"
+    <div routerLink="/mobiledashboard/appointment" *ngIf="((role == 'Clinic' || role == 'Physician' || role == 'Secretary') && isActive) || role == 'Admin' || role == 'Patient'"
       class="flex flex-col items-center justify-center w-20  h-20  bg-pink-200   rounded-2xl text-pink-500 shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
       <i class="far fa-calendar"></i>
       <p class="text-sm mt-1">Appointment</p>
@@ -82,7 +87,7 @@
       <p class="text-sm mt-1">Subscription</p>
     </div>
 
-    <div routerLink="/mobiledashboard/faq"  *ngIf="role == 'Patient'"
+    <div routerLink="/mobiledashboard/faq"  *ngIf="role == 'Patient' || role == 'Secretary'"
       class="flex flex-col items-center justify-center w-20  h-20  bg-yellow-200 rounded-2xl text-yellow-600  shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
       <i class="far fa-user"></i>
       <p class="text-sm mt-1">FAQ</p>
@@ -93,7 +98,19 @@
       <i class="far fa-user"></i>
       <p class="text-sm mt-1">Messages</p>
     </div>
+
+    <div routerLink="/mobiledashboard/secretary" *ngIf="role == 'Physician'"
+      class="flex flex-col items-center justify-center w-20  h-20  bg-yellow-200 rounded-2xl text-yellow-600  shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
+      <i class="far fa-user"></i>
+      <p class="text-sm mt-1">Secretary</p>
+    </div>
   </div>
+
+  <div *ngIf="role == 'Admin'" routerLink="/mobiledashboard/users"
+      class="flex flex-col items-center justify-center w-20  h-20  bg-indigo-200  rounded-2xl  text-indigo-500 shadow hover:shadow-md cursor-pointer mb-2 p-1 bg-white transition ease-in duration-300">
+      <i class="far fa-notes-medical"></i>
+      <p class="text-sm mt-1">Users</p>
+    </div>
 
 
 

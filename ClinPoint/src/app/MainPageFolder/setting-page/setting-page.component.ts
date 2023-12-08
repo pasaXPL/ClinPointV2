@@ -100,38 +100,60 @@ export class SettingPageComponent {
   cpassword = '';
 
   //scheduler
+  // amtime = [
+  //   '8:00 AM',
+  //   '8:30 AM',
+  //   '9:00 AM',
+  //   '9:30 AM',
+  //   '10:00 AM',
+  //   '10:30 AM',
+  //   '11:00 AM',
+  //   '11:30 AM',
+  // ];
+
+  // pmtime = [
+  //   '12:00 PM',
+  //   '12:30 PM',
+  //   '1:00 PM',
+  //   '1:30 PM',
+  //   '2:00 PM',
+  //   '2:30 PM',
+  //   '3:00 PM',
+  //   '3:30 PM',
+  //   '4:00 PM',
+  //   '4:30 PM',
+  //   '5:00 PM',
+  //   '5:30 PM',
+  //   '6:00 PM',
+  //   '6:30 PM',
+  //   '7:00 PM',
+  //   '7:30 PM',
+  //   '8:00 PM',
+  //   '8:30 PM',
+  //   '9:00 PM',
+  // ];
+
+
   amtime = [
     '8:00 AM',
-    '8:30 AM',
-    '9:00 AM ',
-    '9:30 AM',
+    '9:00 AM',
     '10:00 AM',
-    '10:30 AM',
     '11:00 AM',
-    '11:30 AM',
   ];
 
   pmtime = [
     '12:00 PM',
-    '12:30 PM',
     '1:00 PM',
-    '1:30 PM',
     '2:00 PM',
-    '2:30 PM',
     '3:00 PM',
-    '3:30 PM',
     '4:00 PM',
-    '4:30 PM',
     '5:00 PM',
-    '5:30 PM',
     '6:00 PM',
-    '6:30 PM',
     '7:00 PM',
-    '7:30 PM',
     '8:00 PM',
-    '8:30 PM',
     '9:00 PM',
   ];
+
 
   morningStarting = '';
   morningEnding = '';
@@ -164,7 +186,7 @@ export class SettingPageComponent {
       this.patientObj = await this.data.getPatientById(this.token)!;
       this.name = this.patientObj.firstname + ' ' + this.patientObj.lastname;
       this.toBeUpdate = this.patientObj;
-    } else if (this.role == 'Physician') {
+    } else if (this.role == 'Physician' || this.role == 'Secretary') {
       this.physicianObj = await this.data.getPhysicianById(this.token)!;
       this.name =
         this.physicianObj.firstname + ' ' + this.physicianObj.lastname;
@@ -198,9 +220,14 @@ export class SettingPageComponent {
           this.afternoonStarting = this.physicianSchedule.afternoonStarting;
           this.afternoonEnding = this.physicianSchedule.afternoonEnding;
         } else {
+          // this.morningStarting = '8:00 AM';
+          // this.morningEnding = '11:30 AM';
+          // this.afternoonStarting = '12:00 PM';
+          // this.afternoonEnding = '9:00 PM';
+
           this.morningStarting = '8:00 AM';
-          this.morningEnding = '11:30 AM';
-          this.afternoonStarting = '12:00 PM';
+          this.morningEnding = '11:00 AM';
+          this.afternoonStarting = '1:00 PM';
           this.afternoonEnding = '9:00 PM';
         }
       },
