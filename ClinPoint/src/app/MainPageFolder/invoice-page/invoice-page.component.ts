@@ -356,45 +356,48 @@ export class InvoicePageComponent {
   public downloadAsPDF() {
     const doc = new jsPDF();
     doc.setFont('Arial', 'normal');
+    
+    doc.internal.pageSize.width = 150;
+    doc.internal.pageSize.height = 150;
+    doc.setFontSize(11);
+    let header = '. . . . . . . . . . . . . . . . Official Receipt of ClinPoint Subscription . . . . . . . . . . . . ';
+    doc.text(header,  15, 10);
+    let title = 'C L I N P O I N T';
+    doc.setFontSize(30);
+    doc.text(title,  39, 20);
 
-    doc.setFontSize(16);
-    doc.setTextColor(255, 255, 255);
-    doc.setFillColor(179, 182, 182);
-    doc.rect(10, 10, 100, 10, 'F');
-    doc.text('ClinPoint', 15, 18);
 
-    doc.setFontSize(10);
-    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(20);
+    doc.text(this.selectedPayment.id, 39, 35);
+    doc.text('___________________________', 28, 35);
+    doc.setFontSize(15)
+    doc.text('Reference No', 63, 41);
 
-    doc.text(
-      'This is the official receipt of ClinPoint recognizing that ClinPoint received a certain amount for the subscription of the clinic.',
-      15,
-      30
-    );
+    doc.setFontSize(20);
+    doc.text(this.selectedPayment.clinicName, 39, 55);
+    doc.text('___________________________', 28, 55);
+    doc.setFontSize(15)
+    doc.text('Clinic', 63, 61);
 
-    doc.setDrawColor(0);
-    doc.setLineWidth(0.2);
+    doc.setFontSize(15);
+    doc.text(this.selectedPayment.subscriptionType, 39, 75);
+    doc.text('___________________________________', 28, 75);
+    doc.setFontSize(15)
+    doc.text('Subscription Type', 63, 81);
 
-    doc.rect(15, 45, 90, 10);
-    doc.text('Reference No: ' + this.selectedPayment.id, 20, 53);
+    doc.setFontSize(20);
+    doc.text(this.selectedPayment.totalprice, 39, 95);
+    doc.text('___________________________', 28, 95);
+    doc.setFontSize(15)
+    doc.text('Total Price', 63, 101);
 
-    doc.rect(15, 60, 90, 10);
-    doc.text('Received From: ' + this.selectedPayment.clinicName, 20, 63);
-
-    doc.rect(15, 75, 90, 10);
-    doc.text('Subscription From: ' + this.selectedPayment.fromdate, 20, 83);
-
-    doc.rect(15, 90, 90, 10);
-    doc.text('Subscription To: ' + this.selectedPayment.todate, 20, 98);
-
-    doc.rect(15, 105, 90, 10);
-    doc.text('Sent on: ' + this.selectedPayment.datesent, 20, 113);
-
-    doc.rect(15, 120, 90, 10);
-    doc.text('Amount: ' + this.selectedPayment.totalprice, 20, 128);
-
-    doc.rect(15, 135, 90, 10);
-    doc.text('Date today: ' + this.currentDate, 20, 143);
+    let d = this.selectedPayment.dateUpdated.toDate();
+    let e = this.selectedPayment.expirationDate.toDate();
+    doc.setFontSize(20);
+    doc.text(d.getMonth()+ '/' + d.getDay() + '/' + d.getFullYear() + ' until ' + e.getMonth()+ '/' + e.getDay() + '/' + e.getFullYear(), 39, 115);
+    doc.text('___________________________', 28, 115);
+    doc.setFontSize(15)
+    doc.text('Subscription Date', 63, 121);
 
     doc.save(this.selectedPayment.id + '.pdf');
   }

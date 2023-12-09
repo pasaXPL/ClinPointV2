@@ -292,7 +292,11 @@ export class AppointmentPageComponent {
 
   openAppointmentModal(appointment: any) {
     var d = new Date(appointment.appointmentDate);
-    if (d < this.realcurrentdate && appointment.status == 'Waiting') {
+    d.setHours(0, 0 ,0);
+
+    var b = this.realcurrentdate;
+    b.setHours(0, 0, 0);
+    if (d < b && appointment.status == 'Waiting' || 'Accepted') {
       appointment.status = 'Failed Appointment';
     }
     this.selectedAppointment = appointment;
@@ -1006,7 +1010,11 @@ export class AppointmentPageComponent {
 
   getAppointmentStatus(date: string, status: string): string {
     var d = new Date(date);
-    if (d < this.realcurrentdate && (status == 'Waiting')) {
+    d.setHours(0, 0 ,0);
+
+    var b = this.realcurrentdate;
+    b.setHours(0, 0, 0);
+    if (d < b && (status == 'Waiting' || status == 'Accepted')) {
       return 'Failed Appointment';
     }
     else {
