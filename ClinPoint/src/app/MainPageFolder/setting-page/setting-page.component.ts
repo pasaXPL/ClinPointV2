@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
-import {
-  Account,
-  Patient,
-  Clinic,
-  Physician,
-} from 'src/app/Models/model.model';
-import { AuthService } from 'src/app/Services/auth.service';
-import { DataService } from 'src/app/Services/data.service';
-import { Modal, Ripple, Input, initTE, Select, Datepicker } from 'tw-elements';
+import { Component, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/Services/auth.service';
+import { initTE, Select, Input, Ripple, Modal } from 'tw-elements';
+import { Account, Physician, Patient, Clinic } from 'src/app/Models/model.model';
+import { DataService } from 'src/app/Services/data.service';
+import { FileSaverService } from 'ngx-filesaver';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
+import { baseURL, clickSendUsername, clickSendPassword } from 'src/app/Models/BaseURL';
 
 @Component({
   selector: 'app-setting-page',
@@ -165,15 +168,16 @@ export class SettingPageComponent {
   constructor(
     private auth: AuthService,
     private data: DataService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngAfterViewInit() {
-    initTE({ Modal, Ripple, Input, Select, Datepicker });
+    initTE({ Modal, Ripple, Input, Select });
   }
 
   async ngOnInit() {
-    initTE({ Modal, Ripple, Input, Select, Datepicker });
+    initTE({ Modal, Ripple, Input, Select });
 
     this.role = this.auth.getAuth()!;
     this.token = this.auth.getToken()!;
@@ -281,6 +285,69 @@ export class SettingPageComponent {
         'Are you sure you want to update ' + clinic.clinicName + ' ?'
       )
     ) {
+
+      if (this.ClinicFile1) {
+        try{
+        const formData = new FormData();
+        formData.append('file', this.ClinicFile1);
+
+        this.http.post(baseURL + 'upload', formData, { responseType: 'text' }).subscribe(
+          response => {
+            console.log('File uploaded successfully', response);
+          },
+          error => {
+            console.error('Error uploading the file', error);
+          }
+        );
+        }catch{}
+      }
+
+      if (this.ClinicFile2) {
+        try{
+        const formData = new FormData();
+        formData.append('file', this.ClinicFile2);
+
+        this.http.post(baseURL + 'upload', formData, { responseType: 'text' }).subscribe(
+          response => {
+            console.log('File uploaded successfully', response);
+          },
+          error => {
+            console.error('Error uploading the file', error);
+          }
+        );
+        }catch{}
+      }
+
+      if (this.ClinicFile3) {
+        try{
+        const formData = new FormData();
+        formData.append('file', this.ClinicFile3);
+
+        this.http.post(baseURL + 'upload', formData, { responseType: 'text' }).subscribe(
+          response => {
+            console.log('File uploaded successfully', response);
+          },
+          error => {
+            console.error('Error uploading the file', error);
+          }
+        );
+        }catch{}
+      }
+
+      clinic.file1 = '';
+      clinic.file2 = '';
+      clinic.file3 = '';
+
+      if(this.ClinicFile1){
+        clinic.file1 = baseURL + 'uploads/' + this.ClinicFile1.name;
+      }
+      if(this.ClinicFile2){
+        clinic.file2 = baseURL + 'uploads/' + this.ClinicFile2.name;
+      }
+      if(this.ClinicFile3){
+        clinic.file3 = baseURL + 'uploads/' + this.ClinicFile3.name;
+      }
+
       this.data.updateClinic(clinic);
     }
   }

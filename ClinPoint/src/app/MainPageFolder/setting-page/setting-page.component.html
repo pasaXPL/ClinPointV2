@@ -23,9 +23,9 @@
     </div>
 
     <div class="grid grid-cols-1 gap-9 md:grid-cols-4 w-full">
-      <!-- <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#viewPhysicianModal" *ngIf="role == 'Physician'">View Account</button>
+      <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#viewPhysicianModal" *ngIf="role == 'Physician'">View Account</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#viewClinicModal" *ngIf="role == 'Clinic'">View Account</button>
-      <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#viewPatientModal" *ngIf="role == 'Patient'">View Account</button> -->
+      <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#viewPatientModal" *ngIf="role == 'Patient'">View Account</button>
 
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#updatePhysicianModal" *ngIf="role == 'Physician'">Update Account</button>
       <button class="px-2.5 py-3 w-full rounded-full shadow-md bg-alili text-white text-semibold text-2xl" data-te-toggle="modal" data-te-target="#updateClinicModal" *ngIf="role == 'Clinic'">Update Account</button>
@@ -203,7 +203,7 @@
           </div>
 
           <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Supporting File 1</label>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Business Permit</label>
             <a [href]="clinicObj.file1" target="_blank"
               class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View
               Supporting File1</a>
@@ -211,7 +211,7 @@
           </div>
 
           <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Supporting File 2</label>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Department of Health (DOH) Certificate</label>
             <a [href]="clinicObj.file2" target="_blank"
               class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View
               Supporting File2</a>
@@ -219,7 +219,7 @@
           </div>
 
           <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Supporting File 3</label>
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Tax Identity ID</label>
             <a [href]="clinicObj.file3" target="_blank"
               class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View
               Supporting File2</a>
@@ -544,27 +544,27 @@
           </div>
 
           <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Supporting File 1</label>
-            <a [href]="toBeUpdate.file1" target="_blank"
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Business Permit</label>
+            <!-- <a [href]="toBeUpdate.file1" target="_blank"
               class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View
-              Supporting File1</a>
-            <!-- <input type="file" placeholder="Supporting File" class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40" accept="application/pdf, image/*" (change)="getSupportingFile1($event)"/> -->
+              Supporting File1</a> -->
+            <input type="file" placeholder="Supporting File" class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40" accept="application/pdf, image/*" (change)="getSupportingFile1($event)"/>
           </div>
 
           <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Supporting File 2</label>
-            <a [href]="toBeUpdate.file2" target="_blank"
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Department of Health (DOH) Certificate</label>
+            <!-- <a [href]="toBeUpdate.file2" target="_blank"
               class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View
-              Supporting File2</a>
-            <!-- <input type="file" placeholder="Supporting File" class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40" accept="application/pdf, image/*" (change)="getSupportingFile2($event)"/> -->
+              Supporting File2</a> -->
+            <input type="file" placeholder="Supporting File" class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40" accept="application/pdf, image/*" (change)="getSupportingFile2($event)"/>
           </div>
 
           <div>
-            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Supporting File 3</label>
-            <a [href]="toBeUpdate.file3" target="_blank"
+            <label class="block text-sm text-gray-800 dark:text-gray-200 font-bold">Tax Identity ID</label>
+            <!-- <a [href]="toBeUpdate.file3" target="_blank"
               class="text-center block w-full px-3 py-1.5 text-white placeholder-gray-400 bg-alili rounded-md">View
-              Supporting File2</a>
-            <!-- <input type="file" placeholder="Supporting File" class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40" accept="application/pdf, image/*" (change)="getSupportingFile2($event)"/> -->
+              Supporting File2</a> -->
+            <input type="file" placeholder="Supporting File" class="block w-full px-3 py-1.5 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-alili dark:focus:border-alili focus:ring-alili focus:outline-none focus:ring focus:ring-opacity-40" accept="application/pdf, image/*" (change)="getSupportingFile2($event)"/>
           </div>
 
 
